@@ -6,7 +6,7 @@
 /*   By: wendelin <wendelin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 15:23:40 by wendelin          #+#    #+#             */
-/*   Updated: 2022/06/14 18:01:41 by wendelin         ###   ########.fr       */
+/*   Updated: 2022/06/15 18:52:23 by wendelin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,28 @@
 #include <math.h>
 #include "fdf.h"
 #define PI 3.1415926
+
+// takes a tree vertizes creates and returns a pointer to an new trigon
+// calculates the dirtction vector d1 and d2 and the normale n by d2xd1
+trigon  *new_trigon(double p0[3], double p1[3], double p2[3])
+{
+    trigon  *tri;
+
+    tri = NULL;
+    tri = malloc(sizeof(trigon));
+    if (tri == NULL)
+        return (NULL);
+    tri->p[0] = p0[0];
+    tri->p[1] = p0[1];
+    tri->p[2] = p0[2];
+    calc_point(p1, p0, tri->d1, -1);
+    calc_point(p2, p0, tri->d2, -1);
+    tri->n[0] = tri->d2[1] * tri->d1[2] - tri->d2[2] * tri->d1[1];
+    tri->n[1] = tri->d2[2] * tri->d1[0] - tri->d2[0] * tri->d1[2];
+    tri->n[2] = tri->d2[0] * tri->d1[1] - tri->d2[1] * tri->d1[0];
+    return (tri);
+}
+
 
 point create_point(int x, int y, int z)
 {
@@ -59,7 +81,7 @@ object	build_object(void)
     shape.zangle = 0;
     shape.xsize = 2;
     shape.ysize = 2;
-    shape.color = set_color(0, 250, 250, 250);
+    shape.color = setcolor(0, 250, 250, 250);
     return (shape);
 }
 
@@ -102,54 +124,6 @@ void    rotate_object(int xangle, int yangle, int zangle, object *obj)
     }
 }
 
-//****LINE_OPERATOR****
-
-void    display_line(point p1, point p2, int offset, image *im)
-{
-    int     x;
-    int     y;
-	double	difx;
-	double	dify;
-    double  slope;
-    point   temp;
-    
-    x = 0;
-    y = 0;
-    slope = 1;
-    if (((p2.x - p1.x) == 0 && p1.y > p2.y) || p1.x > p2.x)
-    {   
-        temp = p1;
-        p1 = p2;
-        p2 = temp;
-    }
-    if ((p2.x - p1.x) == 0)
-    {
-        y = p1.y;
-        while (y < p2.y)
-        {
-            render(p1.x + offset, y + offset, set_color(0, 255, 255, 255), im);
-            y++;
-        }        
-    }
-    else
-    {
-		difx = (p2.x - p1.x);
-		dify = (p2.y - p1.y);
-        slope = (dify/difx) * slope;
-        y = x * slope + p1.y;
-        x = 0;
-        
-        printf("slope: %f | p1:%d:%d | p2:%d:%d \n", slope, p1.x, p1.y, p2.x, p2.y);
-        
-        while (x < (p2.x - p1.x))
-        {
-	        y = lround(x * slope);
-            // printf("x: %d, y: %d\n", (x+offset), (y+offset));
-	        render(x + offset +p1.x, y + offset + p1.y, set_color(0, 255, 255, 255), im);
-	        x++;
-        }
-    }
-}
 
 void	display_object(object *obj, int offset, image *im)
 {

@@ -6,26 +6,11 @@
 /*   By: wendelin <wendelin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 09:32:35 by wweisser          #+#    #+#             */
-/*   Updated: 2022/06/12 22:32:34 by wendelin         ###   ########.fr       */
+/*   Updated: 2022/06/15 15:27:38 by wendelin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include <math.h>
-
-//first instance rows, second instance collums
-struct matrix
-{
-	float	m[4][4];
-};
-typedef struct matrix	mtx;
-
-struct triangle
-{
-	float	p0[3];
-	float	p1[3];
-	float	p2[3];
-};
-typedef struct triangle	tri;
+# include "fdf.h"
 
 // Creates 4x4 matrix and fills it with 0.o
 mtx	createmtx(void)
@@ -70,7 +55,7 @@ void	mxp(mtx *c, float in[3], float *out[3], int ortho)
 }
 
 // matrix mulitplies a triangle. If orthogoinal matrix => ortho=1
-void	mxt(mtx *c, tri in, tri *out, int ortho)
+void	mxt(mtx *c, trigon in, trigon *out, int ortho)
 {
 	mpx(c, in.p0, out->p0, ortho);
 	mpx(c, in.p1, out->p1, ortho);
