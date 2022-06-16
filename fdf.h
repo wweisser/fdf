@@ -6,7 +6,7 @@
 /*   By: wendelin <wendelin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 13:33:09 by wendelin          #+#    #+#             */
-/*   Updated: 2022/06/15 18:44:26 by wendelin         ###   ########.fr       */
+/*   Updated: 2022/06/16 15:17:13 by wendelin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,19 @@ typedef struct matrix
 // it represents a trigon of three points p, p+d1, p+d2
 typedef struct s_trigon
 {
-	double	p[3];
-	double	d1[3];
-	double	d2[3];
+	double	p0[3];
+	double	p1[3];
+	double	p2[3];
 	double	n[3];
 }			trigon;
+
+// holds a poiner to two arrays of trigons, static hold the original vertices
+// of the object, draw holds the vertices after perspective transformation
+typedef struct s_object
+{
+	trigon *stat;
+	trigon *draw;
+}			object;
 
 // contains the state of a window 
 typedef struct s_window
@@ -63,13 +71,21 @@ typedef struct	s_image
 
 window  *new_window(int width, int hight);
 image   *new_image(window *win);
+trigon  *new_trigon(double p0[3], double p1[3], double p2[3]);
+void	draw_trigon(image *im, trigon *tri);
+void	draw_line(double p1[3], double p2[3], image *im);
+void	set_line(double p1[3], double p2[3], image *im);
 void	calc_point(double p1[3], double p2[3], double result[3], int op);
-void	ft_bzero(void *buf, size_t n);
+void    fact_vector(double p1[3], double f);
+void    cross_product(double p1[3], double p2[3], double result[3]);
 char 	*fdf_main(void);
 int		render(int x, int y, int color, image *im);
 int		setcolor(unsigned char t, unsigned char r, unsigned char g, unsigned char b);
 int		color_shift(int dir, image *im);
 int		create_line(int x1, int y1, int x2, int y2, image *im);
 int		mouse_hook(int key, int x, int y, image *im);
+double	sum_vektor(double p1[3]);
+double	dot_product(double p1[3], double p2[3]);
+
 
 #endif

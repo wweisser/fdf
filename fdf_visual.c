@@ -6,7 +6,7 @@
 /*   By: wendelin <wendelin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 15:00:31 by wendelin          #+#    #+#             */
-/*   Updated: 2022/06/15 17:47:07 by wendelin         ###   ########.fr       */
+/*   Updated: 2022/06/16 14:54:34 by wendelin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,66 +59,54 @@ int	color_shift(int dir, image *im)
 	return (0);
 }
 
-
-
-void show_line(image *im, double p1[3], double p2[3])
+// draws the line via render 
+void	draw_line(double p1[3], double p2[3], image *im)
 {
+	int		x;
+	int		y;
+	double	slope;
+	int		clr;
 	
+	x = 0;
+	y = 0;
+	clr = setcolor(0, 255, 255, 255);
+	if (p1[0] != p2[0])
+	{		
+		slope = (p2[1] - p1[1]) / (p2[0] - p1[0]);
+		while (x < (p2[0] - p1[0]))
+		{
+			y = x * slope;
+			render(x + (im->x / 2) + p1[0], y + (im->x / 2) + p1[1], clr, im);
+			x++;
+		}
+	}
+	else
+	{
+		while (y < (p2[1] - p1[1]))
+		{
+			render(p1[0] + (im->x / 2) + p1[0], y + (im->x / 2) + p1[1], clr, im);
+			y++;
+		}
+	}
 }
 
-void	show_trigon(image *im, trigon tri)
+// checks if the two points have even x or y values and assigns
+// them accordingly to draw_line
+void	set_line(double p1[3], double p2[3], image *im)
 {
-	p1[3]
-	p2[3]
-	
-	show_line(tri)
+	if (p1[0] < p2[0])
+		draw_line(p1, p2, im);
+	else if (p1[0] > p2[0])
+		draw_line(p2, p1, im);
+	else if (p1[0] == p2[0])
+	{
+		if (p1[1] >= p2[1])
+			draw_line(p2, p1, im);
+		if (p1[1] < p2[1])
+			draw_line(p1, p2, im);
+	}
 }
 
-void    display_line(point p1, point p2, int offset, image *im)
-{
-    int     x;
-    int     y;
-	double	difx;
-	double	dify;
-    double  slope;
-    point   temp;
-    
-    x = 0;
-    y = 0;
-    slope = 1;
-    if (((p2.x - p1.x) == 0 && p1.y > p2.y) || p1.x > p2.x)
-    {   
-        temp = p1;
-        p1 = p2;
-        p2 = temp;
-    }
-    if ((p2.x - p1.x) == 0)
-    {
-        y = p1.y;
-        while (y < p2.y)
-        {
-            render(p1.x + offset, y + offset, setcolor(0, 255, 255, 255), im);
-            y++;
-        }        
-    }
-    else
-    {
-		difx = (p2.x - p1.x);
-		dify = (p2.y - p1.y);
-        slope = (dify/difx) * slope;
-        y = x * slope + p1.y;
-        x = 0;
-        
-        printf("slope: %f | p1:%d:%d | p2:%d:%d \n", slope, p1.x, p1.y, p2.x, p2.y);
-        
-        while (x < (p2.x - p1.x))
-        {
-	        y = lround(x * slope);
-            // printf("x: %d, y: %d\n", (x+offset), (y+offset));
-	        render(x + offset +p1.x, y + offset + p1.y, setcolor(0, 255, 255, 255), im);
-	        x++;
-        }
-    }
-}
+
 
 

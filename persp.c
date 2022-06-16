@@ -6,7 +6,7 @@
 /*   By: wendelin <wendelin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 09:32:35 by wweisser          #+#    #+#             */
-/*   Updated: 2022/06/15 15:27:38 by wendelin         ###   ########.fr       */
+/*   Updated: 2022/06/16 15:09:15 by wendelin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,3 +87,5 @@ void rotmtx(mtx *rotmtx, float y, float ß, float a)
     rotmtx->m[2][0] = (-sin(ß));
     rotmtx->m[2][1] = (sin(a) * cos(ß));
     rotmtx->m[2][2] = (cos(a * cos(ß)));
+}
+
