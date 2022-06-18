@@ -6,14 +6,25 @@
 /*   By: wendelin <wendelin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 15:23:40 by wendelin          #+#    #+#             */
-/*   Updated: 2022/06/16 20:24:24 by wendelin         ###   ########.fr       */
+/*   Updated: 2022/06/18 22:54:38 by wendelin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include <math.h>
 #include "fdf.h"
-#define PI 3.1415926
+
+double	*new_point(double x, double y, double z)
+{
+	double *point;
+	point = malloc(sizeof(double) * 3);
+    if (point == NULL)
+        return (NULL);
+	point[0] = x;
+	point[1] = y;
+	point[2] = z;
+	return (point);
+}
 
 // takes a tree vertizes creates and returns a pointer to an new trigon
 // calculates the dirtction vector d1 and d2 and the normale n by d2xd1
@@ -42,10 +53,40 @@ trigon  *new_trigon(double p0[3], double p1[3], double p2[3])
     return (tri);
 }
 
-// returns a pointer to a new object
-object  *new_object(trigon *tri)
+
+
+// creates a square consting of four trigons. The center => cent, 
+// side length => s_len, algn=0 x-plane, algn=1 y-plane, algn=2 z-plane
+trigon	*new_sqare(double ctr[3], int algn, int l)
 {
-    int     i;
+    
+    trigon	*sqare;
+	double	*p[3];
+
+    sqare = malloc(4 * sizeof(trigon));
+    if (sqare = NULL)
+   		return (NULL);	
+	p[0] = new_point(ctr[0] , ctr[1], ctr[2]);
+	p[1] = new_point(ctr[0] - (l / 2), ctr[1] - (l / 2), ctr[2]);
+	p[2] = new_point(ctr[0] + (l / 2), ctr[1] - (l / 2), ctr[2]);
+	sqare[0] = *new_trigon(p[0], p[1], p[2]);
+	p[1] = new_point(ctr[0] + (l / 2), ctr[1] - (l / 2), ctr[2]);
+	p[2] = new_point(ctr[0] + (l / 2), ctr[1] + (l / 2), ctr[2]);
+	sqare[1] = *new_trigon(p[0], p[2], p[1]);
+	p[1] = new_point(ctr[0] + (l / 2), ctr[1] + (l / 2), ctr[2]);
+	p[2] = new_point(ctr[0] - (l / 2), ctr[1] + (l / 2), ctr[2]);
+	sqare[2] = *new_trigon(p[0], p[2], p[1]);
+	p[1] = new_point(ctr[0] - (l / 2), ctr[1] + (l / 2), ctr[2]);
+	p[2] = new_point(ctr[0] - (l / 2), ctr[1] - (l / 2), ctr[2]);
+	sqare[3] = *new_trigon(p[0], p[2], p[1]);
+    return (sqare);
+}
+
+
+// takes an array of trigons and the number of trigons in that array
+// assigns them to an object and returns a pointer to the new object
+object  *new_object(trigon *tri, int i)
+{
     object  *obj;
     
     i = 1;
@@ -58,8 +99,8 @@ object  *new_object(trigon *tri)
     obj->draw = malloc(i * sizeof(trigon));
     if (obj == NULL)
         return (NULL);
-    obj->stat[0] = *tri;
-    obj->draw[0] = *tri;
+    obj->stat = tri;
+    obj->draw = tri;
     return(obj);
 }
 
@@ -82,3 +123,4 @@ void    draw_object(object *obj, image *im)
 {
     draw_trigon(im, &obj->draw[0]);
 }
+

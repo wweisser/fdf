@@ -6,7 +6,7 @@
 /*   By: wendelin <wendelin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 13:33:09 by wendelin          #+#    #+#             */
-/*   Updated: 2022/06/16 20:05:40 by wendelin         ###   ########.fr       */
+/*   Updated: 2022/06/18 20:06:19 by wendelin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,10 @@ typedef struct	s_image
 window  *new_window(int width, int hight);
 image   *new_image(window *win);
 trigon  *new_trigon(double p0[3], double p1[3], double p2[3]);
-object  *new_object(trigon *tri);
+object  *new_object(trigon *tri, int i);
 void	draw_trigon(image *im, trigon *tri);
 void	draw_line(double p1[3], double p2[3], image *im);
+void    draw_object(object *obj, image *im);
 void	set_line(double p1[3], double p2[3], image *im);
 void	calc_point(double p1[3], double p2[3], double result[3], int op);
 void    fact_vector(double p1[3], double f);

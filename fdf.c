@@ -6,7 +6,7 @@
 /*   By: wendelin <wendelin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 15:38:02 by wendelin          #+#    #+#             */
-/*   Updated: 2022/06/16 20:06:24 by wendelin         ###   ########.fr       */
+/*   Updated: 2022/06/18 17:18:29 by wendelin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,6 @@
 #include <stdlib.h>
 #include "fdf.h"
 
-
-#define WINDOW_WIDTH 1000
-#define WINDOW_HEIGHT 1000
-
-#define MLX_ERROR 1
 
 int	mouse_hook(int key, int x, int y, image *im)
 {
@@ -28,11 +23,11 @@ int	mouse_hook(int key, int x, int y, image *im)
 	double p0[3];
 	double p1[3];
     double p2[3];
-	double p3[3];
-	double p4[3];
-	double p5[3];
-	double p6[3];
-	double p7[3];
+	// double p3[3];
+	// double p4[3];
+	// double p5[3];
+	// double p6[3];
+	// double p7[3];
 	
     trigon	*test;
 	object	*obj;
@@ -41,37 +36,37 @@ int	mouse_hook(int key, int x, int y, image *im)
     p0[1] = 0;
     p0[2] = 0;
     
-    p1[0] = 10;
+    p1[0] = 100;
     p1[1] = 0;
     p1[2] = 0;
 
-    p2[0] = 10;
-    p2[1] = 10;
+    p2[0] = 100;
+    p2[1] = 100;
     p2[2] = 0;
 
-	p3[0] = 0;
-    p3[1] = 10;
-    p3[2] = 0;
+	// p3[0] = 0;
+    // p3[1] = 10;
+    // p3[2] = 0;
 
-	p4[0] = 0;
-    p4[1] = 0;
-    p4[2] = 10;
+	// p4[0] = 0;
+    // p4[1] = 0;
+    // p4[2] = 10;
 	
-	p5[0] = 10;
-    p5[1] = 0;
-    p5[2] = 10;
+	// p5[0] = 10;
+    // p5[1] = 0;
+    // p5[2] = 10;
 
-	p6[0] = 10;
-    p6[1] = 10;
-    p6[2] = 10;
+	// p6[0] = 10;
+    // p6[1] = 10;
+    // p6[2] = 10;
 
-	p7[0] = 0;
-    p7[1] = 10;
-    p7[2] = 10;
+	// p7[0] = 0;
+    // p7[1] = 10;
+    // p7[2] = 10;
 
 
-	set_line(p0, p1, im);
-	set_line(p2, p3, im);
+	// set_line(p0, p1, im);
+	// set_line(p2, p3, im);
 
 	test = new_trigon(p0, p1, p2);
 	// test = new_trigon(p0, p2, p3);
@@ -79,9 +74,10 @@ int	mouse_hook(int key, int x, int y, image *im)
 	// test = new_trigon(p4, p5, p6);
 	// test = new_trigon(p4, p5, p6);
 
-	new_object(test);
-	draw_trigon(im, test);
+	obj = new_object(test);
+	draw_object(obj, im);
 	free(test);
+	free(obj);
 	
 	if (key == 1)
 		mlx_put_image_to_window(im->win->mlx, im->win->win, im->grid, 0, 0);

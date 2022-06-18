@@ -6,7 +6,7 @@
 /*   By: wendelin <wendelin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 15:00:31 by wendelin          #+#    #+#             */
-/*   Updated: 2022/06/16 14:54:34 by wendelin         ###   ########.fr       */
+/*   Updated: 2022/06/18 17:20:44 by wendelin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void	draw_line(double p1[3], double p2[3], image *im)
 	{
 		while (y < (p2[1] - p1[1]))
 		{
-			render(p1[0] + (im->x / 2) + p1[0], y + (im->x / 2) + p1[1], clr, im);
+			render(p1[0] + (im->x / 2), y + (im->x / 2) + p1[1], clr, im);
 			y++;
 		}
 	}
