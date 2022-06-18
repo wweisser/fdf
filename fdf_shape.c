@@ -6,7 +6,7 @@
 /*   By: wendelin <wendelin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 15:23:40 by wendelin          #+#    #+#             */
-/*   Updated: 2022/06/16 14:55:19 by wendelin         ###   ########.fr       */
+/*   Updated: 2022/06/16 20:24:24 by wendelin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,27 @@ trigon  *new_trigon(double p0[3], double p1[3], double p2[3])
     return (tri);
 }
 
+// returns a pointer to a new object
+object  *new_object(trigon *tri)
+{
+    int     i;
+    object  *obj;
+    
+    i = 1;
+    obj = malloc(sizeof(object));
+    if (obj == NULL)
+        return (NULL);
+    obj->stat = malloc(i * sizeof(trigon));
+    if (obj == NULL)
+        return (NULL);
+    obj->draw = malloc(i * sizeof(trigon));
+    if (obj == NULL)
+        return (NULL);
+    obj->stat[0] = *tri;
+    obj->draw[0] = *tri;
+    return(obj);
+}
+
 // draws the lines of a trigon.
 void	draw_trigon(image *im, trigon *tri)
 {
@@ -56,4 +77,8 @@ void	draw_trigon(image *im, trigon *tri)
 	// set_line(tri->p0, nvector, im);
 }
 
-
+// draws an object
+void    draw_object(object *obj, image *im)
+{
+    draw_trigon(im, &obj->draw[0]);
+}

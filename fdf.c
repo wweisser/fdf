@@ -6,7 +6,7 @@
 /*   By: wendelin <wendelin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 15:38:02 by wendelin          #+#    #+#             */
-/*   Updated: 2022/06/16 14:59:45 by wendelin         ###   ########.fr       */
+/*   Updated: 2022/06/16 20:06:24 by wendelin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ int	mouse_hook(int key, int x, int y, image *im)
 	double p6[3];
 	double p7[3];
 	
-	
-    trigon *test;
+    trigon	*test;
+	object	*obj;
 
     p0[0] = 0;
     p0[1] = 0;
@@ -74,11 +74,12 @@ int	mouse_hook(int key, int x, int y, image *im)
 	set_line(p2, p3, im);
 
 	test = new_trigon(p0, p1, p2);
-	test = new_trigon(p0, p2, p3);
-	test = new_trigon(p4, p5, p6);
-	test = new_trigon(p4, p5, p6);
-	test = new_trigon(p4, p5, p6);
+	// test = new_trigon(p0, p2, p3);
+	// test = new_trigon(p4, p5, p6);
+	// test = new_trigon(p4, p5, p6);
+	// test = new_trigon(p4, p5, p6);
 
+	new_object(test);
 	draw_trigon(im, test);
 	free(test);
 	
