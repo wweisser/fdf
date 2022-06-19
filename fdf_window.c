@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf_window.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wendelin <wendelin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 10:51:16 by wendelin          #+#    #+#             */
-/*   Updated: 2022/06/15 14:28:55 by wendelin         ###   ########.fr       */
+/*   Updated: 2022/06/19 13:29:29 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,13 @@
 window    *new_window(int width, int hight)
 {
     window   *win;
-    
+
     win = NULL;
-	win = malloc(sizeof(window));
+	win = (window *)malloc(sizeof(window));
 	win->mlx = mlx_init();
 	if (win->mlx == NULL)
 		return (NULL);
-    win->win = mlx_new_window(win->mlx, width, hight, "fdf");
+    win->win = (void *)mlx_new_window(win->mlx, width, hight, (char *)"fdf");
     if (win->win == NULL)
 	{
 		free(win->win);
@@ -39,9 +39,9 @@ window    *new_window(int width, int hight)
 image    *new_image(window *win)
 {
     image   *im;
-    
+
     im = NULL;
-    im = malloc(sizeof(image));
+    im = (image *)malloc(sizeof(image));
     if (im == NULL)
         return (NULL);
     im->win = win;

@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   fdf_visual.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wendelin <wendelin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 15:00:31 by wendelin          #+#    #+#             */
-/*   Updated: 2022/06/18 17:20:44 by wendelin         ###   ########.fr       */
+/*   Updated: 2022/06/19 17:17:39 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-// sets the pixelvalue at the coordinate x and y to color 
+// sets the pixelvalue at the coordinate x and y to color
 int	render(int x, int y, int color, image *im)
 {
 	int	pixel;
@@ -59,32 +59,32 @@ int	color_shift(int dir, image *im)
 	return (0);
 }
 
-// draws the line via render 
-void	draw_line(double p1[3], double p2[3], image *im)
+// draws the line via render
+void	draw_line(point p1, point p2, image *im)
 {
 	int		x;
 	int		y;
 	double	slope;
 	int		clr;
-	
+
 	x = 0;
 	y = 0;
 	clr = setcolor(0, 255, 255, 255);
-	if (p1[0] != p2[0])
-	{		
-		slope = (p2[1] - p1[1]) / (p2[0] - p1[0]);
-		while (x < (p2[0] - p1[0]))
+	if (p1.x != p2.x)
+	{
+		slope = (p2.y - p1.y) / (p2.x - p1.x);
+		while (x < (p2.x - p1.x))
 		{
 			y = x * slope;
-			render(x + (im->x / 2) + p1[0], y + (im->x / 2) + p1[1], clr, im);
+			render(x + (im->x / 2) + p1.x, y + (im->x / 2) + p1.y, clr, im);
 			x++;
 		}
 	}
 	else
 	{
-		while (y < (p2[1] - p1[1]))
+		while (y < (p2.y - p1.y))
 		{
-			render(p1[0] + (im->x / 2), y + (im->x / 2) + p1[1], clr, im);
+			render(p1.x + (im->x / 2), y + (im->x / 2) + p1.y, clr, im);
 			y++;
 		}
 	}
@@ -92,17 +92,17 @@ void	draw_line(double p1[3], double p2[3], image *im)
 
 // checks if the two points have even x or y values and assigns
 // them accordingly to draw_line
-void	set_line(double p1[3], double p2[3], image *im)
+void	set_line(point p1, point p2, image *im)
 {
-	if (p1[0] < p2[0])
+	if (p1.x < p2.x)
 		draw_line(p1, p2, im);
-	else if (p1[0] > p2[0])
+	else if (p1.x > p2.x)
 		draw_line(p2, p1, im);
-	else if (p1[0] == p2[0])
+	else if (p1.x == p2.x)
 	{
-		if (p1[1] >= p2[1])
+		if (p1.y >= p2.y)
 			draw_line(p2, p1, im);
-		if (p1[1] < p2[1])
+		if (p1.y < p2.y)
 			draw_line(p1, p2, im);
 	}
 }
