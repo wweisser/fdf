@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf_shape.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wendelin <wendelin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 15:23:40 by wendelin          #+#    #+#             */
-/*   Updated: 2022/06/19 19:43:15 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/06/20 18:31:54 by wendelin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,9 @@ trigon	*new_trigon(point *p0, point *p1, point *p2)
 void	draw_trigon(image *im, trigon *tri)
 {
 	// double	normfact;
-	point	*nvector;
+	// point	*nvector;
 
-	nvector = NULL;
+	// nvector = NULL;
 	set_line(*(tri->p0), *(tri->p1), im);
 	set_line(*(tri->p1), *(tri->p2), im);
 	set_line(*(tri->p2), *(tri->p0), im);

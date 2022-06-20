@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wendelin <wendelin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 15:38:02 by wendelin          #+#    #+#             */
-/*   Updated: 2022/06/19 20:52:43 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/06/20 23:04:51 by wendelin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,11 @@ int	mouse_hook(int key, int x, int y, image *im)
 	point *p5;
 
 
-	double cent[3];
-	cent[0] = 100;
-	cent[1] = 100;
-	cent[2] = 0;
-	trigon	*test;
+	// double cent[3];
+	// cent[0] = 100;
+	// cent[1] = 100;
+	// cent[2] = 0;
+	// trigon	*test;
 
 	// object	*obj;
 
@@ -46,27 +46,27 @@ int	mouse_hook(int key, int x, int y, image *im)
 	p2 = new_point(0, 400, 0);
 	p3 = new_point(0, -400, 0);
 
-	p4 = new_point(100, 100, 0);
+	p4 = new_point(100, 0, 0);
 	p5 = new_point(0, 0, 0);
 
 
 
 	set_line(*p0, *p1, im);
 	set_line(*p2, *p3, im);
-	rotmtx(im->angle[0], im->angle[1], im->angle[2], *p5, p4);
-	set_line(*p4, *p5, im);
+	// set_line(*p4, *p5, im);
+	printf("pretrans %f %f %f\n", p5->x, p5->y, p5->z);
+	im->angle[1] = (im->angle[1] + 90 *(M_PI/360));
+	trans_op(*p4, p5, im);
+	printf("pretrans %f %f %f\n", p5->x, p5->y, p5->z);
 
-	test = new_sqare(cent, 100);
-	// test = new_trigon(p0, p2, p3);
-	// test = new_trigon(p4, p5, p6);
-	// test = new_trigon(p4, p5, p6);
-	// test = new_trigon(p4, p5, p6);
+	// set_line(*p4, *p5, im);
 
+	// test = new_sqare(cent, 100);
 	// draw_trigon(im, test);
 	// draw_trigon(im, test + 1);
 	// draw_trigon(im, test + 2);
 	// draw_trigon(im, test + 3);
-
+	
 	// obj = new_object(test);
 	// draw_object(obj, im);
 	// free(test);

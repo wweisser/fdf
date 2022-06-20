@@ -3,29 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   persp.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wendelin <wendelin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 09:32:35 by wweisser          #+#    #+#             */
-/*   Updated: 2022/06/19 21:19:48 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/06/20 22:40:39 by wendelin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "fdf.h"
 
-// Creates 4x4 matrix and fills it with 0.o
-mtx	createmtx(void)
+// Creates 4x4 matrix and fills it with 0.0
+mtx	*new_mtx(void)
 {
-	mtx	emptyMtx;
+	mtx	*emptyMtx;
 	int	i;
 	int	j;
 
+	emptyMtx = (mtx *)malloc(sizeof(mtx));
+	if (emptyMtx == NULL)
+		return (NULL);
 	j = 0;
 	while (j < 4)
 	{
 		i = 0;
 		while (i < 4)
 		{
-			emptyMtx.m[j][i] = 0.0;
+			emptyMtx->m[j][i] = 0.0;
 			i++;
 		}
 		j++;
@@ -41,6 +44,7 @@ void	mxp(mtx *c, point in, point *out, int ortho)
 {
 	float	w;
 
+	w = 1;
 	out->x = (in.x * c->m[0][0] + in.y * c->m[0][1] + in.z * c->m[0][2] + c->m[0][3]);
 	out->y = (in.x * c->m[1][0] + in.y * c->m[1][1] + in.z * c->m[1][2] + c->m[1][3]);
 	out->z = (in.x * c->m[2][0] + in.y * c->m[2][1] + in.z * c->m[2][2] + c->m[2][3]);
@@ -56,27 +60,37 @@ void	mxp(mtx *c, point in, point *out, int ortho)
 // matrix mulitplies a triangle. If orthogoinal matrix => ortho=1
 void	mxt(mtx *c, trigon in, trigon *out, int ortho)
 {
-	mpx(c, in.p0, out->p0, ortho);
-	mpx(c, in.p1, out->p1, ortho);
-	mpx(c, in.p2, out->p2, ortho);
+	mxp(c, *in.p0, out->p0, ortho);
+	mxp(c, *in.p1, out->p1, ortho);
+	mxp(c, *in.p2, out->p2, ortho);
 }
 
 //creates an Orthonormal matrix. Values for znear are set to 0.1
-mtx	othromtx(double width, double length, double zfar, double viewangle)
+mtx	*othromtx(double width, double length, double zfar, double viewangle)
 {
-	mtx	orthomtx;
-
-	orthomtx = createmtx();
-	orthomtx.m[0][0] = (width/length) * 1/(tan(viewangle / 2));
-	orthomtx.m[1][1] = 1 / (tan(viewangle / 2));
-	orthomtx.m[2][2] = zfar / (zfar - 0.1);
-	orthomtx.m[2][3] = -(zfar / (zfar - 0.1) * 0.1);
-	orthomtx.m[3][2] = 1;
+	mtx	*orthomtx;
+	
+	orthomtx = NULL;
+	orthomtx = new_mtx();
+	if (orthomtx == NULL)
+		return (NULL);
+	orthomtx->m[0][0] = (width/length) * 1/(tan(viewangle / 2));
+	orthomtx->m[1][1] = 1 / (tan(viewangle / 2));
+	orthomtx->m[2][2] = zfar / (zfar - 0.1);
+	orthomtx->m[2][3] = -(zfar / (zfar - 0.1) * 0.1);
+	orthomtx->m[3][2] = 1;
+	return (orthomtx);
 }
 
-//creates a rotation matrix
-void create_rotmtx(mtx *rotmtx, double y, double ß, double a)
+//creates a rotation matrix with the corresponding angles
+mtx *create_rotmtx(double y, double ß, double a)
 {
+	mtx  *rotmtx;
+
+	rotmtx = NULL;
+	rotmtx = new_mtx();
+	if (rotmtx == NULL)
+		return (NULL);
 	rotmtx->m[0][0] = (cos(a) * cos(ß));
 	rotmtx->m[0][1] = (cos(a) * sin(ß) * sin(y) - sin(a) * cos(y));
 	rotmtx->m[0][2] = (cos(a) * sin(ß) * cos(y) + cos(a) * sin(y));
@@ -86,13 +100,14 @@ void create_rotmtx(mtx *rotmtx, double y, double ß, double a)
 	rotmtx->m[2][0] = (-sin(ß));
 	rotmtx->m[2][1] = (sin(a) * cos(ß));
 	rotmtx->m[2][2] = (cos(a * cos(ß)));
+	return (rotmtx);
 }
 
 void	trans_op(point in, point *out, image *im)
 {
-	mtx	rotmtx;
+	mtx	*rotmtx;
 
-	create_rotmtx(&rotmtx, im->angle[0], im->angle[1], im->angle[2]);
-	mxp(&rotmtx, in, out, 0);
+	rotmtx = create_rotmtx(im->angle[0], im->angle[1], im->angle[2]);
+	mxp(rotmtx, in, out, 0);
 }
 
