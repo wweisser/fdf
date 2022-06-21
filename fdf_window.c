@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 10:51:16 by wendelin          #+#    #+#             */
-/*   Updated: 2022/06/19 13:29:29 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/06/21 19:10:17 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,28 +36,30 @@ window    *new_window(int width, int hight)
 
 // creates image of size of the window, assigns bit/pixel and bytes/line,
 // endian, color, returns pointer to an image
-image    *new_image(window *win)
+image	*new_image(window *win)
 {
-    image   *im;
+	image	*im;
 
-    im = NULL;
-    im = (image *)malloc(sizeof(image));
-    if (im == NULL)
-        return (NULL);
-    im->win = win;
+	im = NULL;
+	im = (image *)malloc(sizeof(image));
+	if (im == NULL)
+		return (NULL);
+	im->win = win;
 	im->bits_per_pixel = 32;
 	im->bytes_per_line = 4;
 	im->endian = 1;
 	im->color = 1;
-    im->x = win->x;
-    im->y = win->y;
-    im->grid = NULL;
-    im->addr = NULL;
-    im->grid = mlx_new_image(win->mlx, win->y, win->x);
-    im->addr = (int *)mlx_get_data_addr(im->grid, &im->bits_per_pixel,
-        &im->bytes_per_line, &im->endian);
-    if (im->grid == NULL || im->addr == NULL)
-        return (NULL);
-    return (im);
+	im->x = win->x;
+	im->y = win->y;
+	im->grid = NULL;
+	im->addr = NULL;
+	im->grid = mlx_new_image(win->mlx, win->y, win->x);
+	im->addr = (int *)mlx_get_data_addr(im->grid, &im->bits_per_pixel,
+		&im->bytes_per_line, &im->endian);
+	im->stat = NULL;
+	im->disp = NULL;
+	if (im->grid == NULL || im->addr == NULL)
+		return (NULL);
+	return (im);
 }
 

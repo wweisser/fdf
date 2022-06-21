@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wendelin <wendelin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 15:38:02 by wendelin          #+#    #+#             */
-/*   Updated: 2022/06/20 23:04:51 by wendelin         ###   ########.fr       */
+/*   Updated: 2022/06/21 18:59:26 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,59 +21,52 @@ int	mouse_hook(int key, int x, int y, image *im)
 	color_shift(50, im);
 
 	if (key == 4)
-		im->angle[2] = im->angle[2] + 10;
+		im->angle[2] = (im->angle[2] + 90 *(M_PI/180));
 	if (key == 5)
-		im->angle[2] = im->angle[2] - 10;
+		im->angle[2] = (im->angle[2] - 90 *(M_PI/180));
 	point *p0;
 	point *p1;
 	point *p2;
 	point *p3;
-	point *p4;
-	point *p5;
+	// point *p4;
+	double ctr[3];
 
-
-	// double cent[3];
-	// cent[0] = 100;
-	// cent[1] = 100;
-	// cent[2] = 0;
-	// trigon	*test;
-
-	// object	*obj;
-
-
+	ctr[0] = 100;
+	ctr[1] = 100;
+	ctr[2] = 0;
 	p0 = new_point(400, 0, 0);
 	p1 = new_point(-400, 0, 0);
 	p2 = new_point(0, 400, 0);
 	p3 = new_point(0, -400, 0);
-
-	p4 = new_point(100, 0, 0);
-	p5 = new_point(0, 0, 0);
-
-
+	// p4 = new_point(100, 100, 0);
+	// p5 = new_point(0, 0, 0);
 
 	set_line(*p0, *p1, im);
 	set_line(*p2, *p3, im);
-	// set_line(*p4, *p5, im);
-	printf("pretrans %f %f %f\n", p5->x, p5->y, p5->z);
-	im->angle[1] = (im->angle[1] + 90 *(M_PI/360));
-	trans_op(*p4, p5, im);
-	printf("pretrans %f %f %f\n", p5->x, p5->y, p5->z);
 
-	// set_line(*p4, *p5, im);
+	new_sqare(ctr, 100, &im->stat);
+	// im->p = trans_op(*p4, im);
+	// set_line(*(im->p), *p5, im);
 
-	// test = new_sqare(cent, 100);
+	free(p0);
+	free(p1);
+	free(p2);
+	free(p3);
+	// free(p4);
+
+
+
 	// draw_trigon(im, test);
 	// draw_trigon(im, test + 1);
 	// draw_trigon(im, test + 2);
 	// draw_trigon(im, test + 3);
-	
+
 	// obj = new_object(test);
 	// draw_object(obj, im);
 	// free(test);
 	// free(obj);
 
-	if (key == 1)
-		mlx_put_image_to_window(im->win->mlx, im->win->win, im->grid, 0, 0);
+	mlx_put_image_to_window(im->win->mlx, im->win->win, im->grid, 0, 0);
 	return (0);
 }
 
