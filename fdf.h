@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 13:33:09 by wendelin          #+#    #+#             */
-/*   Updated: 2022/06/21 19:20:23 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/06/22 16:15:27 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <math.h>
 # include <unistd.h>
 # include <stdlib.h>
+# include <stdio.h>
 
 #define RED_PIXEL 0xFFAABB
 
@@ -44,14 +45,6 @@ struct s_trigon
 	struct s_trigon	*next;
 };
 typedef struct s_trigon	trigon;
-
-// holds a poiner to two arrays of trigons, static hold the original vertices
-// of the object, draw holds the vertices after perspective transformation
-typedef struct s_object
-{
-	trigon *stat;
-	trigon *draw;
-}			object;
 
 // contains the state of a window
 typedef struct s_window
@@ -85,17 +78,18 @@ image	*new_image(window *win);
 mtx		*new_mtx(void);
 point	*new_point(double x, double y, double z);
 trigon	*new_trigon(point *p0, point *p1, point *p2);
-void	rottrigon(trigon in, trigon *out, mtx rotmtx);
+void	rottrigon(trigon *in, trigon *out, mtx rotmtx);
 void	new_sqare(double ctr[3], int l, trigon **head);
-void	draw_trigon(trigon *head, image *im);
+void	free_lst(trigon **head);
+void	draw_trigons(trigon *tri_lst, image *im);
 void	draw_line(point p1, point p2, image *im);
 void	set_line(point p1, point p2, image *im);
 void	calc_point(point p1, point p2, point *result, int op);
 void	fact_vector(point p1, double f);
 void	cross_product(point p1, point p2, point *result);
 mtx		*create_rotmtx(double y, double ß, double a);
-void	mxp(mtx c, point in, point *out, int ortho);
-void	addtrigon(trigon **head, point *p0, point *p1, point *p2);
+void	mxp(mtx c, point *in, point *out, int ortho);
+trigon	*addtrigon(trigon **head, point *p0, point *p1, point *p2);
 void	trans_op(image *im);
 int		render(int x, int y, int color, image *im);
 int		setcolor(unsigned char t, unsigned char r, unsigned char g, unsigned char b);

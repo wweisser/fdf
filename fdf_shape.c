@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 15:23:40 by wendelin          #+#    #+#             */
-/*   Updated: 2022/06/21 19:20:16 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/06/22 16:28:43 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,48 +50,59 @@ trigon	*new_trigon(point *p0, point *p1, point *p2)
 	calc_point(*p1, *p0, &d1, -1);
 	calc_point(*p2, *p0, &d2, -1);
 	cross_product(d1, d2, tri->n);
+	tri->next = NULL;
 	return (tri);
 }
 
 // appends a node containing a trigon at the end of a list of trigons
-void	addtrigon(trigon **head, point *p0, point *p1, point *p2)
+trigon	*addtrigon(trigon **head, point *p0, point *p1, point *p2)
 {
-	trigon	*temp;
+	trigon	**temp;
 	trigon	*node;
 
 	node = NULL;
+	printf(" -1- \n");
 	node = new_trigon(p0, p1, p2);
-	if (head == NULL)
-		head = &node;
+	if (node == NULL)
+		return (NULL);
+	printf(" -2- \n");
+	if (*head == NULL)
+	{
+		*head = node;
+		printf(" -3- \n");
+	}
 	else
 	{
-		if (node != NULL)
+		temp = head;
+		while (*temp)
 		{
-			temp = *head;
-			while(temp)
-				temp = temp->next;
-			node->next = temp;
-			temp = node;
+			temp = &(*temp)->next;
+			printf(" -4- \n");
 		}
+		node->next = *temp;
+		*temp = node;
 	}
+	return (node);
 }
 
 // draws a list of trigons.
-void	draw_trigon(trigon *head, image *im)
+void	draw_trigons(trigon *tri_lst, image *im)
 {
 	// double	normfact;
 	// point	*nvector;
 	trigon	*temp;
 
 	// nvector = NULL;
-	if (head != NULL)
+	if (tri_lst != NULL)
 	{
-		temp = head;
-		while (temp)
+		printf("test\n");
+		temp = tri_lst;
+		while (temp != NULL)
 		{
 			set_line(*(temp->p0), *(temp->p1), im);
 			set_line(*(temp->p1), *(temp->p2), im);
 			set_line(*(temp->p2), *(temp->p0), im);
+			printf("Node to print %f %f %f", temp->p1->x, temp->p1->y, temp->p1->z);
 			temp = temp->next;
 		}
 	}
@@ -107,7 +118,6 @@ void	new_sqare(double ctr[3], int l, trigon **head)
 {
 	point	*p[3];
 
-	head =  NULL;
 	p[0] = new_point(ctr[0], ctr[1], ctr[2]);
 	p[1] = new_point(ctr[0] - (l / 2), ctr[1] - (l / 2), ctr[2]);
 	p[2] = new_point(ctr[0] + (l / 2), ctr[1] - (l / 2), ctr[2]);
@@ -121,4 +131,25 @@ void	new_sqare(double ctr[3], int l, trigon **head)
 	p[1] = new_point(ctr[0] - (l / 2), ctr[1] + (l / 2), ctr[2]);
 	p[2] = new_point(ctr[0] - (l / 2), ctr[1] - (l / 2), ctr[2]);
 	addtrigon(head, p[0], p[1], p[2]);
+}
+
+void	free_lst(trigon **head)
+{
+	trigon *temp;
+
+	temp = *head;
+	if (*head != NULL)
+	{
+		while(*head)
+		{
+			temp = *head;
+			free(temp->n);
+			free(temp->p0);
+			free(temp->p1);
+			free(temp->p2);
+			*head = (*head)->next;
+			free(temp);
+		}
+		head = NULL;
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 15:38:02 by wendelin          #+#    #+#             */
-/*   Updated: 2022/06/21 18:59:26 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/06/22 16:35:07 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,10 @@ int	mouse_hook(int key, int x, int y, image *im)
 	point *p1;
 	point *p2;
 	point *p3;
-	// point *p4;
+	point *p4;
 	double ctr[3];
+	trigon *test;
+	mtx		*rotmtx;
 
 	ctr[0] = 100;
 	ctr[1] = 100;
@@ -38,13 +40,27 @@ int	mouse_hook(int key, int x, int y, image *im)
 	p1 = new_point(-400, 0, 0);
 	p2 = new_point(0, 400, 0);
 	p3 = new_point(0, -400, 0);
-	// p4 = new_point(100, 100, 0);
-	// p5 = new_point(0, 0, 0);
+	p4 = new_point(100, 100, 0);
+	test = NULL;
 
 	set_line(*p0, *p1, im);
 	set_line(*p2, *p3, im);
 
+	// test = new_trigon(p2, p3, p4);
+	addtrigon(&im->stat, p2, p3, p4);
+	addtrigon(&im->disp, p0, p1, p4);
+
+
+
+
+	rotmtx = create_rotmtx(im->angle[0], im->angle[1], im->angle[2]);
 	new_sqare(ctr, 100, &im->stat);
+	// trans_op(im);
+	rottrigon(im->stat, im->disp, *rotmtx);
+	draw_trigons(im->disp, im);
+	free_lst(&im->stat);
+	free_lst(&im->disp);
+	printf("after free %p\n", im->stat);
 	// im->p = trans_op(*p4, im);
 	// set_line(*(im->p), *p5, im);
 
