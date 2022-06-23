@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wendelin <wendelin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 15:38:02 by wendelin          #+#    #+#             */
-/*   Updated: 2022/06/22 16:35:07 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/06/23 23:41:47 by wendelin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,72 +17,73 @@
 
 int	mouse_hook(int key, int x, int y, image *im)
 {
-	y = x + y;
-	color_shift(50, im);
+	double ctr[3];
+	double angle[3];
 
-	if (key == 4)
-		im->angle[2] = (im->angle[2] + 90 *(M_PI/180));
-	if (key == 5)
-		im->angle[2] = (im->angle[2] - 90 *(M_PI/180));
 	point *p0;
 	point *p1;
 	point *p2;
 	point *p3;
-	point *p4;
-	double ctr[3];
-	trigon *test;
-	mtx		*rotmtx;
-
-	ctr[0] = 100;
-	ctr[1] = 100;
+	ctr[0] = -50;
+	ctr[1] = -50;
 	ctr[2] = 0;
+	angle[0] = 0;
+	angle[1] = 0;
+	angle[2] = 0;
+
+
 	p0 = new_point(400, 0, 0);
 	p1 = new_point(-400, 0, 0);
 	p2 = new_point(0, 400, 0);
 	p3 = new_point(0, -400, 0);
-	p4 = new_point(100, 100, 0);
-	test = NULL;
+	y = x + y;
+	color_shift(50, im);
 
-	set_line(*p0, *p1, im);
-	set_line(*p2, *p3, im);
+	if (key == 1)
+	{
+		new_sqare(ctr, angle, 100, im);
+		angle[1] = 90 *(M_PI/180);
+		new_sqare(ctr, angle, 100, im);
+		ctr[2] = -100;
+		new_sqare(ctr, angle, 100, im);
+		angle[1] = 0;
+		angle[0] = -90 *(M_PI/180);
+		new_sqare(ctr, angle, 100, im);
+		ctr[2] = 0;
+		new_sqare(ctr, angle, 100, im);
+		ctr[2] = 100;
+		angle[0] = 0;
+		new_sqare(ctr, angle, 100, im);
+	}
+	if (key == 4)
+	{		
+		im->angle[0] = (im->angle[0] + 5 *(M_PI/180));
+		im->angle[1] = (im->angle[1] + 5 *(M_PI/180));
+		im->angle[2] = (im->angle[2] + 5 *(M_PI/180));
 
-	// test = new_trigon(p2, p3, p4);
-	addtrigon(&im->stat, p2, p3, p4);
-	addtrigon(&im->disp, p0, p1, p4);
+	}
+	if (key == 5)
+	{
+		im->angle[0] = (im->angle[0] - 5 *(M_PI/180));
+		im->angle[1] = (im->angle[1] - 5 *(M_PI/180));
+		im->angle[2] = (im->angle[2] - 5 *(M_PI/180));
 
-
-
-
-	rotmtx = create_rotmtx(im->angle[0], im->angle[1], im->angle[2]);
-	new_sqare(ctr, 100, &im->stat);
-	// trans_op(im);
-	rottrigon(im->stat, im->disp, *rotmtx);
+	}
+	trans_op(im->stat, &im->disp, im->angle);
 	draw_trigons(im->disp, im);
-	free_lst(&im->stat);
+	// free_lst(&im->stat);
 	free_lst(&im->disp);
 	printf("after free %p\n", im->stat);
 	// im->p = trans_op(*p4, im);
 	// set_line(*(im->p), *p5, im);
-
+	// free(p4);
+	set_line(*p0, *p1, im);
+	set_line(*p2, *p3, im);
+	mlx_put_image_to_window(im->win->mlx, im->win->win, im->grid, 0, 0);
 	free(p0);
 	free(p1);
 	free(p2);
 	free(p3);
-	// free(p4);
-
-
-
-	// draw_trigon(im, test);
-	// draw_trigon(im, test + 1);
-	// draw_trigon(im, test + 2);
-	// draw_trigon(im, test + 3);
-
-	// obj = new_object(test);
-	// draw_object(obj, im);
-	// free(test);
-	// free(obj);
-
-	mlx_put_image_to_window(im->win->mlx, im->win->win, im->grid, 0, 0);
 	return (0);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   persp.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wendelin <wendelin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 09:32:35 by wweisser          #+#    #+#             */
-/*   Updated: 2022/06/22 16:39:59 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/06/23 21:51:16 by wendelin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,9 @@ void	mxp(mtx c, point *in, point *out, int ortho)
 	float	w;
 
 	w = 1;
-	out->x = (in->x * c.m[0][0] + in->y * c.m[0][1] + in->z * c.m[0][2] + c.m[0][3]);
-	out->y = (in->x * c.m[1][0] + in->y * c.m[1][1] + in->z * c.m[1][2] + c.m[1][3]);
-	out->z = (in->x * c.m[2][0] + in->y * c.m[2][1] + in->z * c.m[2][2] + c.m[2][3]);
+	out->x = round(in->x * c.m[0][0] + in->y * c.m[0][1] + in->z * c.m[0][2] + c.m[0][3]);
+	out->y = round(in->x * c.m[1][0] + in->y * c.m[1][1] + in->z * c.m[1][2] + c.m[1][3]);
+	out->z = round(in->x * c.m[2][0] + in->y * c.m[2][1] + in->z * c.m[2][2] + c.m[2][3]);
 	if (ortho == 1 && w != 0)
 	{
 		w = (in->x * c.m[3][2] + in->y * c.m[3][2] + in->z * c.m[3][2] + c.m[3][3]);
@@ -111,25 +111,30 @@ void	rottrigon(trigon *in, trigon *out, mtx rotmtx)
 }
 
 // transformas all objects in an image to the current angle
-void	trans_op(image *im)
+// void	trans_op(image *im)
+void	trans_op(trigon *stat, trigon **disp, double angle[3])
 {
 	mtx		*rotmtx;
 	trigon	*temp;
 	trigon	*out;
+	point	*p[3];
 
-	rotmtx = create_rotmtx(im->angle[0], im->angle[1], im->angle[2]);
+	rotmtx = create_rotmtx(angle[0], angle[1], angle[2]);
 	temp = NULL;
 	out = NULL;
-	out = new_trigon(NULL, NULL, NULL); // punkte in neuem trigon durfen nicht leer sein
-	temp = im->stat;
-	rottrigon(im->stat, out, *rotmtx);
+	p[0] = new_point(0, 0, 0);
+	p[1] = new_point(0, 0, 0);
+	p[2] = new_point(0, 0, 0);
+	temp = stat;
 	while (temp)
 	{
-
-
+		out = new_trigon(p[0], p[1], p[2]);
+		printf("bevor rot %f %f %f\n", out->p0->x, out->p0->y, out->p0->z);
+		rottrigon(temp, out, *rotmtx);	
+		addtrigon(disp, out);
+		printf(" -test %p- \n", temp->next);
 		temp = temp->next;
 	}
-	free (out);
 	free (rotmtx);
 }
 

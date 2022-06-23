@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wendelin <wendelin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 13:33:09 by wendelin          #+#    #+#             */
-/*   Updated: 2022/06/22 16:15:27 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/06/23 22:12:47 by wendelin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ mtx		*new_mtx(void);
 point	*new_point(double x, double y, double z);
 trigon	*new_trigon(point *p0, point *p1, point *p2);
 void	rottrigon(trigon *in, trigon *out, mtx rotmtx);
-void	new_sqare(double ctr[3], int l, trigon **head);
+void	new_sqare(double ctr[3], double angle[3], int l, image *im);
 void	free_lst(trigon **head);
 void	draw_trigons(trigon *tri_lst, image *im);
 void	draw_line(point p1, point p2, image *im);
@@ -89,8 +89,9 @@ void	fact_vector(point p1, double f);
 void	cross_product(point p1, point p2, point *result);
 mtx		*create_rotmtx(double y, double ß, double a);
 void	mxp(mtx c, point *in, point *out, int ortho);
-trigon	*addtrigon(trigon **head, point *p0, point *p1, point *p2);
-void	trans_op(image *im);
+void	addtrigon(trigon **head, trigon *new);
+// void	trans_op(image *im);
+void	trans_op(trigon *stat, trigon **disp, double angle[3]);
 int		render(int x, int y, int color, image *im);
 int		setcolor(unsigned char t, unsigned char r, unsigned char g, unsigned char b);
 int		color_shift(int dir, image *im);
