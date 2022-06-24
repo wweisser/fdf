@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf_math.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wendelin <wendelin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 16:19:02 by wendelin          #+#    #+#             */
-/*   Updated: 2022/06/19 19:07:49 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/06/24 17:29:28 by wendelin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,19 +32,19 @@ void	calc_point(point p1, point p2, point *result, int op)
 // calculates p1xp2 an puts it to result
 void	cross_product(point p1, point p2, point *result)
 {
-	result->x = p1.y * p2.z - p1.z * p2.y;
-	result->y = p1.z * p2.x - p1.x * p2.z;
-	result->z = p1.x * p2.y - p1.y * p2.x;
+	result->x = round(p1.y * p2.z - p1.z * p2.y);
+	result->y = round(p1.z * p2.x - p1.x * p2.z);
+	result->z = round(p1.x * p2.y - p1.y * p2.x);
 }
 
 // multiplies p1 times f
-void	fact_vector(point p1, double f)
+void	fact_vector(point *p1, double f)
 {
-	if (p1.x != 0.0)
+	if (p1->x != 0.0)
 	{
-		p1.x = p1.x * f;
-		p1.y = p1.y * f;
-		p1.z = p1.z * f;
+		p1->x = p1->x * f;
+		p1->y = p1->y * f;
+		p1->z = p1->z * f;
 	}
 }
 

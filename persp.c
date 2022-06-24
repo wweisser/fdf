@@ -6,7 +6,7 @@
 /*   By: wendelin <wendelin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 09:32:35 by wweisser          #+#    #+#             */
-/*   Updated: 2022/06/23 21:51:16 by wendelin         ###   ########.fr       */
+/*   Updated: 2022/06/24 17:12:52 by wendelin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,7 @@ void	rottrigon(trigon *in, trigon *out, mtx rotmtx)
 	mxp(rotmtx, in->p0, out->p0, 0);
 	mxp(rotmtx, in->p1, out->p1, 0);
 	mxp(rotmtx, in->p2, out->p2, 0);
+	mxp(rotmtx, in->n, out->n, 0);
 }
 
 // transformas all objects in an image to the current angle
@@ -129,10 +130,10 @@ void	trans_op(trigon *stat, trigon **disp, double angle[3])
 	while (temp)
 	{
 		out = new_trigon(p[0], p[1], p[2]);
-		printf("bevor rot %f %f %f\n", out->p0->x, out->p0->y, out->p0->z);
+		// printf("bevor rot %f %f %f\n", out->n->x, out->n->y, out->n->z);
 		rottrigon(temp, out, *rotmtx);	
 		addtrigon(disp, out);
-		printf(" -test %p- \n", temp->next);
+		// printf("nach rot %f %f %f\n", out->n->x, out->n->y, out->n->z);
 		temp = temp->next;
 	}
 	free (rotmtx);

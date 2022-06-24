@@ -6,7 +6,7 @@
 /*   By: wendelin <wendelin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 13:33:09 by wendelin          #+#    #+#             */
-/*   Updated: 2022/06/23 22:12:47 by wendelin         ###   ########.fr       */
+/*   Updated: 2022/06/24 17:07:57 by wendelin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	draw_trigons(trigon *tri_lst, image *im);
 void	draw_line(point p1, point p2, image *im);
 void	set_line(point p1, point p2, image *im);
 void	calc_point(point p1, point p2, point *result, int op);
-void	fact_vector(point p1, double f);
+void	fact_vector(point *p1, double f);
 void	cross_product(point p1, point p2, point *result);
 mtx		*create_rotmtx(double y, double ß, double a);
 void	mxp(mtx c, point *in, point *out, int ortho);

@@ -6,7 +6,7 @@
 /*   By: wendelin <wendelin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 15:00:31 by wendelin          #+#    #+#             */
-/*   Updated: 2022/06/22 21:13:14 by wendelin         ###   ########.fr       */
+/*   Updated: 2022/06/24 10:37:58 by wendelin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,8 +94,8 @@ void	draw_line(point p1, point p2, image *im)
 // them accordingly to draw_line
 void	set_line(point p1, point p2, image *im)
 {
-	printf("p1 x:%f y:%f ====> ", p1.x, p1.y);
-	printf("p2 x:%f y:%f \n", p2.x, p2.y);
+	// printf("p1 x:%f y:%f ====> ", p1.x, p1.y);
+	// printf("p2 x:%f y:%f \n", p2.x, p2.y);
 	if (p1.x < p2.x)
 		draw_line(p1, p2, im);
 	else if (p1.x > p2.x)

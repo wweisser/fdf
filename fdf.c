@@ -6,7 +6,7 @@
 /*   By: wendelin <wendelin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 15:38:02 by wendelin          #+#    #+#             */
-/*   Updated: 2022/06/23 23:41:47 by wendelin         ###   ########.fr       */
+/*   Updated: 2022/06/24 16:44:58 by wendelin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@ int	mouse_hook(int key, int x, int y, image *im)
 	point *p1;
 	point *p2;
 	point *p3;
-	ctr[0] = -50;
-	ctr[1] = -50;
-	ctr[2] = 0;
+	ctr[0] = 0;
+	ctr[1] = 0;
+	ctr[2] = 50;
 	angle[0] = 0;
 	angle[1] = 0;
 	angle[2] = 0;
@@ -44,30 +44,30 @@ int	mouse_hook(int key, int x, int y, image *im)
 		new_sqare(ctr, angle, 100, im);
 		angle[1] = 90 *(M_PI/180);
 		new_sqare(ctr, angle, 100, im);
-		ctr[2] = -100;
+		angle[1] = -90 *(M_PI/180);
+		new_sqare(ctr, angle, 100, im);
+		angle[1] = -180 *(M_PI/180);
 		new_sqare(ctr, angle, 100, im);
 		angle[1] = 0;
 		angle[0] = -90 *(M_PI/180);
 		new_sqare(ctr, angle, 100, im);
-		ctr[2] = 0;
-		new_sqare(ctr, angle, 100, im);
-		ctr[2] = 100;
-		angle[0] = 0;
+		angle[0] = 90 *(M_PI/180);
 		new_sqare(ctr, angle, 100, im);
 	}
 	if (key == 4)
 	{		
-		im->angle[0] = (im->angle[0] + 5 *(M_PI/180));
-		im->angle[1] = (im->angle[1] + 5 *(M_PI/180));
-		im->angle[2] = (im->angle[2] + 5 *(M_PI/180));
-
+		im->angle[0] = (im->angle[0] + 5 *(M_PI/360));
+		im->angle[1] = (im->angle[1] + 5 *(M_PI/360));
+		im->angle[2] = (im->angle[2] + 5 *(M_PI/360));
+		printf("angles %f %f %f\n", im->angle[0], im->angle[1], im->angle[2]);
+		
 	}
 	if (key == 5)
 	{
-		im->angle[0] = (im->angle[0] - 5 *(M_PI/180));
-		im->angle[1] = (im->angle[1] - 5 *(M_PI/180));
-		im->angle[2] = (im->angle[2] - 5 *(M_PI/180));
-
+		im->angle[0] = (im->angle[0] - 5 *(M_PI/360));
+		im->angle[1] = (im->angle[1] - 5 *(M_PI/360));
+		im->angle[2] = (im->angle[2] - 5 *(M_PI/360));
+		printf("angles %f %f %f\n", im->angle[0], im->angle[1], im->angle[2]);
 	}
 	trans_op(im->stat, &im->disp, im->angle);
 	draw_trigons(im->disp, im);

@@ -6,7 +6,7 @@
 /*   By: wendelin <wendelin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 15:23:40 by wendelin          #+#    #+#             */
-/*   Updated: 2022/06/23 22:12:24 by wendelin         ###   ########.fr       */
+/*   Updated: 2022/06/24 17:43:37 by wendelin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ trigon	*new_trigon(point *p0, point *p1, point *p2)
 	trigon	*tri;
 	point	d1;
 	point	d2;
+	double	fact;
 
 	if (p0 == NULL || p1 == NULL || p2 == NULL)
 		return (NULL);
@@ -50,6 +51,14 @@ trigon	*new_trigon(point *p0, point *p1, point *p2)
 	calc_point(*p1, *p0, &d1, -1);
 	calc_point(*p2, *p0, &d2, -1);
 	cross_product(d1, d2, tri->n);
+	
+	
+	fact = sum_vektor(*(tri->n));
+	//HIER WEITER MACHEN, N NORMIEREN
+	if (fact != 0)
+		fact = 1 / fact;
+	fact_vector(tri->n, fact);
+	printf("Node to print %f %f %f\n", tri->n->x, tri->n->y, tri->n->z);
 	tri->next = NULL;
 	return (tri);
 }
@@ -61,14 +70,14 @@ void	addtrigon(trigon **head, trigon *new)
 	trigon	**temp;
 
 
-	printf(" -1- \n");
+	// printf(" -1- \n");
 	if (new == NULL)
 		return ;
-	printf(" -2- \n");
+	// printf(" -2- \n");
 	if (*head == NULL)
 	{
 		*head = new;
-		printf(" -3- \n");
+		// printf(" -3- \n");
 	}
 	else
 	{
@@ -76,11 +85,11 @@ void	addtrigon(trigon **head, trigon *new)
 		// while (*temp)
 		// {
 			temp = &(*temp)->next;
-			printf(" -4- %p\n", *temp);
+			// printf(" -4- %p\n", *temp);
 		// }
 		new->next = *temp;
 		*temp = new;
-		printf(" -5- \n");
+		// printf(" -5- \n");
 		
 	}
 }
@@ -89,10 +98,11 @@ void	addtrigon(trigon **head, trigon *new)
 void	draw_trigons(trigon *tri_lst, image *im)
 {
 	// double	normfact;
-	// point	*nvector;
+	point	*nvector;
 	trigon	*temp;
 
-	// nvector = NULL;
+	// normfact = 0;
+	nvector = new_point(0, 0, 0);
 	if (tri_lst != NULL)
 	{
 		printf("test\n");
@@ -102,14 +112,21 @@ void	draw_trigons(trigon *tri_lst, image *im)
 			set_line(*(temp->p0), *(temp->p1), im);
 			set_line(*(temp->p1), *(temp->p2), im);
 			set_line(*(temp->p2), *(temp->p0), im);
-			printf("Node to print %f %f %f\n", temp->p0->x, temp->p0->y, temp->p0->z);
+			// printf("Node to print %f %f %f\n", temp->n->x, temp->n->y, temp->n->z);
+			// calc_point(*(temp->n), *(temp->p0), nvector, 1);
+			// printf("normed n %f  %f  %f\n", temp->n->x, temp->n->y, temp->n->z);
+			// normfact = 1 / sum_vektor(*(temp->n));
+			// printf("sumed normfact 1 %f\n", normfact);
+			// printf("unnormed vector %f  %f  %f\n", nvector->x, nvector->y, nvector->z);
+			fact_vector(temp->n, 0.01);
+			calc_point(*(temp->p0), *(temp->n), nvector, 1);
+			// printf("normed vector 3 %f  %f  %f\n", temp->n->x, temp->n->y, temp->n->z);
+			// set_line(*(temp->p0), *(temp->n), im);	
+			// printf("normfact 4 %f\n", normfact);		
 			temp = temp->next;
 		}
+	free (nvector);
 	}
-	// calc_point(*(tri->n), *(tri->p0), nvector, 1);
-	// normfact = sum_vektor(*nvector);
-	// fact_vector(*nvector, (1 / normfact) * 10);
-	// set_line(*(tri->p0), *nvector, im);
 }
 
 // creates a square consting of four trigons. The center => cent,
