@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wendelin <wendelin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 13:33:09 by wendelin          #+#    #+#             */
-/*   Updated: 2022/06/24 17:07:57 by wendelin         ###   ########.fr       */
+/*   Updated: 2022/07/03 21:19:50 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,10 +86,11 @@ void	draw_line(point p1, point p2, image *im);
 void	set_line(point p1, point p2, image *im);
 void	calc_point(point p1, point p2, point *result, int op);
 void	fact_vector(point *p1, double f);
-void	cross_product(point p1, point p2, point *result);
+void	cross_product(point *p1, point *p2, point *result);
 mtx		*create_rotmtx(double y, double ß, double a);
 void	mxp(mtx c, point *in, point *out, int ortho);
 void	addtrigon(trigon **head, trigon *new);
+void	norm_vector(point *p1);
 // void	trans_op(image *im);
 void	trans_op(trigon *stat, trigon **disp, double angle[3]);
 int		render(int x, int y, int color, image *im);
@@ -97,7 +98,7 @@ int		setcolor(unsigned char t, unsigned char r, unsigned char g, unsigned char b
 int		color_shift(int dir, image *im);
 int		create_line(int x1, int y1, int x2, int y2, image *im);
 int		mouse_hook(int key, int x, int y, image *im);
-double	sum_vektor(point p1);
+double	sum_vector(point p1);
 double	dot_product(double p1[3], double p2[3]);
 char	*fdf_main(void);
 

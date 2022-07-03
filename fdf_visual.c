@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf_visual.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wendelin <wendelin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 15:00:31 by wendelin          #+#    #+#             */
-/*   Updated: 2022/06/24 10:37:58 by wendelin         ###   ########.fr       */
+/*   Updated: 2022/07/03 18:52:44 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,3 @@ void	set_line(point p1, point p2, image *im)
 			draw_line(p1, p2, im);
 	}
 }
-
-
-
-

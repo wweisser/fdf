@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   persp.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wendelin <wendelin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 09:32:35 by wweisser          #+#    #+#             */
-/*   Updated: 2022/06/24 17:12:52 by wendelin         ###   ########.fr       */
+/*   Updated: 2022/07/03 22:25:38 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,9 @@ void	mxp(mtx c, point *in, point *out, int ortho)
 	float	w;
 
 	w = 1;
-	out->x = round(in->x * c.m[0][0] + in->y * c.m[0][1] + in->z * c.m[0][2] + c.m[0][3]);
-	out->y = round(in->x * c.m[1][0] + in->y * c.m[1][1] + in->z * c.m[1][2] + c.m[1][3]);
-	out->z = round(in->x * c.m[2][0] + in->y * c.m[2][1] + in->z * c.m[2][2] + c.m[2][3]);
+	out->x = in->x * c.m[0][0] + in->y * c.m[0][1] + in->z * c.m[0][2] + c.m[0][3];
+	out->y = in->x * c.m[1][0] + in->y * c.m[1][1] + in->z * c.m[1][2] + c.m[1][3];
+	out->z = in->x * c.m[2][0] + in->y * c.m[2][1] + in->z * c.m[2][2] + c.m[2][3];
 	if (ortho == 1 && w != 0)
 	{
 		w = (in->x * c.m[3][2] + in->y * c.m[3][2] + in->z * c.m[3][2] + c.m[3][3]);
@@ -103,12 +103,17 @@ mtx *create_rotmtx(double y, double ß, double a)
 	return (rotmtx);
 }
 
+// rotates all vertices of a trigon together with its normal direction vector
+// also norms the rotated direction vector
 void	rottrigon(trigon *in, trigon *out, mtx rotmtx)
 {
 	mxp(rotmtx, in->p0, out->p0, 0);
 	mxp(rotmtx, in->p1, out->p1, 0);
 	mxp(rotmtx, in->p2, out->p2, 0);
+	printf("vor trafo %f %f %f\n", in->n->x, in->n->y, in->n->z);
 	mxp(rotmtx, in->n, out->n, 0);
+	printf("vor norm %f %f %f\n", out->n->x, out->n->y, out->n->z);
+	norm_vector(out->n);
 }
 
 // transformas all objects in an image to the current angle
@@ -130,10 +135,9 @@ void	trans_op(trigon *stat, trigon **disp, double angle[3])
 	while (temp)
 	{
 		out = new_trigon(p[0], p[1], p[2]);
-		// printf("bevor rot %f %f %f\n", out->n->x, out->n->y, out->n->z);
-		rottrigon(temp, out, *rotmtx);	
+		rottrigon(temp, out, *rotmtx);
 		addtrigon(disp, out);
-		// printf("nach rot %f %f %f\n", out->n->x, out->n->y, out->n->z);
+
 		temp = temp->next;
 	}
 	free (rotmtx);
