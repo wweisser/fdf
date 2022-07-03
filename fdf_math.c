@@ -6,7 +6,7 @@
 /*   By: wendelin <wendelin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 16:19:02 by wendelin          #+#    #+#             */
-/*   Updated: 2022/06/24 17:29:28 by wendelin         ###   ########.fr       */
+/*   Updated: 2022/06/25 16:53:01 by wendelin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,9 @@ void	cross_product(point p1, point p2, point *result)
 // multiplies p1 times f
 void	fact_vector(point *p1, double f)
 {
-	if (p1->x != 0.0)
-	{
 		p1->x = p1->x * f;
 		p1->y = p1->y * f;
 		p1->z = p1->z * f;
-	}
 }
 
 // returns the dotproct of p1 o p2

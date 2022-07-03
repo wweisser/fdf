@@ -6,7 +6,7 @@
 /*   By: wendelin <wendelin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 15:23:40 by wendelin          #+#    #+#             */
-/*   Updated: 2022/06/24 17:43:37 by wendelin         ###   ########.fr       */
+/*   Updated: 2022/06/25 16:59:14 by wendelin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,7 @@ trigon	*new_trigon(point *p0, point *p1, point *p2)
 	calc_point(*p1, *p0, &d1, -1);
 	calc_point(*p2, *p0, &d2, -1);
 	cross_product(d1, d2, tri->n);
-	
-	
 	fact = sum_vektor(*(tri->n));
-	//HIER WEITER MACHEN, N NORMIEREN
 	if (fact != 0)
 		fact = 1 / fact;
 	fact_vector(tri->n, fact);
@@ -93,7 +90,7 @@ void	addtrigon(trigon **head, trigon *new)
 		
 	}
 }
-
+// HIER WEITERMACHEN NORMALEN VEKTOREN DATSTELLEN
 // draws a list of trigons.
 void	draw_trigons(trigon *tri_lst, image *im)
 {
@@ -118,10 +115,10 @@ void	draw_trigons(trigon *tri_lst, image *im)
 			// normfact = 1 / sum_vektor(*(temp->n));
 			// printf("sumed normfact 1 %f\n", normfact);
 			// printf("unnormed vector %f  %f  %f\n", nvector->x, nvector->y, nvector->z);
-			fact_vector(temp->n, 0.01);
+			fact_vector(temp->n, 100);
 			calc_point(*(temp->p0), *(temp->n), nvector, 1);
 			// printf("normed vector 3 %f  %f  %f\n", temp->n->x, temp->n->y, temp->n->z);
-			// set_line(*(temp->p0), *(temp->n), im);	
+			set_line(*(temp->p0), *nvector, im);	
 			// printf("normfact 4 %f\n", normfact);		
 			temp = temp->next;
 		}
