@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 15:38:02 by wendelin          #+#    #+#             */
-/*   Updated: 2022/07/03 22:21:02 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/07/04 19:32:26 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,17 +43,18 @@ int	mouse_hook(int key, int x, int y, image *im)
 	{
 		new_sqare(ctr, angle, 100, im);
 		angle[1] = 90 *(M_PI/180);
-		new_sqare(ctr, angle, 100, im);
+		// new_sqare(ctr, angle, 100, im);
 		angle[1] = -90 *(M_PI/180);
-		new_sqare(ctr, angle, 100, im);
-		angle[1] = -180 *(M_PI/180);
-		new_sqare(ctr, angle, 100, im);
-		angle[1] = 0;
-		angle[0] = -90 *(M_PI/180);
-		new_sqare(ctr, angle, 100, im);
-		angle[0] = 90 *(M_PI/180);
-		new_sqare(ctr, angle, 100, im);
+		// new_sqare(ctr, angle, 100, im);
+		// angle[1] = -180 *(M_PI/180);
+		// new_sqare(ctr, angle, 100, im);
+		// angle[1] = 0;
+		// angle[0] = -90 *(M_PI/180);
+		// new_sqare(ctr, angle, 100, im);
+		// angle[0] = 90 *(M_PI/180);
+		// new_sqare(ctr, angle, 100, im);
 	}
+
 	if (key == 4)
 	{
 		im->angle[0] = (im->angle[0] + 5 *(M_PI/360));
@@ -65,9 +66,9 @@ int	mouse_hook(int key, int x, int y, image *im)
 		im->angle[2] = (im->angle[2] + 5 *(M_PI/360));
 		if (im->angle[2] > (2*M_PI) || im->angle[2] < 0)
 			im->angle[2] = 0;
-		printf("angles %f %f %f\n", im->angle[0], im->angle[1], im->angle[2]);
-
+		// printf("angles %f %f %f\n", im->angle[0], im->angle[1], im->angle[2]);
 	}
+
 	if (key == 5)
 	{
 		im->angle[0] = (im->angle[0] - 5 *(M_PI/360));
@@ -79,13 +80,13 @@ int	mouse_hook(int key, int x, int y, image *im)
 		im->angle[2] = (im->angle[2] - 5 *(M_PI/360));
 		if (im->angle[2] > (2*M_PI) || im->angle[2] < 0)
 			im->angle[2] = 0;
-		printf("angles %f %f %f\n", im->angle[0], im->angle[1], im->angle[2]);
+		// printf("angles %f %f %f\n", im->angle[0], im->angle[1], im->angle[2]);
 	}
-	trans_op(im->stat, &im->disp, im->angle);
+	trans_op(im->stat, &im->disp, im->angle, im);
 	draw_trigons(im->disp, im);
 	// free_lst(&im->stat);
 	free_lst(&im->disp);
-	printf("after free %p\n", im->stat);
+	// printf("after free %p\n", im->stat);
 	// im->p = trans_op(*p4, im);
 	// set_line(*(im->p), *p5, im);
 	// free(p4);
@@ -115,6 +116,8 @@ char *fdf_main(void)
 	im->angle[0] = 0;
 	im->angle[1] = 0;
 	im->angle[2] = 0;
+	im->win->view = new_point(0, 0, -100);
+	im->win->open_angle = 90;
 	mlx_mouse_hook(win->win, mouse_hook, im);
 	mlx_loop(win->mlx);
 	free(im->mlx);

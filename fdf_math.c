@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 16:19:02 by wendelin          #+#    #+#             */
-/*   Updated: 2022/07/03 22:04:13 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/07/04 14:04:30 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,15 @@ void	calc_point(point p1, point p2, point *result, int op)
 		result->y = p1.y - p2.y;
 		result->z = p1.z - p2.z;
 	}
+}
+
+// calculates the sacalarproduct
+double	scalar_product(point *d1, point *d2)
+{
+	double	result;
+
+	result = (d1->x * d2->x) + (d1->y * d2->y) + (d1->z * d2->z);
+	return(result);
 }
 
 // calculates p1xp2 an puts it to result

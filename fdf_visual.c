@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 15:00:31 by wendelin          #+#    #+#             */
-/*   Updated: 2022/07/03 18:52:44 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/07/04 13:55:04 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,33 +59,65 @@ int	color_shift(int dir, image *im)
 	return (0);
 }
 
+void	fill_segment(int x, int y1, int y2, image *im)
+{
+	int	i;
+	int	clr;
+
+	clr = setcolor(0, 255, 255, 255);
+	if (y1 >= y2)
+	{
+		i = y2;
+		while (i < y1)
+		{
+			printf("test %d\n", i);
+			render((im->x / 2) + x, i , clr, im);
+			i++;
+		}
+	}
+	if (y1 <= y2)
+	{
+		i = y1;
+		while (i < y2)
+		{
+			printf("test %d\n", i);
+			render((im->x / 2) + x, i , clr, im);
+			i++;
+		}
+	}
+}
+
 // draws the line via render
 void	draw_line(point p1, point p2, image *im)
 {
 	int		x;
-	int		y;
+	int		y1;
+	int		y2;
 	double	slope;
 	int		clr;
 
+	slope = (p2.y - p1.y) / (p2.x - p1.x);
 	x = 0;
-	y = 0;
+	y1 = (im->x / 2) + p1.y;
+	y2 = (im->x / 2) + p2.y;
 	clr = setcolor(0, 255, 255, 255);
 	if (p1.x != p2.x)
 	{
-		slope = (p2.y - p1.y) / (p2.x - p1.x);
 		while (x < (p2.x - p1.x))
 		{
-			y = x * slope;
-			render(x + (im->x / 2) + p1.x, y + (im->x / 2) + p1.y, clr, im);
+			y2 = round(x * slope) + (im->x / 2) + p1.y;
+			render(x + (im->x / 2) + p1.x, y2, clr, im);
+			// fill_segment(x + p1.x, y1, y2, im);
+			y1 = y2;
 			x++;
 		}
 	}
 	else
 	{
-		while (y < (p2.y - p1.y))
+		while (y1 < (p2.y - p1.y))
 		{
-			render(p1.x + (im->x / 2), y + (im->x / 2) + p1.y, clr, im);
-			y++;
+			render(p1.x + (im->x / 2), y1 + (im->x / 2) + p1.y, clr, im);
+			y1++;
 		}
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 13:33:09 by wendelin          #+#    #+#             */
-/*   Updated: 2022/07/03 21:19:50 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/07/04 17:44:45 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ typedef struct s_window
 	void	*win;
 	int		x;
 	int		y;
+	point	*view;
+	double	open_angle;
 }			window;
 
 // contains the state of an image of size x and y
@@ -73,33 +75,39 @@ typedef struct	s_image
 	void	*grid;
 }			image;
 
-window	*new_window(int width, int hight);
-image	*new_image(window *win);
-mtx		*new_mtx(void);
-point	*new_point(double x, double y, double z);
-trigon	*new_trigon(point *p0, point *p1, point *p2);
-void	rottrigon(trigon *in, trigon *out, mtx rotmtx);
-void	new_sqare(double ctr[3], double angle[3], int l, image *im);
-void	free_lst(trigon **head);
-void	draw_trigons(trigon *tri_lst, image *im);
-void	draw_line(point p1, point p2, image *im);
-void	set_line(point p1, point p2, image *im);
-void	calc_point(point p1, point p2, point *result, int op);
-void	fact_vector(point *p1, double f);
-void	cross_product(point *p1, point *p2, point *result);
-mtx		*create_rotmtx(double y, double ß, double a);
-void	mxp(mtx c, point *in, point *out, int ortho);
-void	addtrigon(trigon **head, trigon *new);
-void	norm_vector(point *p1);
-// void	trans_op(image *im);
-void	trans_op(trigon *stat, trigon **disp, double angle[3]);
-int		render(int x, int y, int color, image *im);
-int		setcolor(unsigned char t, unsigned char r, unsigned char g, unsigned char b);
-int		color_shift(int dir, image *im);
-int		create_line(int x1, int y1, int x2, int y2, image *im);
 int		mouse_hook(int key, int x, int y, image *im);
+window	*new_window(int width, int hight);
+
+image	*new_image(window *win);
+point	*new_point(double x, double y, double z);
+mtx		*new_mtx(void);
+trigon	*new_trigon(point *p0, point *p1, point *p2);
+void	addtrigon(trigon **head, trigon *new);
+void	new_sqare(double ctr[3], double angle[3], int l, image *im);
+
+void	rottrigon(trigon in, trigon *out, mtx rotmtx);
+void	mxp(mtx c, point in, point *out, int ortho);
+void	mxt(mtx c, trigon in, trigon *out, int ortho);
+mtx		*create_rotmtx(double y, double ß, double a);
+mtx		*create_othromtx(window *win);
+void	trans_op(trigon *stat, trigon **disp, double angle[3], image *im);
+
+void	draw_trigons(trigon *tri_lst, image *im);
+int		setcolor(unsigned char t, unsigned char r, unsigned char g, unsigned char b);
+void	set_line(point p1, point p2, image *im);
+void	draw_line(point p1, point p2, image *im);
+int		create_line(int x1, int y1, int x2, int y2, image *im);
+int		render(int x, int y, int color, image *im);
+int		color_shift(int dir, image *im);
+
+void	cross_product(point *p1, point *p2, point *result);
+void	fact_vector(point *p1, double f);
+void	norm_vector(point *p1);
+void	calc_point(point p1, point p2, point *result, int op);
 double	sum_vector(point p1);
 double	dot_product(double p1[3], double p2[3]);
-char	*fdf_main(void);
+double	scalar_product(point *d1, point *d2);
 
+void	free_lst(trigon **head);
+char	*fdf_main(void);
 #endif
