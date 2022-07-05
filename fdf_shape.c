@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 15:23:40 by wendelin          #+#    #+#             */
-/*   Updated: 2022/07/04 19:28:41 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/07/05 19:48:48 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void	draw_trigons(trigon *tri_lst, image *im)
 	nvector = new_point(0, 0, 0);
 	if (tri_lst != NULL)
 	{
-		printf("test\n");
+		// printf("test\n");
 		temp = tri_lst;
 		while (temp != NULL)
 		{
@@ -106,9 +106,9 @@ void	draw_trigons(trigon *tri_lst, image *im)
 				set_line(*(temp->p0), *(temp->p1), im);
 				set_line(*(temp->p1), *(temp->p2), im);
 				set_line(*(temp->p2), *(temp->p0), im);
-				fact_vector(temp->n, 100);
-				calc_point(*(temp->p0), *(temp->n), nvector, 1);
-				set_line(*(temp->p0), *nvector, im);
+				// fact_vector(temp->n, 100);
+				// calc_point(*(temp->p0), *(temp->n), nvector, 1);
+				// set_line(*(temp->p0), *nvector, im);
 			}
 			temp = temp->next;
 		}
@@ -118,7 +118,7 @@ void	draw_trigons(trigon *tri_lst, image *im)
 
 // creates a square consting of four trigons. The center => cent,
 // side length => s_len, algn=0 x-plane, algn=1 y-plane, algn=2 z-plane
-void	new_sqare(double ctr[3], double angle[3], int l, image *im)
+void	new_sqare(double ctr[3], int l, image *im)
 {
 	point	*p[3];
 	trigon	*node;
@@ -128,22 +128,22 @@ void	new_sqare(double ctr[3], double angle[3], int l, image *im)
 	p[2] = new_point(ctr[0] + (l / 2), ctr[1] - (l / 2), ctr[2]);
 	node = new_trigon(p[0], p[1], p[2]);
 	printf("%p\n", node);
-	trans_op(node, &im->stat, angle, im);
+	addtrigon(&im->stat, node);
 	p[1] = new_point(ctr[0] + (l / 2), ctr[1] - (l / 2), ctr[2]);
 	p[2] = new_point(ctr[0] + (l / 2), ctr[1] + (l / 2), ctr[2]);
 	node = new_trigon(p[0], p[1], p[2]);
 	printf("%p\n", node);
-	trans_op(node, &im->stat, angle, im);
+	addtrigon(&im->stat, node);
 	p[1] = new_point(ctr[0] + (l / 2), ctr[1] + (l / 2), ctr[2]);
 	p[2] = new_point(ctr[0] - (l / 2), ctr[1] + (l / 2), ctr[2]);
 	node = new_trigon(p[0], p[1], p[2]);
 	printf("%p\n", node);
-	trans_op(node, &im->stat, angle, im);
+	addtrigon(&im->stat, node);
 	p[1] = new_point(ctr[0] - (l / 2), ctr[1] + (l / 2), ctr[2]);
 	p[2] = new_point(ctr[0] - (l / 2), ctr[1] - (l / 2), ctr[2]);
 	node = new_trigon(p[0], p[1], p[2]);
 	printf("%p\n", node);
-	trans_op(node, &im->stat, angle, im);
+	addtrigon(&im->stat, node);
 }
 
 void	free_lst(trigon **head)

@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 15:00:31 by wendelin          #+#    #+#             */
-/*   Updated: 2022/07/04 13:55:04 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/07/05 19:24:01 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	fill_segment(int x, int y1, int y2, image *im)
 		i = y2;
 		while (i < y1)
 		{
-			printf("test %d\n", i);
+			// printf("test %d\n", i);
 			render((im->x / 2) + x, i , clr, im);
 			i++;
 		}
@@ -80,7 +80,7 @@ void	fill_segment(int x, int y1, int y2, image *im)
 		i = y1;
 		while (i < y2)
 		{
-			printf("test %d\n", i);
+			// printf("test %d\n", i);
 			render((im->x / 2) + x, i , clr, im);
 			i++;
 		}
@@ -98,10 +98,10 @@ void	draw_line(point p1, point p2, image *im)
 
 	slope = (p2.y - p1.y) / (p2.x - p1.x);
 	x = 0;
-	y1 = (im->x / 2) + p1.y;
-	y2 = (im->x / 2) + p2.y;
+	y1 = 0;
+	y2 = 0;
 	clr = setcolor(0, 255, 255, 255);
-	if (p1.x != p2.x)
+	if ((int )p1.x != (int )p2.x)
 	{
 		while (x < (p2.x - p1.x))
 		{
@@ -116,6 +116,7 @@ void	draw_line(point p1, point p2, image *im)
 	{
 		while (y1 < (p2.y - p1.y))
 		{
+			// printf("test");
 			render(p1.x + (im->x / 2), y1 + (im->x / 2) + p1.y, clr, im);
 			y1++;
 		}

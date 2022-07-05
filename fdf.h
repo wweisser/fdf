@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 13:33:09 by wendelin          #+#    #+#             */
-/*   Updated: 2022/07/04 17:44:45 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/07/05 19:35:26 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ point	*new_point(double x, double y, double z);
 mtx		*new_mtx(void);
 trigon	*new_trigon(point *p0, point *p1, point *p2);
 void	addtrigon(trigon **head, trigon *new);
-void	new_sqare(double ctr[3], double angle[3], int l, image *im);
+void	new_sqare(double ctr[3], int l, image *im);
 
 void	rottrigon(trigon in, trigon *out, mtx rotmtx);
 void	mxp(mtx c, point in, point *out, int ortho);
@@ -91,6 +91,7 @@ void	mxt(mtx c, trigon in, trigon *out, int ortho);
 mtx		*create_rotmtx(double y, double ß, double a);
 mtx		*create_othromtx(window *win);
 void	trans_op(trigon *stat, trigon **disp, double angle[3], image *im);
+void	translate(trigon *tri, int zoffset);
 
 void	draw_trigons(trigon *tri_lst, image *im);
 int		setcolor(unsigned char t, unsigned char r, unsigned char g, unsigned char b);
