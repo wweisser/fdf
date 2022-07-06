@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 16:19:02 by wendelin          #+#    #+#             */
-/*   Updated: 2022/07/04 14:04:30 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/07/06 11:31:58 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,4 +81,20 @@ void	norm_vector(point *p1)
 	if (fact != 0.0)
 		fact = 1 / fact;
 	fact_vector(p1, fact);
+}
+
+double	rnd(double in, int places)
+{
+	int		i;
+	double	temp;
+
+	i = 1;
+	while (places > 0)
+	{
+		i = i * 10;
+		places--;
+	}
+	temp = (int )(in * i);
+	in = temp / i;
+	return (in);
 }

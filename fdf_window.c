@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 10:51:16 by wendelin          #+#    #+#             */
-/*   Updated: 2022/06/21 19:10:17 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/07/06 20:16:34 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,24 @@
 
 // creates a pointer to a window, asigns memory, creates mlx-state and new window
 // with dimensions x and y, returns pointer to a window
-window    *new_window(int width, int hight)
+window	*new_window(int width, int hight)
 {
-    window   *win;
+	window	*win;
 
-    win = NULL;
+	win = NULL;
 	win = (window *)malloc(sizeof(window));
 	win->mlx = mlx_init();
 	if (win->mlx == NULL)
 		return (NULL);
-    win->win = (void *)mlx_new_window(win->mlx, width, hight, (char *)"fdf");
-    if (win->win == NULL)
+	// win->win = (void *)mlx_new_window(win->mlx, width, hight, (char *)"fdf");
+	if (win->win == NULL)
 	{
 		free(win->win);
 		return (NULL);
 	}
-    win->x = width;
-    win->y = hight;
-    return (win);
+	win->x = width;
+	win->y = hight;
+	return (win);
 }
 
 // creates image of size of the window, assigns bit/pixel and bytes/line,
@@ -58,6 +58,10 @@ image	*new_image(window *win)
 		&im->bytes_per_line, &im->endian);
 	im->stat = NULL;
 	im->disp = NULL;
+	im->angle[0] = 0;
+	im->angle[1] = 0;
+	im->angle[2] = 0;
+	im->win->viewer = new_point(0, 0, -100);
 	if (im->grid == NULL || im->addr == NULL)
 		return (NULL);
 	return (im);

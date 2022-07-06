@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 09:32:35 by wweisser          #+#    #+#             */
-/*   Updated: 2022/07/05 21:03:41 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/07/06 20:47:07 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ mtx	*create_othromtx(window *win)
 	double	znear;
 
 	zfar = 100;
-	znear = 1;
+	znear = 0.1;
 	orthomtx = NULL;
 	orthomtx = new_mtx();
 	if (orthomtx == NULL)
@@ -52,7 +52,7 @@ mtx	*create_othromtx(window *win)
 	orthomtx->m[0][0] = 1/((tan((win->open_angle * (M_PI / 360)) / 2)) * (win->x / win->y));
 	orthomtx->m[1][1] = 1/(tan((win->open_angle * (M_PI / 360)) / 2));
 	orthomtx->m[2][2] = zfar / (zfar - znear);
-	orthomtx->m[2][3] = (-zfar * znear) / (zfar - znear);
+	orthomtx->m[2][3] = -(2 * zfar * znear) / (zfar - znear);
 	orthomtx->m[3][2] = 1;
 	printf(" 0/0: %f | 1/1: %f | 2/2: %f | 3/2: %f  \n", orthomtx->m[0][0], orthomtx->m[1][1], orthomtx->m[2][2], orthomtx->m[3][2]);
 	return (orthomtx);
@@ -63,6 +63,9 @@ mtx *create_rotmtx(double y, double ß, double a)
 {
 	mtx	*rotmtx;
 
+	a = a * (M_PI/360);
+	y = y * (M_PI/360);
+	ß = ß * (M_PI/360);
 	rotmtx = NULL;
 	rotmtx = new_mtx();
 	if (rotmtx == NULL)
@@ -88,15 +91,13 @@ void	mxp(mtx c, point in, point *out, int ortho)
 	double	w;
 // ergebnisse der orthomatrix uberprufen, egbnisse auf den falschen slots
 	w = 1;
-	out->x = in.x * c.m[0][0] + in.y * c.m[0][1] + in.z * c.m[0][2] + c.m[0][3];
-	out->y = in.x * c.m[1][0] + in.y * c.m[1][1] + in.z * c.m[1][2] + c.m[1][3];
-	out->z = in.x * c.m[2][0] + in.y * c.m[2][1] + in.z * c.m[2][2] + c.m[2][3];
-	w = round(out->z * 100);
-	w = w / 100;
-
-	if (ortho == 1 && w != 0)
+	out->x = (in.x * c.m[0][0] + in.y * c.m[0][1] + in.z * c.m[0][2] + c.m[0][3]);
+	out->y = (in.x * c.m[1][0] + in.y * c.m[1][1] + in.z * c.m[1][2] + c.m[1][3]);
+	out->z = (in.x * c.m[2][0] + in.y * c.m[2][1] + in.z * c.m[2][2] + c.m[2][3]);
+	w = rnd(in.z, 1);
+	if (ortho == 1 && w > 0.00)
 	{
-		printf("out before x %f, y %f, z %f w: %f\n", out->x, out->y, out->z, w);
+		// printf("out before x %f, y %f, z %f w: %f\n", out->x, out->y, out->z, w);
 		out->x = out->x / w;
 		out->y = out->y / w;
 		out->z = out->z / w;
@@ -115,7 +116,6 @@ void	mxt(mtx c, trigon in, trigon *out, int ortho)
 		mxp(c, *in.n, out->n, 0);
 		norm_vector(out->n);
 	}
-
 }
 
 // rotates all vertices of a trigon together with its normal direction vector
@@ -134,13 +134,26 @@ void	rottrigon(trigon in, trigon *out, mtx rotmtx)
 void	translate(trigon *tri, int zoffset)
 {
 	tri->p0->z += tri->p0->z + zoffset;
-	tri->p1->z += tri->p0->z + zoffset;
-	tri->p2->z += tri->p0->z + zoffset;
+	tri->p1->z += tri->p1->z + zoffset;
+	tri->p2->z += tri->p2->z + zoffset;
+}
+
+void	scale(trigon *tri, int fact)
+{
+	tri->p0->x = tri->p0->x * fact;
+	tri->p0->y = tri->p0->y * fact;
+	tri->p0->z = tri->p0->z * fact;
+	tri->p1->x = tri->p1->x * fact;
+	tri->p1->y = tri->p1->y * fact;
+	tri->p1->z = tri->p1->z * fact;
+	tri->p2->x = tri->p2->x * fact;
+	tri->p2->y = tri->p2->y * fact;
+	tri->p2->z = tri->p2->z * fact;
 }
 
 // transformas all objects in an image to the current angle
 // void	trans_op(image *im)
-void	trans_op(trigon *stat, trigon **disp, double angle[3], image *im)
+void	trans_op(trigon *stat, trigon **disp, int angle[3], image *im)
 {
 	mtx		*rotmtx;
 	mtx		*orthomtx;
@@ -161,31 +174,33 @@ void	trans_op(trigon *stat, trigon **disp, double angle[3], image *im)
 	{
 		out1 = new_trigon(p[0], p[1], p[2]);
 		out2 = new_trigon(p[0], p[1], p[2]);
-		printf("vor rot %f %f %f\n", temp->p0->x, temp->p1->x, temp->p2->z);
-		printf("vor rot %f %f %f\n", temp->p0->y, temp->p1->y, temp->p2->y);
-		printf("vor rot %f %f %f\n", temp->p0->z, temp->p1->z, temp->p2->z);
+		printf("vor rot %f %f %f\n", temp->p0->x, temp->p0->y, temp->p0->z);
+		printf("vor rot %f %f %f\n", temp->p1->x, temp->p1->y, temp->p1->z);
+		printf("vor rot %f %f %f\n", temp->p2->x, temp->p2->y, temp->p2->z);
 
 		mxt(*rotmtx, *temp, out1, 0);
-		printf("vor trans %f %f %f\n", out1->p0->x, out1->p1->x, out1->p2->x);
-		printf("vor trans %f %f %f\n", out1->p0->y, out1->p1->y, out1->p2->y);
-		printf("vor trans %f %f %f\n", out1->p0->z, out1->p1->z, out1->p2->z);
+		printf("vor trans %f %f %f\n", out1->p0->x, out1->p0->y, out1->p0->z);
+		printf("vor trans %f %f %f\n", out1->p1->x, out1->p1->y, out1->p1->z);
+		printf("vor trans %f %f %f\n", out1->p2->x, out1->p2->y, out1->p2->z);
 
-		translate(out1, 2);
-		printf("vor persp %f %f %f\n", out1->p0->x, out1->p1->x, out1->p2->x);
-		printf("vor persp %f %f %f\n", out1->p0->y, out1->p1->y, out1->p2->y);
-		printf("vor persp %f %f %f\n", out1->p0->z, out1->p1->z, out1->p2->z);
+		translate(out1, 5);
+		printf("vor persp p0 %f %f %f\n", out1->p0->x, out1->p0->y, out1->p0->z);
+		printf("vor persp p1 %f %f %f\n", out1->p1->x, out1->p1->y, out1->p1->z);
+		printf("vor persp p2 %f %f %f\n", out1->p2->x, out1->p2->y, out1->p2->z);
 
 		mxt(*orthomtx, *out1, out2, 1);
-		printf("output p0x%f %f p2x%f\n", out2->p0->x, out2->p1->x, out2->p2->x);
-		printf("output p0y%f %f p2y%f\n", out2->p0->y, out2->p1->y, out2->p2->y);
-		printf("output p0y%f %f p2z%f\n", out2->p0->z, out2->p1->z, out2->p2->z);
+		printf("output p0 %f %f %f\n", out2->p0->x, out2->p0->y, out2->p0->z);
+		printf("output p1 %f %f %f\n", out2->p1->x, out2->p1->y, out2->p1->z);
+		printf("output p2 %f %f %f\n", out2->p2->x, out2->p2->y, out2->p2->z);
 
+		scale(out2, 100);
 
+		free_lst (&out1);
 		addtrigon(disp, out2);
 		printf("next\n\n");
 		temp = temp->next;
 	}
-	free_lst (&out1);
+
 	free (rotmtx);
 	free (orthomtx);
 }
