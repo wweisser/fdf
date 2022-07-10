@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 13:33:09 by wendelin          #+#    #+#             */
-/*   Updated: 2022/07/06 19:48:20 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/07/10 17:05:09 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ void	scale(trigon *tri, int fact);
 void	draw_trigons(trigon *tri_lst, image *im);
 int		setcolor(unsigned char t, unsigned char r, unsigned char g, unsigned char b);
 void	set_line(point p1, point p2, image *im);
+void	line(point p1, point p2, int color, image *im);
 void	draw_line(point p1, point p2, image *im);
 int		create_line(int x1, int y1, int x2, int y2, image *im);
 int		render(int x, int y, int color, image *im);

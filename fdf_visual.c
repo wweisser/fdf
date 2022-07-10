@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 15:00:31 by wendelin          #+#    #+#             */
-/*   Updated: 2022/07/05 19:24:01 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/07/10 21:49:21 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	render(int x, int y, int color, image *im)
 {
 	int	pixel;
 
-	pixel = y * im->x + x;
+	pixel = y * im->win->x + x;
 	im->addr[pixel] = color;
 	return (0);
 }
@@ -44,12 +44,12 @@ int	color_shift(int dir, image *im)
 
 	y = 0;
 	blue = 0;
-	while (y < im->y)
+	while (y < im->win->y)
 	{
-		if ((y % (im->y / 200)) == 0)
+		if ((y % (im->win->y / 200)) == 0)
 			blue++;
 		x = 0;
-		while (x < im->x)
+		while (x < im->win->x)
 		{
 			render(x, y, setcolor(0, 40, dir, blue), im);
 			x++;
@@ -59,32 +59,40 @@ int	color_shift(int dir, image *im)
 	return (0);
 }
 
-void	fill_segment(int x, int y1, int y2, image *im)
+void	line(point p1, point p2, int color, image *im)
 {
-	int	i;
-	int	clr;
+	point	np;
 
-	clr = setcolor(0, 255, 255, 255);
-	if (y1 >= y2)
+	p1.x = (int )(p1.x);
+	p1.y = (int )(p1.y);
+	p2.x = (int )(p2.x);
+	p2.y = (int )(p2.y);
+	if ((p1.x == p2.x) && (p1.y == p2.y))
 	{
-		i = y2;
-		while (i < y1)
-		{
-			// printf("test %d\n", i);
-			render((im->x / 2) + x, i , clr, im);
-			i++;
-		}
+		// printf("gleiches x und y x1:%f y1:%f | x2:%f y2:%f\n", p1.x, p1.y, p2.x, p2.y);
+		return ;
 	}
-	if (y1 <= y2)
+	else if ((p1.x == p2.x + 1 || p1.x == p2.x - 1) && (p1.y == p2.y + 1 || p1.y == p2.y - 1))
 	{
-		i = y1;
-		while (i < y2)
-		{
-			// printf("test %d\n", i);
-			render((im->x / 2) + x, i , clr, im);
-			i++;
-		}
+		return ;
 	}
+	else if ((p1.y == p2.y) && (p1.x == p2.x + 1 || p1.x == p2.x - 1))
+	{
+		// printf("gleiches y, x1:%f y1:%f | x2:%f y2:%f\n", p1.x, p1.y, p2.x, p2.y);
+		return ;
+	}
+	else if ((p1.x == p2.x) && (p1.y == p2.y + 1 || p1.y == p2.y - 1))
+	{
+		return ;
+	}
+	np = *(new_point((p1.x + ((p2.x - p1.x) / 2)), (p1.y + ((p2.y - p1.y) / 2)), 0));
+	line(p1, np, color, im);
+	line(p2, np, color, im);
+	if ((np.x < im->x) && (np.y < im->y) &&
+		(np.x > -im->x) && (np.y > -im->y))
+		render((int )(np.x + im->x), (int )(np.y + im->y), color, im);
+		// printf("print x1:%f y1:%f\n", (np.x + im->x / 2), (np.y + im->y / 2));
+	return ;
 }
 
 // draws the line via render

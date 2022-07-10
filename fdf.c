@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 15:38:02 by wendelin          #+#    #+#             */
-/*   Updated: 2022/07/06 21:03:43 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/07/10 21:28:39 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,13 +79,16 @@ void	create_grid(image *im)
 
 void	build_scene(image *im)
 {
-
+	// int		color = setcolor(0, 255, 255, 255);
+	// point	*p1 = new_point(100.3543435, 0, 0);
+	// point	*p2	= new_point(0, 0, 0);
 	color_shift(50, im);
 
 	trans_op(im->stat, &im->disp, im->angle, im);
-	printf("----6----\n");
+	// printf("----6----\n");
 	draw_trigons(im->disp, im);
 	printf("----7----\n");
+	// line (*p1, *p2, color, im);
 	mlx_put_image_to_window(im->win->mlx, im->win->win, im->grid, 0, 0);
 	printf("----8----\n");
 	free_lst(&im->disp);

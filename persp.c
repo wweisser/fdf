@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 09:32:35 by wweisser          #+#    #+#             */
-/*   Updated: 2022/07/06 20:47:07 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/07/10 20:26:17 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,15 +140,13 @@ void	translate(trigon *tri, int zoffset)
 
 void	scale(trigon *tri, int fact)
 {
-	tri->p0->x = tri->p0->x * fact;
-	tri->p0->y = tri->p0->y * fact;
-	tri->p0->z = tri->p0->z * fact;
-	tri->p1->x = tri->p1->x * fact;
-	tri->p1->y = tri->p1->y * fact;
-	tri->p1->z = tri->p1->z * fact;
-	tri->p2->x = tri->p2->x * fact;
-	tri->p2->y = tri->p2->y * fact;
-	tri->p2->z = tri->p2->z * fact;
+	tri->p0->x = (int )(tri->p0->x * fact);
+	tri->p0->y = (int )(tri->p0->y * fact);
+	tri->p1->x = (int )(tri->p1->x * fact);
+	tri->p1->y = (int )(tri->p1->y * fact);
+	tri->p2->x = (int )(tri->p2->x * fact);
+	tri->p2->y = (int )(tri->p2->y * fact);
+
 }
 
 // transformas all objects in an image to the current angle
@@ -189,11 +187,11 @@ void	trans_op(trigon *stat, trigon **disp, int angle[3], image *im)
 		printf("vor persp p2 %f %f %f\n", out1->p2->x, out1->p2->y, out1->p2->z);
 
 		mxt(*orthomtx, *out1, out2, 1);
+		scale(out2, 100);
+
 		printf("output p0 %f %f %f\n", out2->p0->x, out2->p0->y, out2->p0->z);
 		printf("output p1 %f %f %f\n", out2->p1->x, out2->p1->y, out2->p1->z);
 		printf("output p2 %f %f %f\n", out2->p2->x, out2->p2->y, out2->p2->z);
-
-		scale(out2, 100);
 
 		free_lst (&out1);
 		addtrigon(disp, out2);
