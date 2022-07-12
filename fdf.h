@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 13:33:09 by wendelin          #+#    #+#             */
-/*   Updated: 2022/07/10 17:05:09 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/07/12 20:38:46 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,9 @@
 # include <math.h>
 # include <unistd.h>
 # include <stdlib.h>
+# include <fcntl.h>
 # include <stdio.h>
+# include "get_next_line.h"
 
 #define RED_PIXEL 0xFFAABB
 
@@ -112,6 +114,21 @@ double	dot_product(double p1[3], double p2[3]);
 double	scalar_product(point *d1, point *d2);
 double	rnd(double in, int places);
 
+int		read_lines(char **input, int fd);
+void	new_grid(int fd, image *im);
+void	built_grid(int **top_map, image *im, int lines);
+void	create_grid(image *im, int fd);
+
 void	free_lst(trigon **head);
-char	*fdf_main(void);
-#endif
+char 	*fdf_main(int fd);
+
+// libft
+int		ft_strlen(const char *c);
+char	*ft_strjoin(char const *s1, char const *s2);
+char	**ft_split(char const *s, char c);
+int		ft_strlen(const char *c);
+size_t	ft_strlcpy(char *dst, const char *src, size_t n);
+void	*ft_calloc(size_t count, size_t size);
+int		ft_atoi(const char *str);
+
+# endif

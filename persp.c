@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 09:32:35 by wweisser          #+#    #+#             */
-/*   Updated: 2022/07/10 20:26:17 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/07/12 21:22:36 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,7 +146,6 @@ void	scale(trigon *tri, int fact)
 	tri->p1->y = (int )(tri->p1->y * fact);
 	tri->p2->x = (int )(tri->p2->x * fact);
 	tri->p2->y = (int )(tri->p2->y * fact);
-
 }
 
 // transformas all objects in an image to the current angle
@@ -172,29 +171,29 @@ void	trans_op(trigon *stat, trigon **disp, int angle[3], image *im)
 	{
 		out1 = new_trigon(p[0], p[1], p[2]);
 		out2 = new_trigon(p[0], p[1], p[2]);
-		printf("vor rot %f %f %f\n", temp->p0->x, temp->p0->y, temp->p0->z);
-		printf("vor rot %f %f %f\n", temp->p1->x, temp->p1->y, temp->p1->z);
-		printf("vor rot %f %f %f\n", temp->p2->x, temp->p2->y, temp->p2->z);
+		// printf("vor rot %f %f %f\n", temp->p0->x, temp->p0->y, temp->p0->z);
+		// printf("vor rot %f %f %f\n", temp->p1->x, temp->p1->y, temp->p1->z);
+		// printf("vor rot %f %f %f\n", temp->p2->x, temp->p2->y, temp->p2->z);
 
 		mxt(*rotmtx, *temp, out1, 0);
-		printf("vor trans %f %f %f\n", out1->p0->x, out1->p0->y, out1->p0->z);
-		printf("vor trans %f %f %f\n", out1->p1->x, out1->p1->y, out1->p1->z);
-		printf("vor trans %f %f %f\n", out1->p2->x, out1->p2->y, out1->p2->z);
+		// printf("vor trans %f %f %f\n", out1->p0->x, out1->p0->y, out1->p0->z);
+		// printf("vor trans %f %f %f\n", out1->p1->x, out1->p1->y, out1->p1->z);
+		// printf("vor trans %f %f %f\n", out1->p2->x, out1->p2->y, out1->p2->z);
 
-		translate(out1, 5);
-		printf("vor persp p0 %f %f %f\n", out1->p0->x, out1->p0->y, out1->p0->z);
-		printf("vor persp p1 %f %f %f\n", out1->p1->x, out1->p1->y, out1->p1->z);
-		printf("vor persp p2 %f %f %f\n", out1->p2->x, out1->p2->y, out1->p2->z);
+		// translate(out1, 5);
+		// printf("vor persp p0 %f %f %f\n", out1->p0->x, out1->p0->y, out1->p0->z);
+		// printf("vor persp p1 %f %f %f\n", out1->p1->x, out1->p1->y, out1->p1->z);
+		// printf("vor persp p2 %f %f %f\n", out1->p2->x, out1->p2->y, out1->p2->z);
 
-		mxt(*orthomtx, *out1, out2, 1);
-		scale(out2, 100);
+		// mxt(*orthomtx, *out1, out2, 1);
+		scale(out1, 25);
 
-		printf("output p0 %f %f %f\n", out2->p0->x, out2->p0->y, out2->p0->z);
-		printf("output p1 %f %f %f\n", out2->p1->x, out2->p1->y, out2->p1->z);
-		printf("output p2 %f %f %f\n", out2->p2->x, out2->p2->y, out2->p2->z);
+		// printf("output p0 %f %f %f\n", out2->p0->x, out2->p0->y, out2->p0->z);
+		// printf("output p1 %f %f %f\n", out2->p1->x, out2->p1->y, out2->p1->z);
+		// printf("output p2 %f %f %f\n", out2->p2->x, out2->p2->y, out2->p2->z);
 
-		free_lst (&out1);
-		addtrigon(disp, out2);
+		free_lst (&out2);
+		addtrigon(disp, out1);
 		printf("next\n\n");
 		temp = temp->next;
 	}

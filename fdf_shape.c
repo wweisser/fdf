@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 15:23:40 by wendelin          #+#    #+#             */
-/*   Updated: 2022/07/10 20:50:54 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/07/12 20:53:01 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,35 @@ void	draw_trigons(trigon *tri_lst, image *im)
 			temp = temp->next;
 		}
 	free (nvector);
+	}
+}
+
+void	built_grid(int **top_map, image *im, int lines)
+{
+	int	i;
+	int	j;
+	point	*np[3];
+	trigon	*nt;
+
+	j = 1;
+	while (j < lines)
+	{
+		i = 1;
+		while (top_map[j][i] != 2147483647)
+		{
+			np[0] = new_point(i - 1, top_map[j][i - 1], j);
+			np[1] = new_point(i, top_map[j - 1][i], j - 1);
+			np[2] = new_point(i, top_map[j][i], j);
+			nt = new_trigon(np[0], np[1], np[2]);
+			addtrigon(&im->stat, nt);
+			np[0] = new_point(i - 1, top_map[j][i - 1], j);
+			np[1] = new_point(i, top_map[j - 1][i], j - 1);
+			np[2] = new_point(i - 1, top_map[j - 1][i - 1], j - 1);
+			nt = new_trigon(np[0], np[1], np[2]);
+			addtrigon(&im->stat, nt);
+			i++;
+		}
+		j++;
 	}
 }
 

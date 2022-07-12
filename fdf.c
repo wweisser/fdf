@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 15:38:02 by wendelin          #+#    #+#             */
-/*   Updated: 2022/07/10 21:28:39 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/07/12 21:27:30 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,52 +29,53 @@
 // 	return (0);
 // }
 
-void	create_grid(image *im)
+void	create_grid(image *im, int fd)
 {
-	point	*p0;
-	point	*p1;
-	point	*p2;
-	point	*p3;
-	point	*p4;
-	point	*p5;
-	point	*p6;
-	point	*p7;
-	trigon	*temp;
+	new_grid(fd , im);
+	// point	*p0;
+	// point	*p1;
+	// point	*p2;
+	// point	*p3;
+	// point	*p4;
+	// point	*p5;
+	// point	*p6;
+	// point	*p7;
+	// trigon	*temp;
 
-	p0 = new_point(0, 0, 0);
-	p1 = new_point(1, 0, 0);
-	p2 = new_point(1, 1, 0);
-	p3 = new_point(0, 1, 0);
-	p4 = new_point(0, 0, 1);
-	p5 = new_point(1, 0, 1);
-	p6 = new_point(1, 1, 1);
-	p7 = new_point(0, 1, 1);
+	// p0 = new_point(0, 0, 0);
+	// p1 = new_point(1, 0, 0);
+	// p2 = new_point(1, 1, 0);
+	// p3 = new_point(0, 1, 0);
+	// p4 = new_point(0, 0, 1);
+	// p5 = new_point(1, 0, 1);
+	// p6 = new_point(1, 1, 1);
+	// p7 = new_point(0, 1, 1);
 
-	free_lst(&im->stat);
-	temp = new_trigon(p1, p2, p3);
-	addtrigon(&im->stat, temp);
-	temp = new_trigon(p0, p1, p3);
-	addtrigon(&im->stat, temp);
-	temp = new_trigon(p0, p4, p1);
-	addtrigon(&im->stat, temp);
-	temp = new_trigon(p5, p1, p4);
-	addtrigon(&im->stat, temp);
-	temp = new_trigon(p5, p1, p2);
-	addtrigon(&im->stat, temp);
-	temp = new_trigon(p2, p5, p6);
-	addtrigon(&im->stat, temp);
-	temp = new_trigon(p0, p3, p4);
-	addtrigon(&im->stat, temp);
-	temp = new_trigon(p4, p3, p7);
-	addtrigon(&im->stat, temp);
-	temp = new_trigon(p3, p7, p2);
-	addtrigon(&im->stat, temp);
-	temp = new_trigon(p7, p6, p2);
-	addtrigon(&im->stat, temp);
-	temp = new_trigon(p4, p5, p6);
-	addtrigon(&im->stat, temp);
-	temp = new_trigon(p4, p6, p7);
-	addtrigon(&im->stat, temp);
+	// free_lst(&im->stat);
+	// temp = new_trigon(p1, p2, p3);
+	// addtrigon(&im->stat, temp);
+	// temp = new_trigon(p0, p1, p3);
+	// addtrigon(&im->stat, temp);
+	// temp = new_trigon(p0, p4, p1);
+	// addtrigon(&im->stat, temp);
+	// temp = new_trigon(p5, p1, p4);
+	// addtrigon(&im->stat, temp);
+	// temp = new_trigon(p5, p1, p2);
+	// addtrigon(&im->stat, temp);
+	// temp = new_trigon(p2, p5, p6);
+	// addtrigon(&im->stat, temp);
+	// temp = new_trigon(p0, p3, p4);
+	// addtrigon(&im->stat, temp);
+	// temp = new_trigon(p4, p3, p7);
+	// addtrigon(&im->stat, temp);
+	// temp = new_trigon(p3, p7, p2);
+	// addtrigon(&im->stat, temp);
+	// temp = new_trigon(p7, p6, p2);
+	// addtrigon(&im->stat, temp);
+	// temp = new_trigon(p4, p5, p6);
+	// addtrigon(&im->stat, temp);
+	// temp = new_trigon(p4, p6, p7);
+	// addtrigon(&im->stat, temp);
 }
 
 void	build_scene(image *im)
@@ -114,7 +115,7 @@ int	keydown(int key, image *im)
 	return (0);
 }
 
-char *fdf_main(void)
+char *fdf_main(int fd)
 {
 	window	*win;
 	image	*im;
@@ -128,7 +129,7 @@ char *fdf_main(void)
 	if (win == NULL)
 		return ("on image creation");
 	im->win->open_angle = 30;
-	create_grid(im);
+	create_grid(im, fd);
 	win->win = (void *)mlx_new_window(win->mlx, 1000, 1000, (char *)"fdf");
 	build_scene(im);
 	// mlx_mouse_hook(win->win, mouse_hook, im);
@@ -148,6 +149,11 @@ char *fdf_main(void)
 
 int	main(void)
 {
-	fdf_main();
+	int	fd;
+
+	fd = open("42.fdf", O_RDONLY);
+	printf("filedescriptor %d\n", fd);
+
+	fdf_main(fd);
 	return (0);
 }
