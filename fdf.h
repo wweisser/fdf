@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 13:33:09 by wendelin          #+#    #+#             */
-/*   Updated: 2022/07/12 20:38:46 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/07/13 22:04:13 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ void	draw_trigons(trigon *tri_lst, image *im);
 int		setcolor(unsigned char t, unsigned char r, unsigned char g, unsigned char b);
 void	set_line(point p1, point p2, image *im);
 void	line(point p1, point p2, int color, image *im);
-void	draw_line(point p1, point p2, image *im);
+void	draw_line(point p1, point p2, int color , image *im);
 int		create_line(int x1, int y1, int x2, int y2, image *im);
 int		render(int x, int y, int color, image *im);
 int		color_shift(int dir, image *im);
@@ -116,7 +116,7 @@ double	rnd(double in, int places);
 
 int		read_lines(char **input, int fd);
 void	new_grid(int fd, image *im);
-void	built_grid(int **top_map, image *im, int lines);
+void	built_grid(int **top_map, image *im, int lines, int rows);
 void	create_grid(image *im, int fd);
 
 void	free_lst(trigon **head);

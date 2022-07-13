@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 15:23:40 by wendelin          #+#    #+#             */
-/*   Updated: 2022/07/12 20:53:01 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/07/13 22:04:59 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,28 +61,19 @@ void	addtrigon(trigon **head, trigon *new)
 {
 	trigon	**temp;
 
-
-	// printf(" -1- \n");
 	if (new == NULL)
 		return ;
-	// printf(" -2- \n");
 	if (*head == NULL)
-	{
 		*head = new;
-		// printf(" -3- \n");
-	}
 	else
 	{
 		temp = head;
-		// while (*temp)
-		// {
+		while (*temp)
+		{
 			temp = &(*temp)->next;
-			// printf(" -4- %p\n", *temp);
-		// }
+		}
 		new->next = *temp;
 		*temp = new;
-		// printf(" -5- \n");
-
 	}
 }
 // HIER WEITERMACHEN NORMALEN VEKTOREN DATSTELLEN
@@ -92,24 +83,24 @@ void	draw_trigons(trigon *tri_lst, image *im)
 	// double	normfact;
 	point	*nvector;
 	trigon	*temp;
-	int		color = setcolor(0, 255, 255, 255);
+	// int		color = setcolor(0, 255, 255, 255);
 
 	// normfact = 0;
 	nvector = new_point(0, 0, 0);
 	if (tri_lst != NULL)
 	{
-		// printf("test\n");
 		temp = tri_lst;
 		while (temp != NULL)
 		{
 			// if (scalar_product(temp->n, im->win->view) > 0)
 			{
-				// set_line(*(temp->p0), *(temp->p1), im);
-				// set_line(*(temp->p1), *(temp->p2), im);
-				// set_line(*(temp->p2), *(temp->p0), im);
-				line(*(temp->p0), *(temp->p1), color, im);
-				line(*(temp->p1), *(temp->p2), color, im);
-				line(*(temp->p2), *(temp->p0), color, im);
+				set_line(*(temp->p0), *(temp->p1), im);
+				set_line(*(temp->p1), *(temp->p2), im);
+				set_line(*(temp->p1), *(temp->p0), im);
+
+				// line(*(temp->p0), *(temp->p1), color, im);
+				// line(*(temp->p1), *(temp->p2), color, im);
+				// line(*(temp->p2), *(temp->p0), color, im);
 
 				// fact_vector(temp->n, 100);
 				// calc_point(*(temp->p0), *(temp->n), nvector, 1);
@@ -121,7 +112,7 @@ void	draw_trigons(trigon *tri_lst, image *im)
 	}
 }
 
-void	built_grid(int **top_map, image *im, int lines)
+void	built_grid(int **top_map, image *im, int lines, int rows)
 {
 	int	i;
 	int	j;
@@ -134,50 +125,20 @@ void	built_grid(int **top_map, image *im, int lines)
 		i = 1;
 		while (top_map[j][i] != 2147483647)
 		{
-			np[0] = new_point(i - 1, top_map[j][i - 1], j);
-			np[1] = new_point(i, top_map[j - 1][i], j - 1);
-			np[2] = new_point(i, top_map[j][i], j);
+			np[0] = new_point(i - 1 - (rows / 2), top_map[j][i - 1], j - (lines / 2));
+			np[1] = new_point(i - (rows / 2), top_map[j - 1][i], j - 1 - (lines / 2));
+			np[2] = new_point(i - (rows / 2), top_map[j][i], j - (lines / 2));
 			nt = new_trigon(np[0], np[1], np[2]);
 			addtrigon(&im->stat, nt);
-			np[0] = new_point(i - 1, top_map[j][i - 1], j);
-			np[1] = new_point(i, top_map[j - 1][i], j - 1);
-			np[2] = new_point(i - 1, top_map[j - 1][i - 1], j - 1);
+			np[0] = new_point(i - 1 - (rows / 2), top_map[j][i - 1], j - (lines / 2));
+			np[1] = new_point(i - (rows / 2), top_map[j - 1][i], j - 1 - (lines / 2));
+			np[2] = new_point(i - 1 - (rows / 2), top_map[j - 1][i - 1], j - 1 - (lines / 2));
 			nt = new_trigon(np[0], np[1], np[2]);
 			addtrigon(&im->stat, nt);
 			i++;
 		}
 		j++;
 	}
-}
-
-// creates a square consting of four trigons. The center => cent,
-// side length => s_len, algn=0 x-plane, algn=1 y-plane, algn=2 z-plane
-void	new_sqare(double ctr[3], int l, image *im)
-{
-	point	*p[3];
-	trigon	*node;
-
-	p[0] = new_point(ctr[0], ctr[1], ctr[2]);
-	p[1] = new_point(ctr[0] - (l / 2), ctr[1] - (l / 2), ctr[2]);
-	p[2] = new_point(ctr[0] + (l / 2), ctr[1] - (l / 2), ctr[2]);
-	node = new_trigon(p[0], p[1], p[2]);
-	printf("%p\n", node);
-	addtrigon(&im->stat, node);
-	p[1] = new_point(ctr[0] + (l / 2), ctr[1] - (l / 2), ctr[2]);
-	p[2] = new_point(ctr[0] + (l / 2), ctr[1] + (l / 2), ctr[2]);
-	node = new_trigon(p[0], p[1], p[2]);
-	printf("%p\n", node);
-	addtrigon(&im->stat, node);
-	p[1] = new_point(ctr[0] + (l / 2), ctr[1] + (l / 2), ctr[2]);
-	p[2] = new_point(ctr[0] - (l / 2), ctr[1] + (l / 2), ctr[2]);
-	node = new_trigon(p[0], p[1], p[2]);
-	printf("%p\n", node);
-	addtrigon(&im->stat, node);
-	p[1] = new_point(ctr[0] - (l / 2), ctr[1] + (l / 2), ctr[2]);
-	p[2] = new_point(ctr[0] - (l / 2), ctr[1] - (l / 2), ctr[2]);
-	node = new_trigon(p[0], p[1], p[2]);
-	printf("%p\n", node);
-	addtrigon(&im->stat, node);
 }
 
 void	free_lst(trigon **head)
@@ -200,3 +161,33 @@ void	free_lst(trigon **head)
 		head = NULL;
 	}
 }
+
+// creates a square consting of four trigons. The center => cent,
+// side length => s_len, algn=0 x-plane, algn=1 y-plane, algn=2 z-plane
+// void	new_sqare(double ctr[3], int l, image *im)
+// {
+// 	point	*p[3];
+// 	trigon	*node;
+
+// 	p[0] = new_point(ctr[0], ctr[1], ctr[2]);
+// 	p[1] = new_point(ctr[0] - (l / 2), ctr[1] - (l / 2), ctr[2]);
+// 	p[2] = new_point(ctr[0] + (l / 2), ctr[1] - (l / 2), ctr[2]);
+// 	node = new_trigon(p[0], p[1], p[2]);
+// 	printf("%p\n", node);
+// 	addtrigon(&im->stat, node);
+// 	p[1] = new_point(ctr[0] + (l / 2), ctr[1] - (l / 2), ctr[2]);
+// 	p[2] = new_point(ctr[0] + (l / 2), ctr[1] + (l / 2), ctr[2]);
+// 	node = new_trigon(p[0], p[1], p[2]);
+// 	printf("%p\n", node);
+// 	addtrigon(&im->stat, node);
+// 	p[1] = new_point(ctr[0] + (l / 2), ctr[1] + (l / 2), ctr[2]);
+// 	p[2] = new_point(ctr[0] - (l / 2), ctr[1] + (l / 2), ctr[2]);
+// 	node = new_trigon(p[0], p[1], p[2]);
+// 	printf("%p\n", node);
+// 	addtrigon(&im->stat, node);
+// 	p[1] = new_point(ctr[0] - (l / 2), ctr[1] + (l / 2), ctr[2]);
+// 	p[2] = new_point(ctr[0] - (l / 2), ctr[1] - (l / 2), ctr[2]);
+// 	node = new_trigon(p[0], p[1], p[2]);
+// 	printf("%p\n", node);
+// 	addtrigon(&im->stat, node);
+// }

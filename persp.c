@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 09:32:35 by wweisser          #+#    #+#             */
-/*   Updated: 2022/07/12 21:22:36 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/07/13 17:28:33 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ void	mxp(mtx c, point in, point *out, int ortho)
 	out->x = (in.x * c.m[0][0] + in.y * c.m[0][1] + in.z * c.m[0][2] + c.m[0][3]);
 	out->y = (in.x * c.m[1][0] + in.y * c.m[1][1] + in.z * c.m[1][2] + c.m[1][3]);
 	out->z = (in.x * c.m[2][0] + in.y * c.m[2][1] + in.z * c.m[2][2] + c.m[2][3]);
-	w = rnd(in.z, 1);
+	w = rnd(in.z, 5);
 	if (ortho == 1 && w > 0.00)
 	{
 		// printf("out before x %f, y %f, z %f w: %f\n", out->x, out->y, out->z, w);
@@ -180,21 +180,20 @@ void	trans_op(trigon *stat, trigon **disp, int angle[3], image *im)
 		// printf("vor trans %f %f %f\n", out1->p1->x, out1->p1->y, out1->p1->z);
 		// printf("vor trans %f %f %f\n", out1->p2->x, out1->p2->y, out1->p2->z);
 
-		// translate(out1, 5);
+		translate(out1, 20);
 		// printf("vor persp p0 %f %f %f\n", out1->p0->x, out1->p0->y, out1->p0->z);
 		// printf("vor persp p1 %f %f %f\n", out1->p1->x, out1->p1->y, out1->p1->z);
 		// printf("vor persp p2 %f %f %f\n", out1->p2->x, out1->p2->y, out1->p2->z);
 
-		// mxt(*orthomtx, *out1, out2, 1);
-		scale(out1, 25);
+		scale(out1, 2);
+		mxt(*orthomtx, *out1, out2, 1);
 
 		// printf("output p0 %f %f %f\n", out2->p0->x, out2->p0->y, out2->p0->z);
 		// printf("output p1 %f %f %f\n", out2->p1->x, out2->p1->y, out2->p1->z);
 		// printf("output p2 %f %f %f\n", out2->p2->x, out2->p2->y, out2->p2->z);
 
-		free_lst (&out2);
-		addtrigon(disp, out1);
-		printf("next\n\n");
+		free_lst (&out1);
+		addtrigon(disp, out2);
 		temp = temp->next;
 	}
 

@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 13:21:35 by wendelin          #+#    #+#             */
-/*   Updated: 2022/07/06 11:31:51 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/07/13 16:24:13 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ void	cross_product(point p1, point p2, point *result)
 double	rnd(double in, int places)
 {
 	int		i;
+	int		j;
 	double	temp;
 
 	i = 1;
@@ -82,16 +83,21 @@ double	rnd(double in, int places)
 		i = i * 10;
 		places--;
 	}
-	temp = (int )(in * i);
+	temp = (in * i);
+	j = temp;
+	if (in > 0 && (temp - j) >= 0.5)
+		temp++;
+	if (in < 0 && (temp + j) <= -0.5)
+		temp--;
+	temp = (int )temp;
 	in = temp / i;
 	return (in);
 }
 
-
 int main(void)
 {
-	double test = 1.05351351151;
-	test = rnd(test, 3);
+	double test = -0.566;
+	test = rnd(test, 0);
 	printf(" %f ", test);
 	return (0);
 }

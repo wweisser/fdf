@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 15:38:02 by wendelin          #+#    #+#             */
-/*   Updated: 2022/07/12 21:27:30 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/07/13 22:08:38 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,7 @@ int	main(void)
 
 	fd = open("42.fdf", O_RDONLY);
 	printf("filedescriptor %d\n", fd);
-
+	// system("leaks a.out");
 	fdf_main(fd);
 	return (0);
 }

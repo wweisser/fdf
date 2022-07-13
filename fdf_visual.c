@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 15:00:31 by wendelin          #+#    #+#             */
-/*   Updated: 2022/07/11 09:52:03 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/07/13 22:20:57 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,19 +59,52 @@ int	color_shift(int dir, image *im)
 	return (0);
 }
 
+
+void	draw_line(point p1, point p2, int color , image *im)
+{
+	int	delta_x;
+	int	delta_y;
+	int	error;
+	int	x;
+	int	y;
+
+	x = p1.x;
+	y = p1.y;
+	delta_y = p2.y - p1.y;
+	delta_x = p2.x - p1.x;
+	error = (2 * delta_x) - delta_y;
+	while (x <= p2.x)
+	{
+		// if (p1.x != p2.x)
+			x++;
+		if (error < 0)
+			error = error + (2 * delta_y);
+		else
+		{
+			error = error + (2 * delta_y) - (2 * delta_x);
+			y++;
+		}
+		if ((x < im->x) && (y < im->y) &&
+		(x > -im->x) && (y > -im->y))
+		render((int )(x + im->x), (int )(y + im->y), color, im);
+	}
+}
+
 void	line(point p1, point p2, int color, image *im)
 {
 	point	np;
 
-	p1.x = (int )(p1.x);
-	p1.y = (int )(p1.y);
-	p2.x = (int )(p2.x);
-	p2.y = (int )(p2.y);
+	// p1.x = rnd(p1.x, 0);
+	// p1.y = rnd(p1.y, 0);
+	// p2.x = rnd(p2.x, 0);
+	// p2.y = rnd(p2.y, 0);
+	p1.x = round(p1.x);
+	p1.y = round(p1.y);
+	p2.x = round(p2.x);
+	p2.y = round(p2.y);
+
 	if ((p1.x == p2.x) && (p1.y == p2.y))
-	{
-		// printf("gleiches x und y x1:%f y1:%f | x2:%f y2:%f\n", p1.x, p1.y, p2.x, p2.y);
-		return ;
-	}
+			return ;
 	else if ((p1.x == p2.x + 1 || p1.x == p2.x - 1) && (p1.y == p2.y + 1 || p1.y == p2.y - 1))
 	{
 		return ;
@@ -96,40 +129,40 @@ void	line(point p1, point p2, int color, image *im)
 }
 
 // draws the line via render
-void	draw_line(point p1, point p2, image *im)
-{
-	int		x;
-	int		y1;
-	int		y2;
-	double	slope;
-	int		clr;
+// void	draw_line(point p1, point p2, image *im)
+// {
+// 	int		x;
+// 	int		y1;
+// 	int		y2;
+// 	double	slope;
+// 	int		clr;
 
-	slope = (p2.y - p1.y) / (p2.x - p1.x);
-	x = 0;
-	y1 = 0;
-	y2 = 0;
-	clr = setcolor(0, 255, 255, 255);
-	if ((int )p1.x != (int )p2.x)
-	{
-		while (x < (p2.x - p1.x))
-		{
-			y2 = round(x * slope) + (im->x / 2) + p1.y;
-			render(x + (im->x / 2) + p1.x, y2, clr, im);
-			// fill_segment(x + p1.x, y1, y2, im);
-			y1 = y2;
-			x++;
-		}
-	}
-	else
-	{
-		while (y1 < (p2.y - p1.y))
-		{
-			// printf("test");
-			render(p1.x + (im->x / 2), y1 + (im->x / 2) + p1.y, clr, im);
-			y1++;
-		}
-	}
-}
+// 	slope = (p2.y - p1.y) / (p2.x - p1.x);
+// 	x = 0;
+// 	y1 = 0;
+// 	y2 = 0;
+// 	clr = setcolor(0, 255, 255, 255);
+// 	if ((int )p1.x != (int )p2.x)
+// 	{
+// 		while (x < (p2.x - p1.x))
+// 		{
+// 			y2 = round(x * slope) + (im->x / 2) + p1.y;
+// 			render(x + (im->x / 2) + p1.x, y2, clr, im);
+// 			// fill_segment(x + p1.x, y1, y2, im);
+// 			y1 = y2;
+// 			x++;
+// 		}
+// 	}
+// 	else
+// 	{
+// 		while (y1 < (p2.y - p1.y))
+// 		{
+// 			// printf("test");
+// 			render(p1.x + (im->x / 2), y1 + (im->x / 2) + p1.y, clr, im);
+// 			y1++;
+// 		}
+// 	}
+// }
 
 // checks if the two points have even x or y values and assigns
 // them accordingly to draw_line
@@ -137,15 +170,17 @@ void	set_line(point p1, point p2, image *im)
 {
 	// printf("p1 x:%f y:%f ====> ", p1.x, p1.y);
 	// printf("p2 x:%f y:%f \n", p2.x, p2.y);
+	int	color;
+	color = setcolor(0, 255, 255, 255);
 	if (p1.x < p2.x)
-		draw_line(p1, p2, im);
+		draw_line(p1, p2, color, im);
 	else if (p1.x > p2.x)
-		draw_line(p2, p1, im);
+		draw_line(p2, p1, color, im);
 	else if (p1.x == p2.x)
 	{
 		if (p1.y >= p2.y)
-			draw_line(p2, p1, im);
+			draw_line(p2, p1, color, im);
 		if (p1.y < p2.y)
-			draw_line(p1, p2, im);
+			draw_line(p1, p2, color, im);
 	}
 }

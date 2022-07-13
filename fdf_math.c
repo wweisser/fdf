@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 16:19:02 by wendelin          #+#    #+#             */
-/*   Updated: 2022/07/06 11:31:58 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/07/13 16:07:46 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ void	norm_vector(point *p1)
 double	rnd(double in, int places)
 {
 	int		i;
+	int		j;
 	double	temp;
 
 	i = 1;
@@ -94,7 +95,13 @@ double	rnd(double in, int places)
 		i = i * 10;
 		places--;
 	}
-	temp = (int )(in * i);
+	temp = (in * i);
+	j = temp;
+	if (in > 0 && (temp - j) >= 0.5)
+		temp++;
+	if (in < 0 && (temp + j) <= -0.5)
+		temp--;
+	temp = (int )temp;
 	in = temp / i;
 	return (in);
 }

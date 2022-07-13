@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 10:15:18 by wweisser          #+#    #+#             */
-/*   Updated: 2022/07/12 21:41:52 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/07/13 11:38:00 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void	TOPMAPTESTER(int **top_map, int lines)
 //####################################################
 
 // Puts fills the chars from proc_input to the top_map + convertsthem them to int
-void	load_topmap(int **top_map, char **proc_input, int lines)
+int	load_topmap(int **top_map, char **proc_input, int lines)
 {
 	int		i;
 	int		j;
@@ -115,6 +115,7 @@ void	load_topmap(int **top_map, char **proc_input, int lines)
 		free_mem((void **)temp, i);
 		j++;
 	}
+	return (i);
 }
 
 void	new_grid(int fd, image *im)
@@ -122,19 +123,20 @@ void	new_grid(int fd, image *im)
 	char	*input;
 	int		**top_map;
 	char	**proc_input;
-	int		lines;
+	int		dim[2];
 
-	lines = 0;
+	dim[0] = 0;
+	dim[1] = 0;
 	input = NULL;
 	top_map = NULL;
 	proc_input = NULL;
 
-	lines = read_lines(&input, fd);
+	dim[0] = read_lines(&input, fd);
 	proc_input = ft_split(input, '\n');
-	top_map = new_topmap(proc_input, top_map, lines);
-	load_topmap(top_map, proc_input, lines);
-	TOPMAPTESTER(top_map, lines);
-	built_grid(top_map, im, lines);
-	free_mem((void **)proc_input, lines);
-	free_mem((void **)top_map, lines);
+	top_map = new_topmap(proc_input, top_map, dim[0]);
+	dim[1] = load_topmap(top_map, proc_input, dim[0]);
+	TOPMAPTESTER(top_map, dim[0]);
+	built_grid(top_map, im, dim[0], dim[1]);
+	free_mem((void **)proc_input, dim[0]);
+	free_mem((void **)top_map, dim[0]);
 }
