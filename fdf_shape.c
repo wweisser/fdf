@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 15:23:40 by wendelin          #+#    #+#             */
-/*   Updated: 2022/07/13 22:04:59 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/07/14 18:04:53 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void	draw_trigons(trigon *tri_lst, image *im)
 	// double	normfact;
 	point	*nvector;
 	trigon	*temp;
-	// int		color = setcolor(0, 255, 255, 255);
+	int		color = setcolor(0, 255, 255, 255);
 
 	// normfact = 0;
 	nvector = new_point(0, 0, 0);
@@ -94,13 +94,13 @@ void	draw_trigons(trigon *tri_lst, image *im)
 		{
 			// if (scalar_product(temp->n, im->win->view) > 0)
 			{
-				set_line(*(temp->p0), *(temp->p1), im);
-				set_line(*(temp->p1), *(temp->p2), im);
-				set_line(*(temp->p1), *(temp->p0), im);
+				// set_line(*(temp->p0), *(temp->p1), im);
+				// set_line(*(temp->p1), *(temp->p2), im);
+				// set_line(*(temp->p1), *(temp->p0), im);
 
-				// line(*(temp->p0), *(temp->p1), color, im);
-				// line(*(temp->p1), *(temp->p2), color, im);
-				// line(*(temp->p2), *(temp->p0), color, im);
+				line(*(temp->p0), *(temp->p1), color, im);
+				line(*(temp->p1), *(temp->p2), color, im);
+				line(*(temp->p2), *(temp->p0), color, im);
 
 				// fact_vector(temp->n, 100);
 				// calc_point(*(temp->p0), *(temp->n), nvector, 1);

@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 09:32:35 by wweisser          #+#    #+#             */
-/*   Updated: 2022/07/13 17:28:33 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/07/14 18:08:12 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,20 +180,20 @@ void	trans_op(trigon *stat, trigon **disp, int angle[3], image *im)
 		// printf("vor trans %f %f %f\n", out1->p1->x, out1->p1->y, out1->p1->z);
 		// printf("vor trans %f %f %f\n", out1->p2->x, out1->p2->y, out1->p2->z);
 
-		translate(out1, 20);
+		// translate(out1, 20);
 		// printf("vor persp p0 %f %f %f\n", out1->p0->x, out1->p0->y, out1->p0->z);
 		// printf("vor persp p1 %f %f %f\n", out1->p1->x, out1->p1->y, out1->p1->z);
 		// printf("vor persp p2 %f %f %f\n", out1->p2->x, out1->p2->y, out1->p2->z);
 
-		scale(out1, 2);
-		mxt(*orthomtx, *out1, out2, 1);
+		scale(out1, 30);
+		// mxt(*orthomtx, *out1, out2, 1);
 
 		// printf("output p0 %f %f %f\n", out2->p0->x, out2->p0->y, out2->p0->z);
 		// printf("output p1 %f %f %f\n", out2->p1->x, out2->p1->y, out2->p1->z);
 		// printf("output p2 %f %f %f\n", out2->p2->x, out2->p2->y, out2->p2->z);
 
-		free_lst (&out1);
-		addtrigon(disp, out2);
+		free_lst (&out2);
+		addtrigon(disp, out1);
 		temp = temp->next;
 	}
 
