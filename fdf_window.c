@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 10:51:16 by wendelin          #+#    #+#             */
-/*   Updated: 2022/07/10 21:23:11 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/07/17 22:28:38 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ window	*new_window(int width, int hight)
 	}
 	win->x = width;
 	win->y = hight;
+	win->size = 30;
 	return (win);
 }
 
@@ -48,7 +49,7 @@ image	*new_image(window *win)
 	im->bits_per_pixel = 32;
 	im->bytes_per_line = 4;
 	im->endian = 1;
-	im->color = 1;
+	im->offset = 0;
 	im->x = win->x / 2;
 	im->y = win->y / 2;
 	im->grid = NULL;
@@ -58,10 +59,9 @@ image	*new_image(window *win)
 		&im->bytes_per_line, &im->endian);
 	im->stat = NULL;
 	im->disp = NULL;
-	im->angle[0] = 0;
-	im->angle[1] = 0;
-	im->angle[2] = 0;
-	im->win->viewer = new_point(0, 0, -100);
+	im->angle[0] = 490;
+	im->angle[1] = 15;
+	im->angle[2] = 45;
 	if (im->grid == NULL || im->addr == NULL)
 		return (NULL);
 	return (im);
