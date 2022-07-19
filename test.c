@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 13:21:35 by wendelin          #+#    #+#             */
-/*   Updated: 2022/07/13 16:24:13 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/07/18 17:39:01 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,10 +94,70 @@ double	rnd(double in, int places)
 	return (in);
 }
 
+int	ft_strlen(const char *c)
+{
+	int	i;
+
+	i = 0;
+	while (c[i] != '\0')
+		i++;
+	return (i);
+}
+
+int	decodehex(char c, char key[17])
+{
+	int	i;
+
+	i = 0;
+	while (key[i] != '\0')
+	{
+		if (c == key[i])
+			return (i);
+		i++;
+	}
+	return (-1);
+}
+
+int	read_hexdec(const char *in)
+{
+	int		i;
+	int		numb;
+	int		factor;
+
+	if (in == NULL)
+		return (0);
+	numb = 0;
+	factor = 1;
+	i = ft_strlen(in) - 1;
+	while (in[i] != 'x' && i > 0)
+	{
+		numb = numb + (decodehex(in[i], "0123456789ABCDEF") * factor);
+		factor = factor * 16;
+		i--;
+	}
+	return (numb);
+}
+
+// double	readnumber(char *numb)
+// {
+// 	double	out;
+// 	double	postcomma;
+// 	char	**numbcompontens;
+
+// 	numbcompontens = ft_split(numb, ',');
+// 	out = atoi(numbcompontens[0]);
+// 	postcomma = read_hexdec(numbcompontens[0]);
+// 	while (postcomma > 1)
+// 		postcomma = postcomma / 10;
+// 	out = out + postcomma;
+// 	return	(out);
+// }
+
 int main(void)
 {
-	double test = -0.566;
-	test = rnd(test, 0);
+	double test;
+	test = read_hexdec("0xFF0000");
+	// test = rnd(test, 0);
 	printf(" %f ", test);
 	return (0);
 }

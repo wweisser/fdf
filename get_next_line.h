@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/14 09:50:31 by wweisser          #+#    #+#             */
-/*   Updated: 2022/07/11 15:54:10 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/07/19 15:24:22 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define GET_NEXT_LINE_H
 # ifdef BUFFER_SIZE
 # else
-#  define BUFFER_SIZE 10
+#  define BUFFER_SIZE 5100
 # endif
 # include <unistd.h>
 # include <stdlib.h>

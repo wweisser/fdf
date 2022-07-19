@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 16:19:02 by wendelin          #+#    #+#             */
-/*   Updated: 2022/07/13 16:07:46 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/07/18 21:13:21 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	calc_point(point p1, point p2, point *result, int op)
 }
 
 // calculates the sacalarproduct
-double	scalar_product(point *d1, point *d2)
+float	scalar_product(point *d1, point *d2)
 {
 	double	result;
 
@@ -47,7 +47,7 @@ void	cross_product(point *p1, point *p2, point *result)
 }
 
 // multiplies p1 times f
-void	fact_vector(point *p1, double f)
+void	fact_vector(point *p1, float f)
 {
 		p1->x = p1->x * f;
 		p1->y = p1->y * f;
@@ -55,18 +55,18 @@ void	fact_vector(point *p1, double f)
 }
 
 // returns the dotproct of p1 o p2
-double	dot_product(double p1[3], double p2[3])
+float	dot_product(float p1[3], float p2[3])
 {
-	double  dp;
+	float  dp;
 
 	dp = (p1[0] * p2[0]) + (p1[1] * p2[1]) + (p1[2] * p2[2]);
 	return (dp);
 }
 
 // returns the sum of a vector
-double	sum_vector(point p1)
+float	sum_vector(point p1)
 {
-	double  sum;
+	float  sum;
 	sum = sqrt((p1.x * p1.x)+ (p1.y * p1.y) + (p1.z * p1.z));
 	return (sum);
 }
@@ -74,7 +74,7 @@ double	sum_vector(point p1)
 // normates a directionvector
 void	norm_vector(point *p1)
 {
-	double	fact;
+	float	fact;
 
 	fact = 0.0;
 	fact = sum_vector(*p1);
@@ -83,11 +83,11 @@ void	norm_vector(point *p1)
 	fact_vector(p1, fact);
 }
 
-double	rnd(double in, int places)
+float	rnd(float in, int places)
 {
 	int		i;
 	int		j;
-	double	temp;
+	float	temp;
 
 	i = 1;
 	while (places > 0)

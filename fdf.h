@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 13:33:09 by wendelin          #+#    #+#             */
-/*   Updated: 2022/07/17 22:42:46 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/07/19 21:03:44 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,25 +26,27 @@
 //first instance rows, second instance collums
 typedef struct matrix
 {
-	double	m[4][4];
+	float	m[4][4];
 }			mtx;
+
+// HIER WEITERMACHEN:	1. GESAMTE BERECHNUNG UNF SPEICHERUNG AUF INT UMSTELLEN
 
 typedef struct s_point
 {
-	double	x;
-	double	y;
-	double	z;
-	int		color;
-}			point;
+	float	x;
+	float	y;
+	float	z;
+	int	color;
+}		point;
 
 // holds the anchor point p, direction vectors d1 and d2 and the normal vector n
 // it represents a trigon of three points p, p+d1, p+d2
 struct s_trigon
 {
-	point			*p0;
-	point			*p1;
-	point			*p2;
-	point			*n;
+	point			p0;
+	point			p1;
+	point			p2;
+	point			n;
 	struct s_trigon	*next;
 };
 typedef struct s_trigon	trigon;
@@ -56,7 +58,7 @@ typedef struct s_window
 	void	*win;
 	int		x;
 	int		y;
-	int		size;
+	float		size;
 	// double	open_angle;
 }			window;
 
@@ -75,7 +77,7 @@ typedef struct	s_image
 	int		bits_per_pixel;
 	int		offset;
 	int		lines;
-	int		rows;
+	int		column;
 	void	*mlx;
 	void	*grid;
 }			image;
@@ -84,22 +86,23 @@ int		mouse_hook(int key, int x, int y, image *im);
 window	*new_window(int width, int hight);
 
 image	*new_image(window *win);
-point	*new_point(double x, double y, double z, int color);
+point	new_point(float x, float y, float z, int color);
 mtx		*new_mtx(void);
 trigon	*new_trigon(point p0, point p1, point p2);
 void	addtrigon(trigon **head, trigon *new);
-void	new_sqare(double ctr[3], int l, image *im);
-void	a_p(point *p, double x, double y, double z);
+void	new_sqare(float ctr[3], int l, image *im);
+void	a_p(point *p, float x, float y, float z);
 
 void	rottrigon(trigon in, trigon *out, mtx rotmtx);
 void	mxp(mtx c, point in, point *out, int ortho);
 void	mxt(mtx c, trigon in, trigon *out, int ortho);
-mtx		*create_rotmtx(double y, double ß, double a);
+mtx		*create_rotmtx(float y, float ß, float a);
 mtx		*create_othromtx(window *win);
-void	trans_op(trigon *stat, trigon **disp, int angle[3], image *im);
+void	trans_op(image *im);
 void	translate(trigon *tri, int zoffset);
 void	scale(trigon *tri, int fact);
-void	adjst_hight(trigon *stat, int sign);
+void	adjst_hight(trigon *stat, float sign);
+void	set_default(image *im);
 
 void	draw_trigons(trigon *tri_lst, image *im);
 int		setcolor(unsigned char t, unsigned char r, unsigned char g, unsigned char b);
@@ -109,17 +112,17 @@ int		render(int x, int y, int color, image *im);
 int		color_shift(image *im);
 
 void	cross_product(point *p1, point *p2, point *result);
-void	fact_vector(point *p1, double f);
+void	fact_vector(point *p1, float f);
 void	norm_vector(point *p1);
 void	calc_point(point p1, point p2, point *result, int op);
-double	sum_vector(point p1);
-double	dot_product(double p1[3], double p2[3]);
-double	scalar_product(point *d1, point *d2);
-double	rnd(double in, int places);
+float	sum_vector(point p1);
+float	dot_product(float p1[3], float p2[3]);
+float	scalar_product(point *d1, point *d2);
+float	rnd(float in, int places);
 
-int		read_lines(char **input, int fd);
+char	*read_lines(int fd);
 void	new_grid(int fd, image *im);
-void	built_grid(int **top_map, image *im, int lines, int rows);
+void	built_grid(float **top_map, int lines, int rows, image *im);
 void	create_grid(image *im, int fd);
 
 void	free_lst(trigon **head);
@@ -133,5 +136,6 @@ int		ft_strlen(const char *c);
 size_t	ft_strlcpy(char *dst, const char *src, size_t n);
 void	*ft_calloc(size_t count, size_t size);
 int		ft_atoi(const char *str);
+void	*ft_memmove(void *dest, const void *src, unsigned int n);
 
 # endif

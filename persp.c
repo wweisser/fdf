@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 09:32:35 by wweisser          #+#    #+#             */
-/*   Updated: 2022/07/17 22:59:45 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/07/19 15:05:49 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ mtx	*new_mtx(void)
 // }
 
 //creates a rotation matrix with the corresponding angles
-mtx *create_rotmtx(double y, double ß, double a)
+mtx *create_rotmtx(float y, float ß, float a)
 {
 	mtx	*rotmtx;
 
@@ -88,7 +88,7 @@ mtx *create_rotmtx(double y, double ß, double a)
 //(see ORthogonal matrix)
 void	mxp(mtx c, point in, point *out, int ortho)
 {
-	double	w;
+	float	w;
 // ergebnisse der orthomatrix uberprufen, egbnisse auf den falschen slots
 	w = 1;
 	out->x = (in.x * c.m[0][0] + in.y * c.m[0][1] + in.z * c.m[0][2] + c.m[0][3]);
@@ -106,13 +106,13 @@ void	mxp(mtx c, point in, point *out, int ortho)
 // matrix mulitplies a triangle. If orthogoinal matrix => ortho=1
 void	mxt(mtx c, trigon in, trigon *out, int ortho)
 {
-	mxp(c, *in.p0, out->p0, ortho);
-	mxp(c, *in.p1, out->p1, ortho);
-	mxp(c, *in.p2, out->p2, ortho);
+	mxp(c, in.p0, &out->p0, ortho);
+	mxp(c, in.p1, &out->p1, ortho);
+	mxp(c, in.p2, &out->p2, ortho);
 	if (ortho == 0)
 	{
-		mxp(c, *in.n, out->n, 0);
-		norm_vector(out->n);
+		mxp(c, in.n, &out->n, 0);
+		norm_vector(&out->n);
 	}
 }
 
@@ -120,100 +120,105 @@ void	mxt(mtx c, trigon in, trigon *out, int ortho)
 // also norms the rotated direction vector
 void	rottrigon(trigon in, trigon *out, mtx rotmtx)
 {
-	mxp(rotmtx, *in.p0, out->p0, 0);
-	mxp(rotmtx, *in.p1, out->p1, 0);
-	mxp(rotmtx, *in.p2, out->p2, 0);
-	mxp(rotmtx, *in.n, out->n, 0);
-	norm_vector(out->n);
+	mxp(rotmtx, in.p0, &out->p0, 0);
+	mxp(rotmtx, in.p1, &out->p1, 0);
+	mxp(rotmtx, in.p2, &out->p2, 0);
+	mxp(rotmtx, in.n, &out->n, 0);
+	norm_vector(&out->n);
 }
 
-void	adjst_hight(trigon *stat, int sign)
+void	adjst_hight(trigon *stat, float sign)
 {
 	trigon	*temp;
 
 	temp = stat;
-	if (sign == -1)
+	if (sign < 1)
 		while(temp)
 		{
-			if (temp->p0->y > 0.1)
-				temp->p0->y = temp->p0->y * 0.9;
-			if (temp->p1->y > 0.1)
-				temp->p1->y = temp->p1->y * 0.9;
-			if (temp->p2->y > 0.1)
-				temp->p2->y = temp->p2->y * 0.9;
-			temp= temp->next;
+			if (temp->p0.y > 0.1 || temp->p0.y < -0.1)
+				temp->p0.y = temp->p0.y * sign;
+			if (temp->p1.y > 0.1 || temp->p1.y < -0.1)
+				temp->p1.y = temp->p1.y * sign;
+			if (temp->p2.y > 0.1 || temp->p2.y < -0.1)
+				temp->p2.y = temp->p2.y * sign;
+			temp = temp->next;
 		}
-	if (sign == 1)
+	if (sign > 1)
 		while(temp)
 		{
-			if (temp->p0->y < 10)
-				temp->p0->y = temp->p0->y * 1.1;
-			if (temp->p1->y < 10)
-				temp->p1->y = temp->p1->y * 1.1;
-			if (temp->p2->y < 10)
-				temp->p2->y = temp->p2->y * 1.1;
-			temp= temp->next;
+			if (temp->p0.y < 10 && temp->p0.y > -10)
+				temp->p0.y = temp->p0.y * sign;
+			if (temp->p1.y < 10 && temp->p1.y > -10)
+				temp->p1.y = temp->p1.y * sign;
+			if (temp->p2.y < 10 && temp->p2.y > -10)
+				temp->p2.y = temp->p2.y * sign;
+			temp = temp->next;
 		}
 }
 
 void	translate(trigon *tri, int xoffset)
 {
-	tri->p0->x += tri->p0->x + xoffset;
-	tri->p1->x += tri->p1->x + xoffset;
-	tri->p2->x += tri->p2->x + xoffset;
+	tri->p0.x += tri->p0.x + xoffset;
+	tri->p1.x += tri->p1.x + xoffset;
+	tri->p2.x += tri->p2.x + xoffset;
 }
 
 void	scale(trigon *tri, int fact)
 {
-	tri->p0->x = (int )(tri->p0->x * fact);
-	tri->p0->y = (int )(tri->p0->y * fact);
-	tri->p1->x = (int )(tri->p1->x * fact);
-	tri->p1->y = (int )(tri->p1->y * fact);
-	tri->p2->x = (int )(tri->p2->x * fact);
-	tri->p2->y = (int )(tri->p2->y * fact);
+	tri->p0.x = (int )(tri->p0.x * fact);
+	tri->p0.y = (int )(tri->p0.y * fact);
+	tri->p1.x = (int )(tri->p1.x * fact);
+	tri->p1.y = (int )(tri->p1.y * fact);
+	tri->p2.x = (int )(tri->p2.x * fact);
+	tri->p2.y = (int )(tri->p2.y * fact);
 }
 
-// HIER WEITERMACHEN:	1. AUS LINE UND ROW OPTIMALE SKALIERUNG BERECHNEN.
-//						2. AUS DEM HOECHSTEN UND TIEFSTEN Y DIE TRIMMUNG AUF DIE MAXIMALEN LINES/ROWS SKALIEREN.
-//						3. DEFAULT FUNKTION SCHREIBEN, UM AUF DER LEERTASTE DEN AUSGANGSWERT WIEDER HESTELLEN ZU KOENNEN.
-//						4. HANDLER FUER HEXADECIMALS SCHREIBEN
-//						5. MAKEFILES/ORDENERSTRUKTUR/ A.OUT, WAS INPUT DATEIEN ALS INPUT HANDELN KANN
-//						6. VALGRIND INSTALLIEREN UND DEBUGGEN
-// void	set_default(image *im)
-// {
-// 	int	vert_offset;
-// 	int	lines;
-// 	int	rows;
-// 	trigon *temp;
-
-// 	temp = im->stat;
-// 	while (temp)
-// 	{
-
-// 		temp = temp->next;
-// 	}
-// }
-
-// transformas all objects in an image to the current angle
-// void	trans_op(image *im)
-void	trans_op(trigon *stat, trigon **disp, int angle[3], image *im)
+void	set_default(image *im)
 {
-	mtx		*rotmtx;
-	trigon	*temp;
-	trigon	*out1;
-	point	p[3];
+	float	vert_hight;
+	float	vert_low;
+	float	temp1;
+	trigon *temp;
 
-	rotmtx = create_rotmtx(angle[0], angle[1], angle[2]);
-	out1 = NULL;
-	temp = stat;
+	vert_hight = 0;
+	vert_low = 0;
+	temp = im->stat;
 	while (temp)
 	{
-		out1 = new_trigon(p[0], p[1], p[2]);
-		mxt(*rotmtx, *temp, out1, 0);
-		translate(out1, im->offset);
-		scale(out1, im->win->size);
-		addtrigon(disp, out1);
+		if (temp->p2.y > vert_hight)
+			vert_hight = temp->p2.y;
+		if (temp->p2.y < vert_low)
+			vert_hight = temp->p2.y;
 		temp = temp->next;
+	}
+	temp1 = (im->lines + im->column) / 2;
+	adjst_hight(im->stat, (temp1 / (temp1 + (vert_hight + vert_low))));
+	im->win->size = (im->x / 2) / temp1;
+	im->angle[0] = 490;
+	im->angle[1] = 15;
+	im->angle[2] = 45;
+	im->offset = 0;
+}
+
+// transformas all objects in an image to the current angle
+void	trans_op(image *im)
+{
+	mtx		*rotmtx;
+	trigon	*temps;
+	trigon	tempd;
+	int		color;
+
+	color = setcolor(0, 255, 10, 10);
+	rotmtx = create_rotmtx(im->angle[0], im->angle[1], im->angle[2]);
+	temps = im->stat;
+	while (temps)
+	{
+		mxt(*rotmtx, *temps, &tempd, 0);
+		scale(&tempd, im->win->size);
+		translate(&tempd, im->offset);
+		line(tempd.p1, tempd.p2, color, im);
+		line(tempd.p2, tempd.p0, color, im);
+		temps = temps->next;
 	}
 	free (rotmtx);
 }

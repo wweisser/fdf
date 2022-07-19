@@ -6,42 +6,93 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 10:15:18 by wweisser          #+#    #+#             */
-/*   Updated: 2022/07/13 11:38:00 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/07/19 23:50:53 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "fdf.h"
 
-// reads a text into input and returns the number of lines
-int read_lines(char **input, int fd)
+void	**free_mem(void **input, int size)
 {
-	int	i;
-	char *line;
-
-	i = 0;
-	*input = get_next_line(fd);
-	while (*input != NULL)
+	while (size <= 0)
 	{
-		line = get_next_line(fd);
-		// printf(" input:%s \n", *input);
-		if (line == NULL)
-			break ;
-		*input = ft_strjoin(*input, line);
-		free (line);
-		i++;
+		free (input[size]);
+		size--;
 	}
-	return (i);
+	free (input);
+	input = NULL;
+	return (input);
 }
 
+
+
+int	decodehex(char c, char key[17])
+{
+	int	i;
+
+	i = 0;
+	while (key[i] != '\0')
+	{
+		if (c == key[i])
+			return (i);
+		i++;
+	}
+	return (-1);
+}
+
+int	read_hexdec(const char *in)
+{
+	int		i;
+	int		numb;
+	int		factor;
+
+	if (in == NULL)
+		return (0);
+	numb = 0;
+	factor = 1;
+	i = ft_strlen(in) - 1;
+	while (in[i] != 'x' && i > 0)
+	{
+		numb = numb + (decodehex(in[i], "0123456789ABCDEF") * factor);
+		factor = factor * 16;
+		i--;
+	}
+	return (numb);
+}
+
+
+float	read_number(char *numb)
+{
+	float	out;
+	// double	postcomma;
+	char	**numbcompontens;
+
+	if (numb == NULL)
+		return (0);
+	numbcompontens = ft_split(numb, ',');
+	// out = atoi(numb);
+	out = atoi(numbcompontens[0]);
+	// postcomma = read_hexdec(numbcompontens[1]);
+	// while (postcomma > 1)
+	// 	postcomma = postcomma / 10;
+	// out = out + postcomma;
+	// if (postcomma != 0)
+	// 	free_mem ((void **)numbcompontens, 2);
+	// else
+		free_mem((void **)numbcompontens, 1);
+	return	(out);
+}
+
+
 // allocates memory for the topogrphical map.
-int **new_topmap(char **input, int **top_map, int lines)
+float	**new_topmap(char **input, float **top_map, int lines)
 {
 	int	i;
 	int	j;
 	int	numb_of_digets;
 
 	j = 0;
-	top_map = malloc(lines * sizeof(int *));
+	top_map = malloc(lines * sizeof(float *));
 	if (top_map ==  NULL)
 		return (NULL);
 	while (lines != 0 && j <= lines)
@@ -54,33 +105,21 @@ int **new_topmap(char **input, int **top_map, int lines)
 				numb_of_digets++;
 			i++;
 		}
-		top_map[j] = ft_calloc(numb_of_digets + 1, sizeof(int));
-		// INSERT PROTECTION
+		top_map[j] = ft_calloc(numb_of_digets + 1, sizeof(float));
 		top_map[j][numb_of_digets] = 2147483647;
 		j++;
 	}
 	return (top_map);
 }
 
-void	free_mem(void **input, int size)
-{
-	while (size <= 0)
-	{
-		free (input[size]);
-		size--;
-	}
-	free (input);
-	input = NULL;
-}
-
 //###################################################
-void	TOPMAPTESTER(int **top_map, int lines)
+void	TOPMAPTESTER(int **top_map)
 {
 	int	i;
 	int	j;
 
 	j = 0;
-	while (j < lines)
+	while (top_map[j] != NULL)
 	{
 		i = 0;
 		while (top_map[j][i] != 2147483647)
@@ -88,28 +127,29 @@ void	TOPMAPTESTER(int **top_map, int lines)
 			printf("%d ", top_map[j][i]);
 			i++;
 		}
-		j++;
 		printf("\n");
+		j++;
 	}
 }
 //####################################################
 
 // Puts fills the chars from proc_input to the top_map + convertsthem them to int
-int	load_topmap(int **top_map, char **proc_input, int lines)
+int	load_topmap(float **top_map, char **proc_input, int lines)
 {
 	int		i;
 	int		j;
 	char	**temp;
 
 	j = 0;
-	TOPMAPTESTER(top_map, lines);
+	// TOPMAPTESTER(top_map, lines);
 	while (j < lines)
 	{
 		temp = ft_split(proc_input[j], ' ');
 		i = 0;
 		while(top_map[j][i] != 2147483647)
 		{
-			top_map[j][i] = ft_atoi(temp[i]);
+
+			top_map[j][i] = read_number(temp[i]);
 			i++;
 		}
 		free_mem((void **)temp, i);
@@ -118,25 +158,139 @@ int	load_topmap(int **top_map, char **proc_input, int lines)
 	return (i);
 }
 
+// reads a text into input and returns the number of lines
+char	*read_lines(int fd)
+{
+	char	buffer[5101];
+	char	*temp;
+	char	*input;
+	int		read_chars;
+
+	read_chars = read(fd, buffer, 5100);
+	if (read_chars < 5100)
+		buffer[read_chars] = '\0';
+	input = malloc(5101 * sizeof(char));
+	if (input != NULL)
+		input = (char *)ft_memmove(input, buffer, 5101);
+	while (read_chars == 5100 && input != NULL)
+	{
+		temp = input;
+		read_chars = read(fd, buffer, 5100);
+		if (read_chars < 5100)
+			buffer[read_chars] = '\0';
+		input = ft_strjoin(temp, buffer);
+		free (temp);
+		printf("round %d\n", read_chars);
+	}
+	return (input);
+}
+
+int	**alloc_lines(int **topmap, char *in)
+{
+	int	i;
+	int	lines;
+
+	i = 0;
+	lines = 0;
+	topmap = NULL;
+	if (in == NULL)
+		return (0);
+	while (in[i] != '\0')
+	{
+		if (in[i] == '\n')
+			lines++;
+		i++;
+	}
+	topmap = (int **)malloc((lines + 1) * sizeof(int *));
+	if (*topmap == NULL)
+		return (NULL);
+	topmap[lines] = NULL;
+	printf("allocated lines : %d\n", lines);
+	return (topmap);
+}
+
+int	**alloc_dim(int **topmap, char *in, image *im)
+{
+	int	i;
+	int *temp;
+
+	i = 0;
+	im->lines = 0;
+	im->column = 0;
+	temp = NULL;
+	while (in[i] != '\0')
+	{
+		if (in[i] == ' ' && ((in[i + 1] > 47 && in[i + 1] < 58) || in[i + 1] == '-'))
+			im->column++;
+		if (in[i] == '\n')
+		{
+	printf("counter : %d lines : %d\n", im->column , im->lines);
+			temp = ft_calloc(im->column + 1, sizeof(int));
+			if (temp == NULL)
+				return (0);
+			topmap[im->lines] = temp;
+			topmap[im->lines][im->column] = 2147483647;
+			im->column = 0;
+			im->lines++;
+		}
+		i++;
+	}
+	return (topmap);
+}
+
+int	**fill_topmap(int **topmap, char *in)
+{
+	int		i;
+	int		j;
+	int		k;
+	char	**split_in;
+
+	j = 0;
+	k = 0;
+	split_in = ft_split(in, ' ');
+	while (topmap[j] != NULL && split_in != NULL)
+	{
+		i = 0;
+		while(topmap[j][i] != 2147483647)
+		{
+			topmap[j][i] = atoi(split_in[k]);
+			k++;
+			i++;
+		}
+		j++;
+	}
+	return (topmap);
+}
+
 void	new_grid(int fd, image *im)
 {
 	char	*input;
-	int		**top_map;
-	char	**proc_input;
-	int		dim[2];
+	int		**topmap;
+	// char	**proc_input;
 
-	dim[0] = 0;
-	dim[1] = 0;
 	input = NULL;
-	top_map = NULL;
-	proc_input = NULL;
+	topmap = NULL;
 
-	dim[0] = read_lines(&input, fd);
-	proc_input = ft_split(input, '\n');
-	top_map = new_topmap(proc_input, top_map, dim[0]);
-	dim[1] = load_topmap(top_map, proc_input, dim[0]);
-	TOPMAPTESTER(top_map, dim[0]);
-	built_grid(top_map, im, dim[0], dim[1]);
-	free_mem((void **)proc_input, dim[0]);
-	free_mem((void **)top_map, dim[0]);
+	input = read_lines(fd);
+	// printf("input : %s\n", input);
+
+	topmap = alloc_lines(topmap, input);
+
+
+	topmap = alloc_dim(topmap, input, im);
+	topmap = fill_topmap(topmap, input);
+	printf("lines %d columns %d :\n", im->lines, im->column);
+	TOPMAPTESTER(topmap);
+
+// 	input = read_lines(fd);
+// 	proc_input = ft_split(input, '\n');
+// 	top_map = new_topmap(proc_input, top_map, im->lines);
+// 	im->column = load_topmap(top_map, proc_input, im->lines);
+	// built_grid(top_map, im->lines, im->column, im);
+// 	free_mem((void **)proc_input, im->lines);
+
+	topmap = (int **)free_mem((void **)topmap, im->lines);
 }
+
+// 1. FILL-ALGORYTHMUS WEITER OPTIMIEREN
+// 2. TRIGONS AUF INTEGER UMSTELLEN, KALKULATION AUS DEN INTGERN HERAUS

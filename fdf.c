@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 15:38:02 by wendelin          #+#    #+#             */
-/*   Updated: 2022/07/17 22:43:04 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/07/19 23:47:59 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@ void	build_scene(image *im)
 {
 	color_shift(im);
 
-	trans_op(im->stat, &im->disp, im->angle, im);
-	draw_trigons(im->disp, im);
+	trans_op(im);
+	// draw_trigons(im->disp, im);
 	mlx_put_image_to_window(im->win->mlx, im->win->win, im->grid, 0, 0);
-	free_lst(&im->disp);
+	// free_lst(&im->disp);
 }
 
 int	mouse_hook(int key, int x, int y, image *im)
@@ -46,6 +46,7 @@ int	mouse_hook(int key, int x, int y, image *im)
 void	create_grid(image *im, int fd)
 {
 	new_grid(fd, im);
+	set_default(im);
 }
 
 
@@ -60,13 +61,15 @@ int	keydown(int key, image *im)
 	if (key == 2)
 		im->angle[1] = (im->angle[1] - 10) % 720;
 	if (key == 126)
-		adjst_hight(im->stat, 1);
+		adjst_hight(im->stat, 1.1);
 	if (key == 125)
-		adjst_hight(im->stat, -1);
+		adjst_hight(im->stat, 0.9);
 	if (key == 123)
 		im->offset--;
 	if (key == 124)
 		im->offset++;
+	if (key == 49)
+		set_default(im);
 	build_scene(im);
 	if (key == 53)
 		mlx_destroy_window(im->win->mlx, im->win->win);
@@ -103,8 +106,7 @@ int	main(void)
 {
 	int	fd;
 
-	fd = open("42.fdf", O_RDONLY);
-	printf("filedescriptor %d\n", fd);
+	fd = open("t1.fdf", O_RDONLY);
 	// system("leaks a.out");
 	fdf_main(fd);
 	return (0);
