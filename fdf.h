@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 13:33:09 by wendelin          #+#    #+#             */
-/*   Updated: 2022/07/19 21:03:44 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/07/20 16:17:47 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ typedef struct	s_image
 	int		bytes_per_line;
 	int		bits_per_pixel;
 	int		offset;
+	float	top_hight;
 	int		lines;
 	int		column;
 	void	*mlx;
@@ -93,6 +94,7 @@ void	addtrigon(trigon **head, trigon *new);
 void	new_sqare(float ctr[3], int l, image *im);
 void	a_p(point *p, float x, float y, float z);
 
+// adjust output
 void	rottrigon(trigon in, trigon *out, mtx rotmtx);
 void	mxp(mtx c, point in, point *out, int ortho);
 void	mxt(mtx c, trigon in, trigon *out, int ortho);
@@ -101,9 +103,10 @@ mtx		*create_othromtx(window *win);
 void	trans_op(image *im);
 void	translate(trigon *tri, int zoffset);
 void	scale(trigon *tri, int fact);
-void	adjst_hight(trigon *stat, float sign);
+void	adjst_top(trigon *temp, float top_hight);
 void	set_default(image *im);
 
+// visual implementaion
 void	draw_trigons(trigon *tri_lst, image *im);
 int		setcolor(unsigned char t, unsigned char r, unsigned char g, unsigned char b);
 void	line(point p1, point p2, int color, image *im);
@@ -111,6 +114,7 @@ int		create_line(int x1, int y1, int x2, int y2, image *im);
 int		render(int x, int y, int color, image *im);
 int		color_shift(image *im);
 
+// math.h
 void	cross_product(point *p1, point *p2, point *result);
 void	fact_vector(point *p1, float f);
 void	norm_vector(point *p1);
@@ -120,9 +124,11 @@ float	dot_product(float p1[3], float p2[3]);
 float	scalar_product(point *d1, point *d2);
 float	rnd(float in, int places);
 
+// input handle
 char	*read_lines(int fd);
 void	new_grid(int fd, image *im);
-void	built_grid(float **top_map, int lines, int rows, image *im);
+void	built_grid(int **top_map, int lines, int rows, image *im);
+void	build_square(int **tp, int i , int j, image *im);
 void	create_grid(image *im, int fd);
 
 void	free_lst(trigon **head);

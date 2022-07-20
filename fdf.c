@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 15:38:02 by wendelin          #+#    #+#             */
-/*   Updated: 2022/07/19 23:47:59 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/07/20 16:32:52 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,8 @@
 void	build_scene(image *im)
 {
 	color_shift(im);
-
 	trans_op(im);
-	// draw_trigons(im->disp, im);
 	mlx_put_image_to_window(im->win->mlx, im->win->win, im->grid, 0, 0);
-	// free_lst(&im->disp);
 }
 
 int	mouse_hook(int key, int x, int y, image *im)
@@ -60,10 +57,10 @@ int	keydown(int key, image *im)
 		im->angle[1] = (im->angle[1] + 10) % 720;
 	if (key == 2)
 		im->angle[1] = (im->angle[1] - 10) % 720;
-	if (key == 126)
-		adjst_hight(im->stat, 1.1);
-	if (key == 125)
-		adjst_hight(im->stat, 0.9);
+	if (key == 126 && im->top_hight < 10)
+		im->top_hight += 0.1;
+	if (key == 125 && im->top_hight > 0.1)
+		im->top_hight -= 0.1;;
 	if (key == 123)
 		im->offset--;
 	if (key == 124)
@@ -106,7 +103,7 @@ int	main(void)
 {
 	int	fd;
 
-	fd = open("t1.fdf", O_RDONLY);
+	fd = open("42.fdf", O_RDONLY);
 	// system("leaks a.out");
 	fdf_main(fd);
 	return (0);

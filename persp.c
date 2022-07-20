@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 09:32:35 by wweisser          #+#    #+#             */
-/*   Updated: 2022/07/19 15:05:49 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/07/20 16:37:04 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,33 +127,11 @@ void	rottrigon(trigon in, trigon *out, mtx rotmtx)
 	norm_vector(&out->n);
 }
 
-void	adjst_hight(trigon *stat, float sign)
+void	adjst_top(trigon *temp, float top_hight)
 {
-	trigon	*temp;
-
-	temp = stat;
-	if (sign < 1)
-		while(temp)
-		{
-			if (temp->p0.y > 0.1 || temp->p0.y < -0.1)
-				temp->p0.y = temp->p0.y * sign;
-			if (temp->p1.y > 0.1 || temp->p1.y < -0.1)
-				temp->p1.y = temp->p1.y * sign;
-			if (temp->p2.y > 0.1 || temp->p2.y < -0.1)
-				temp->p2.y = temp->p2.y * sign;
-			temp = temp->next;
-		}
-	if (sign > 1)
-		while(temp)
-		{
-			if (temp->p0.y < 10 && temp->p0.y > -10)
-				temp->p0.y = temp->p0.y * sign;
-			if (temp->p1.y < 10 && temp->p1.y > -10)
-				temp->p1.y = temp->p1.y * sign;
-			if (temp->p2.y < 10 && temp->p2.y > -10)
-				temp->p2.y = temp->p2.y * sign;
-			temp = temp->next;
-		}
+			temp->p0.y = temp->p0.y * top_hight;
+			temp->p1.y = temp->p1.y * top_hight;
+			temp->p2.y = temp->p2.y * top_hight;
 }
 
 void	translate(trigon *tri, int xoffset)
@@ -192,7 +170,7 @@ void	set_default(image *im)
 		temp = temp->next;
 	}
 	temp1 = (im->lines + im->column) / 2;
-	adjst_hight(im->stat, (temp1 / (temp1 + (vert_hight + vert_low))));
+	im->top_hight = temp1 / (temp1 + (vert_hight + vert_low));
 	im->win->size = (im->x / 2) / temp1;
 	im->angle[0] = 490;
 	im->angle[1] = 15;
@@ -214,11 +192,18 @@ void	trans_op(image *im)
 	while (temps)
 	{
 		mxt(*rotmtx, *temps, &tempd, 0);
+		adjst_top(&tempd, im->top_hight);
 		scale(&tempd, im->win->size);
 		translate(&tempd, im->offset);
+		// printf("p0 x: %f, p1 y: %f\n", tempd.p0.x, tempd.p0.y);
+		// printf("p1 x: %f, p1 y: %f\n", tempd.p1.x, tempd.p1.y);
+		// printf("p2 x: %f, p1 y: %f\n", tempd.p2.x, tempd.p2.y);
 		line(tempd.p1, tempd.p2, color, im);
 		line(tempd.p2, tempd.p0, color, im);
 		temps = temps->next;
 	}
 	free (rotmtx);
 }
+
+// HIER WEITERMACHEN, DIE KALUCULATION AUF INTEGER UND FLOATS UMSTELLEN, ADJUST_TOP EINBINDEN
+// COLORS EINBINDEN

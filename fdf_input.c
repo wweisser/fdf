@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 10:15:18 by wweisser          #+#    #+#             */
-/*   Updated: 2022/07/19 23:50:53 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/07/20 15:01:46 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,7 +180,6 @@ char	*read_lines(int fd)
 			buffer[read_chars] = '\0';
 		input = ft_strjoin(temp, buffer);
 		free (temp);
-		printf("round %d\n", read_chars);
 	}
 	return (input);
 }
@@ -205,7 +204,6 @@ int	**alloc_lines(int **topmap, char *in)
 	if (*topmap == NULL)
 		return (NULL);
 	topmap[lines] = NULL;
-	printf("allocated lines : %d\n", lines);
 	return (topmap);
 }
 
@@ -224,13 +222,13 @@ int	**alloc_dim(int **topmap, char *in, image *im)
 			im->column++;
 		if (in[i] == '\n')
 		{
-	printf("counter : %d lines : %d\n", im->column , im->lines);
 			temp = ft_calloc(im->column + 1, sizeof(int));
 			if (temp == NULL)
 				return (0);
 			topmap[im->lines] = temp;
 			topmap[im->lines][im->column] = 2147483647;
-			im->column = 0;
+			if (in[i + 1] != '\0')
+				im->column = 0;
 			im->lines++;
 		}
 		i++;
@@ -238,26 +236,32 @@ int	**alloc_dim(int **topmap, char *in, image *im)
 	return (topmap);
 }
 
-int	**fill_topmap(int **topmap, char *in)
+int	**fill_topmap(int **topmap, char *in, image *im)
 {
-	int		i;
-	int		j;
-	int		k;
-	char	**split_in;
+	printf("presplit\n");
+	int		i[4];
 
-	j = 0;
-	k = 0;
-	split_in = ft_split(in, ' ');
-	while (topmap[j] != NULL && split_in != NULL)
+	i[0] = 0;
+	i[1] = 0;
+	i[2] = 0;
+	printf("postsplit\n");
+	while (in[i[0]] != '\0')
 	{
-		i = 0;
-		while(topmap[j][i] != 2147483647)
+		if (in[i[0]] == ' ' && ((in[i[0] + 1] > 47 && in[i[0] + 1] < 58) || in[i[0] + 1] == '-'))
 		{
-			topmap[j][i] = atoi(split_in[k]);
-			k++;
-			i++;
+			topmap[i[2]][i[1]] = atoi(in + (i[0] + 1));
+			if (i[1] > 0 && i[2] > 0 && i[1] < i[3])
+				build_square(topmap, i[1], i[2], im);
+				// printf("0");
+			i[1]++;
 		}
-		j++;
+		if (in[i[0]] == '\n')
+		{
+			i[3] = i[1];
+			i[1] = 0;
+			i[2]++;
+		}
+		i[0]++;
 	}
 	return (topmap);
 }
@@ -273,23 +277,19 @@ void	new_grid(int fd, image *im)
 
 	input = read_lines(fd);
 	// printf("input : %s\n", input);
-
 	topmap = alloc_lines(topmap, input);
-
-
+	printf("lines allocated\n");
 	topmap = alloc_dim(topmap, input, im);
-	topmap = fill_topmap(topmap, input);
+	printf("dimension allocated\n");
+	topmap = fill_topmap(topmap, input, im);
 	printf("lines %d columns %d :\n", im->lines, im->column);
 	TOPMAPTESTER(topmap);
 
-// 	input = read_lines(fd);
-// 	proc_input = ft_split(input, '\n');
-// 	top_map = new_topmap(proc_input, top_map, im->lines);
-// 	im->column = load_topmap(top_map, proc_input, im->lines);
-	// built_grid(top_map, im->lines, im->column, im);
-// 	free_mem((void **)proc_input, im->lines);
+
+	// built_grid(topmap, im->lines, im->column, im);
 
 	topmap = (int **)free_mem((void **)topmap, im->lines);
+	free (input);
 }
 
 // 1. FILL-ALGORYTHMUS WEITER OPTIMIEREN

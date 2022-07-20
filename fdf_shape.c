@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 15:23:40 by wendelin          #+#    #+#             */
-/*   Updated: 2022/07/19 14:37:05 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/07/20 14:37:05 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,21 +85,26 @@ trigon	*new_trigon(point p0, point p1, point p2)
 // ADDTRIGON UND NEW TRIGON MÜSSEN GETRENNT WERDEN
 void	addtrigon(trigon **head, trigon *new)
 {
-	trigon	**temp;
+	// trigon	**temp;
 
 	if (new == NULL)
 		return ;
 	if (*head == NULL)
+	{
+		new->next = NULL;
 		*head = new;
+	}
 	else
 	{
-		temp = head;
-		while (*temp)
-		{
-			temp = &(*temp)->next;
-		}
-		new->next = *temp;
-		*temp = new;
+		new->next = *head;
+		*head = new;
+		// temp = head;
+		// while (*temp)
+		// {
+		// 	temp = &(*temp)->next;
+		// }
+		// new->next = *temp;
+		// *temp = new;
 	}
 }
 
@@ -132,26 +137,41 @@ void	a_p(point *p, float x, float y, float z)
 	p->z = z;
 }
 
-void	built_grid(float **tp, int ln, int rw, image *im)
+void	build_square(int **tp, int i , int j, image *im)
+{
+	point	np[3];
+	trigon	*nt;
+
+	a_p(&np[0], i - 1 - (im->column / 2), tp[j][i - 1], j - (im->lines / 2));
+	a_p(&np[1], i - (im->column / 2), tp[j - 1][i], j - 1 - (im->lines / 2));
+	a_p(&np[2], i - (im->column / 2), tp[j][i], j - (im->lines / 2));
+	nt = new_trigon(np[0], np[1], np[2]);
+	addtrigon(&im->stat, nt);
+	a_p(&np[2], i - 1 - (im->column / 2), tp[j - 1][i - 1], j - 1 - (im->lines / 2));
+	nt = new_trigon(np[0], np[1], np[2]);
+	addtrigon(&im->stat, nt);
+}
+
+void	built_grid(int **tp, int ln, int cl, image *im)
 {
 	int	i;
 	int	j;
 	point	np[3];
 	trigon	*nt;
 	j = 1;
-	while (j <= ln)
+	while (tp[j] != NULL)
 	{
 		i = 1;
 		while (tp[j][i] != 2147483647)
 		{
 			if ((tp[j - 1][i]) == 2147483647)
 				break ;
-			a_p(&np[0], i - 1 - (rw / 2), tp[j][i - 1], j - (ln / 2));
-			a_p(&np[1], i - (rw / 2), tp[j - 1][i], j - 1 - (ln / 2));
-			a_p(&np[2], i - (rw / 2), tp[j][i], j - (ln / 2));
+			a_p(&np[0], i - 1 - (cl / 2), tp[j][i - 1], j - (ln / 2));
+			a_p(&np[1], i - (cl / 2), tp[j - 1][i], j - 1 - (ln / 2));
+			a_p(&np[2], i - (cl / 2), tp[j][i], j - (ln / 2));
 			nt = new_trigon(np[0], np[1], np[2]);
 			addtrigon(&im->stat, nt);
-			a_p(&np[2], i - 1 - (rw / 2), tp[j - 1][i - 1], j - 1 - (ln / 2));
+			a_p(&np[2], i - 1 - (cl / 2), tp[j - 1][i - 1], j - 1 - (ln / 2));
 			nt = new_trigon(np[0], np[1], np[2]);
 			addtrigon(&im->stat, nt);
 			i++;

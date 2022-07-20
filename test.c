@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 13:21:35 by wendelin          #+#    #+#             */
-/*   Updated: 2022/07/18 17:39:01 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/07/20 15:10:45 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,9 +155,11 @@ int	read_hexdec(const char *in)
 
 int main(void)
 {
-	double test;
-	test = read_hexdec("0xFF0000");
+	double t = 3;
+	int	i = 5;
+	int	j = 3;
 	// test = rnd(test, 0);
-	printf(" %f ", test);
+	t = i / j;
+	printf(" %f ", t);
 	return (0);
 }
