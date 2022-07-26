@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 09:32:35 by wweisser          #+#    #+#             */
-/*   Updated: 2022/07/20 16:37:04 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/07/26 20:07:10 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ mtx *create_rotmtx(float y, float ß, float a)
 // If it is an Orthogonal matrix => ortho=1, which means a 4x4 matrix, w is
 // the fourth value which divides the other tree results
 //(see ORthogonal matrix)
-void	mxp(mtx c, point in, point *out, int ortho)
+void	mxp(mtx c, point in, point *out)
 {
 	float	w;
 // ergebnisse der orthomatrix uberprufen, egbnisse auf den falschen slots
@@ -94,36 +94,16 @@ void	mxp(mtx c, point in, point *out, int ortho)
 	out->x = (in.x * c.m[0][0] + in.y * c.m[0][1] + in.z * c.m[0][2] + c.m[0][3]);
 	out->y = (in.x * c.m[1][0] + in.y * c.m[1][1] + in.z * c.m[1][2] + c.m[1][3]);
 	out->z = (in.x * c.m[2][0] + in.y * c.m[2][1] + in.z * c.m[2][2] + c.m[2][3]);
-	w = rnd(in.z, 5);
-	if (ortho == 1 && w > 0.00)
-	{
-		out->x = out->x / w;
-		out->y = out->y / w;
-		out->z = out->z / w;
-	}
-}
-
-// matrix mulitplies a triangle. If orthogoinal matrix => ortho=1
-void	mxt(mtx c, trigon in, trigon *out, int ortho)
-{
-	mxp(c, in.p0, &out->p0, ortho);
-	mxp(c, in.p1, &out->p1, ortho);
-	mxp(c, in.p2, &out->p2, ortho);
-	if (ortho == 0)
-	{
-		mxp(c, in.n, &out->n, 0);
-		norm_vector(&out->n);
-	}
 }
 
 // rotates all vertices of a trigon together with its normal direction vector
 // also norms the rotated direction vector
 void	rottrigon(trigon in, trigon *out, mtx rotmtx)
 {
-	mxp(rotmtx, in.p0, &out->p0, 0);
-	mxp(rotmtx, in.p1, &out->p1, 0);
-	mxp(rotmtx, in.p2, &out->p2, 0);
-	mxp(rotmtx, in.n, &out->n, 0);
+	mxp(rotmtx, in.p0, &out->p0);
+	mxp(rotmtx, in.p1, &out->p1);
+	mxp(rotmtx, in.p2, &out->p2);
+	mxp(rotmtx, in.n, &out->n);
 	norm_vector(&out->n);
 }
 
@@ -132,6 +112,18 @@ void	adjst_top(trigon *temp, float top_hight)
 			temp->p0.y = temp->p0.y * top_hight;
 			temp->p1.y = temp->p1.y * top_hight;
 			temp->p2.y = temp->p2.y * top_hight;
+}
+
+// matrix mulitplies a triangle. If orthogoinal matrix => ortho=1
+void	mxt(mtx c, trigon in, trigon *out, float top_hight)
+{
+	adjst_top(&in, top_hight);
+	mxp(c, in.p0, &out->p0);
+	mxp(c, in.p1, &out->p1);
+	mxp(c, in.p2, &out->p2);
+	out->p0.color = in.p0.color;
+	out->p1.color = in.p1.color;
+	out->p2.color = in.p2.color;
 }
 
 void	translate(trigon *tri, int xoffset)
@@ -184,22 +176,22 @@ void	trans_op(image *im)
 	mtx		*rotmtx;
 	trigon	*temps;
 	trigon	tempd;
-	int		color;
 
-	color = setcolor(0, 255, 10, 10);
+
 	rotmtx = create_rotmtx(im->angle[0], im->angle[1], im->angle[2]);
 	temps = im->stat;
 	while (temps)
 	{
-		mxt(*rotmtx, *temps, &tempd, 0);
-		adjst_top(&tempd, im->top_hight);
+		mxt(*rotmtx, *temps, &tempd, im->top_hight);
+		// printf("p0 x: %d, t0 y: %d\n", tempd.p0.color, temps->p0.color);
+		// printf("p1 x: %d, t1 y: %d\n", tempd.p1.color, temps->p1.color);
+		// printf("p2 x: %d, t2 y: %d\n", tempd.p2.color, temps->p2.color);
 		scale(&tempd, im->win->size);
 		translate(&tempd, im->offset);
-		// printf("p0 x: %f, p1 y: %f\n", tempd.p0.x, tempd.p0.y);
-		// printf("p1 x: %f, p1 y: %f\n", tempd.p1.x, tempd.p1.y);
-		// printf("p2 x: %f, p1 y: %f\n", tempd.p2.x, tempd.p2.y);
-		line(tempd.p1, tempd.p2, color, im);
-		line(tempd.p2, tempd.p0, color, im);
+
+
+		line(tempd.p1, tempd.p2, im);
+		line(tempd.p2, tempd.p0, im);
 		temps = temps->next;
 	}
 	free (rotmtx);

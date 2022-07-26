@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 15:00:31 by wendelin          #+#    #+#             */
-/*   Updated: 2022/07/17 22:50:41 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/07/26 19:45:38 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,9 @@ int	color_shift(image *im)
 }
 
 
-void	line(point p1, point p2, int color, image *im)
+void	line(point p1, point p2, image *im)
 {
 	point	np;
-
 	if ((p1.x == p2.x) && (p1.y == p2.y))
 			return ;
 	else if ((p1.x == p2.x + 1 || p1.x == p2.x - 1) && (p1.y == p2.y + 1 || p1.y == p2.y - 1))
@@ -71,11 +70,11 @@ void	line(point p1, point p2, int color, image *im)
 		return ;
 	else if ((p1.x == p2.x) && (p1.y == p2.y + 1 || p1.y == p2.y - 1))
 		return ;
-	a_p(&np, round( p1.x + ((p2.x - p1.x) / 2)), round(p1.y + ((p2.y - p1.y) / 2)), 0);
-	line(p1, np, color, im);
-	line(p2, np, color, im);
+	np = new_point(round( p1.x + ((p2.x - p1.x) / 2)), round(p1.y + ((p2.y - p1.y) / 2)), 0, (p1.color + p2.color) / 2);
+	line(p1, np, im);
+	line(p2, np, im);
 	if ((np.x < im->x) && (np.y < im->y) &&
 		(np.x > -im->x) && (np.y > -im->y))
-		render((int )(np.x + im->x), (int )(np.y + im->y), color, im);
+		render((int )(np.x + im->x), (int )(np.y + im->y), (p1.color + p2.color) / 2, im);
 	return ;
 }

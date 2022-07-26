@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 13:33:09 by wendelin          #+#    #+#             */
-/*   Updated: 2022/07/20 16:17:47 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/07/26 19:52:15 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,12 +92,12 @@ mtx		*new_mtx(void);
 trigon	*new_trigon(point p0, point p1, point p2);
 void	addtrigon(trigon **head, trigon *new);
 void	new_sqare(float ctr[3], int l, image *im);
-void	a_p(point *p, float x, float y, float z);
+point	a_p(float x, float y, float z, int color);
 
 // adjust output
 void	rottrigon(trigon in, trigon *out, mtx rotmtx);
-void	mxp(mtx c, point in, point *out, int ortho);
-void	mxt(mtx c, trigon in, trigon *out, int ortho);
+void	mxp(mtx c, point in, point *out);
+void	mxt(mtx c, trigon in, trigon *out, float top_hight);
 mtx		*create_rotmtx(float y, float ß, float a);
 mtx		*create_othromtx(window *win);
 void	trans_op(image *im);
@@ -109,7 +109,7 @@ void	set_default(image *im);
 // visual implementaion
 void	draw_trigons(trigon *tri_lst, image *im);
 int		setcolor(unsigned char t, unsigned char r, unsigned char g, unsigned char b);
-void	line(point p1, point p2, int color, image *im);
+void	line(point p1, point p2, image *im);
 int		create_line(int x1, int y1, int x2, int y2, image *im);
 int		render(int x, int y, int color, image *im);
 int		color_shift(image *im);
@@ -127,8 +127,8 @@ float	rnd(float in, int places);
 // input handle
 char	*read_lines(int fd);
 void	new_grid(int fd, image *im);
-void	built_grid(int **top_map, int lines, int rows, image *im);
-void	build_square(int **tp, int i , int j, image *im);
+void	built_grid(double **top_map, int lines, int rows, image *im);
+void	build_square(double **tp, int i[4], image *im);
 void	create_grid(image *im, int fd);
 
 void	free_lst(trigon **head);

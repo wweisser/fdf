@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 13:21:35 by wendelin          #+#    #+#             */
-/*   Updated: 2022/07/20 15:10:45 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/07/26 22:34:48 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,85 +14,8 @@
 # include <stdlib.h>
 # include <stdio.h>
 # include <math.h>
-typedef struct s_point
-{
-	double	x;
-	double	y;
-	double	z;
-}			point;
 
-point	*new_point(double x, double y, double z)
-{
-	point	*p;
 
-	p = NULL;
-	p = (point *)malloc(sizeof(point));
-	if (p == NULL)
-		return (NULL);
-	p->x = x;
-	p->y = y;
-	p->z = z;
-	return (p);
-}
-
-// returns the sum of a vector
-double	sum_vector(point p1)
-{
-	double  sum;
-	sum = sqrt((p1.x * p1.x)+ (p1.y * p1.y) + (p1.z * p1.z));
-	return (sum);
-}
-
-// multiplies p1 times f
-void	fact_vector(point *p1, double f)
-{
-		p1->x = p1->x * f;
-		p1->y = p1->y * f;
-		p1->z = p1->z * f;
-}
-
-// normates a directionvector
-void	norm_vector(point *p1)
-{
-	double	temp[3];
-	double	fact;
-
-	fact = 0.0;
-	fact = 1 / sum_vector(*p1);
-	printf("fact %f\n", fact);
-	fact_vector(p1, fact);
-}
-
-// calculates p1xp2 an puts it to result
-void	cross_product(point p1, point p2, point *result)
-{
-	result->x = round(p1.y * p2.z - p1.z * p2.y);
-	result->y = round(p1.z * p2.x - p1.x * p2.z);
-	result->z = round(p1.x * p2.y - p1.y * p2.x);
-}
-
-double	rnd(double in, int places)
-{
-	int		i;
-	int		j;
-	double	temp;
-
-	i = 1;
-	while (places > 0)
-	{
-		i = i * 10;
-		places--;
-	}
-	temp = (in * i);
-	j = temp;
-	if (in > 0 && (temp - j) >= 0.5)
-		temp++;
-	if (in < 0 && (temp + j) <= -0.5)
-		temp--;
-	temp = (int )temp;
-	in = temp / i;
-	return (in);
-}
 
 int	ft_strlen(const char *c)
 {
@@ -104,62 +27,71 @@ int	ft_strlen(const char *c)
 	return (i);
 }
 
-int	decodehex(char c, char key[17])
+int	decodehex(char c)
 {
 	int	i;
 
 	i = 0;
-	while (key[i] != '\0')
+	if (c >= 48 && c <= 57)
+		return (c - 48);
+	else
 	{
-		if (c == key[i])
-			return (i);
-		i++;
+		while (i <= 7)
+		{
+			if (c == i + 65 || c == i + 97)
+				return (i + 10);
+			i++;
+		}
 	}
-	return (-1);
+	return (0);
 }
 
-int	read_hexdec(const char *in)
+double	read_hexdec(const char *in)
 {
 	int		i;
-	int		numb;
+	double		numb;
 	int		factor;
 
 	if (in == NULL)
 		return (0);
 	numb = 0;
+	i = 0;
 	factor = 1;
-	i = ft_strlen(in) - 1;
+	while (in[i] != ' ' && in[i] != '\n' && in[i] != '\0')
+		i++;
 	while (in[i] != 'x' && i > 0)
 	{
-		numb = numb + (decodehex(in[i], "0123456789ABCDEF") * factor);
-		factor = factor * 16;
 		i--;
+		numb = numb + (decodehex(in[i]) * factor);
+		factor = factor * 16;
 	}
+	while (numb > 1)
+		numb = numb / 10;
 	return (numb);
 }
 
-// double	readnumber(char *numb)
-// {
-// 	double	out;
-// 	double	postcomma;
-// 	char	**numbcompontens;
+float	read_number(char *numb)
+{
+	double	postcomma;
 
-// 	numbcompontens = ft_split(numb, ',');
-// 	out = atoi(numbcompontens[0]);
-// 	postcomma = read_hexdec(numbcompontens[0]);
-// 	while (postcomma > 1)
-// 		postcomma = postcomma / 10;
-// 	out = out + postcomma;
-// 	return	(out);
-// }
+	if (numb == NULL)
+		return (0);
+	postcomma = read_hexdec(numb);
+	while (postcomma > 1)
+		postcomma = postcomma / 10;
+	return	(postcomma);
+}
+
 
 int main(void)
 {
 	double t = 3;
-	int	i = 5;
 	int	j = 3;
+	char test = 'C';
+	printf("test %d \n", decodehex(test));
 	// test = rnd(test, 0);
-	t = i / j;
+	t = read_number("20,0xFF0000 ");
+	t = t - (int )t;
 	printf(" %f ", t);
 	return (0);
 }
