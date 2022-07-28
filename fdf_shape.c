@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 15:23:40 by wendelin          #+#    #+#             */
-/*   Updated: 2022/07/26 20:37:04 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/07/27 15:13:59 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,12 +69,15 @@ void	build_square(double **tp, int i[4], image *im)
 	point	np[3];
 	trigon	*nt;
 	int	color;
-	color = setcolor(0, 255, 255, 255);
+	color = setcolor(0, 255, tp[i[2]][i[1] - 1] * (float )(255 / im->top_hight), 100);
 	np[0] = new_point(i[1] - 1 - (im->column / 2), tp[i[2]][i[1] - 1], i[2] - (im->lines / 2), color);
+	color = setcolor(0, 255, tp[i[2] - 1][i[1]] * (float )(255 / im->top_hight), 100);
 	np[1] = new_point(i[1] - (im->column / 2), tp[i[2] - 1][i[1]], i[2] - 1 - (im->lines / 2), color);
+	color = setcolor(0, 255, tp[i[2]][i[1]] * (float )(255 / im->top_hight), 100);
 	np[2] = new_point(i[1] - (im->column / 2), tp[i[2]][i[1]], i[2] - (im->lines / 2), color);
 	nt = new_trigon(np[0], np[1], np[2]);
 	addtrigon(&im->stat, nt);
+	color = setcolor(0, 255, tp[i[2] - 1][i[1] - 1] * (float )(255 / im->top_hight), 100);
 	np[2] = new_point(i[1] - 1 - (im->column / 2), tp[i[2] - 1][i[1] - 1], i[2] - 1 - (im->lines / 2), color);
 	nt = new_trigon(np[0], np[1], np[2]);
 	addtrigon(&im->stat, nt);

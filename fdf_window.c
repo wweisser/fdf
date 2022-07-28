@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 10:51:16 by wendelin          #+#    #+#             */
-/*   Updated: 2022/07/18 21:06:35 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/07/28 16:21:58 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,8 @@ image	*new_image(window *win)
 	im->bits_per_pixel = 32;
 	im->bytes_per_line = 4;
 	im->endian = 1;
-	im->offset = 0;
+	im->offsetx = 0;
+	im->offsetx = 0;
 	im->x = win->x / 2;
 	im->y = win->y / 2;
 	im->grid = NULL;

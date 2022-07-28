@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 09:32:35 by wweisser          #+#    #+#             */
-/*   Updated: 2022/07/26 20:07:10 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/07/28 16:33:15 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,28 +35,6 @@ mtx	*new_mtx(void)
 	}
 	return (emptyMtx);
 }
-
-//creates an Orthonormal matrix. Values for znear are set to 0.1
-// mtx	*create_othromtx(window *win)
-// {
-// 	mtx		*orthomtx;
-// 	double	zfar;
-// 	double	znear;
-
-// 	zfar = 100;
-// 	znear = 0.1;
-// 	orthomtx = NULL;
-// 	orthomtx = new_mtx();
-// 	if (orthomtx == NULL)
-// 		return (NULL);
-// 	orthomtx->m[0][0] = 1/((tan((win->open_angle * (M_PI / 360)) / 2)) * (win->x / win->y));
-// 	orthomtx->m[1][1] = 1/(tan((win->open_angle * (M_PI / 360)) / 2));
-// 	orthomtx->m[2][2] = zfar / (zfar - znear);
-// 	orthomtx->m[2][3] = -(2 * zfar * znear) / (zfar - znear);
-// 	orthomtx->m[3][2] = 1;
-// 	printf(" 0/0: %f | 1/1: %f | 2/2: %f | 3/2: %f  \n", orthomtx->m[0][0], orthomtx->m[1][1], orthomtx->m[2][2], orthomtx->m[3][2]);
-// 	return (orthomtx);
-// }
 
 //creates a rotation matrix with the corresponding angles
 mtx *create_rotmtx(float y, float ß, float a)
@@ -126,11 +104,14 @@ void	mxt(mtx c, trigon in, trigon *out, float top_hight)
 	out->p2.color = in.p2.color;
 }
 
-void	translate(trigon *tri, int xoffset)
+void	translate(trigon *tri, int offsetx, int offsety)
 {
-	tri->p0.x += tri->p0.x + xoffset;
-	tri->p1.x += tri->p1.x + xoffset;
-	tri->p2.x += tri->p2.x + xoffset;
+	tri->p0.x += tri->p0.x + offsetx;
+	tri->p1.x += tri->p1.x + offsetx;
+	tri->p2.x += tri->p2.x + offsetx;
+	tri->p0.y += tri->p0.y + offsety;
+	tri->p1.y += tri->p1.y + offsety;
+	tri->p2.y += tri->p2.y + offsety;
 }
 
 void	scale(trigon *tri, int fact)
@@ -163,11 +144,12 @@ void	set_default(image *im)
 	}
 	temp1 = (im->lines + im->column) / 2;
 	im->top_hight = temp1 / (temp1 + (vert_hight + vert_low));
-	im->win->size = (im->x / 2) / temp1;
+	im->win->size = (im->x) / temp1;
 	im->angle[0] = 490;
 	im->angle[1] = 15;
 	im->angle[2] = 45;
-	im->offset = 0;
+	im->offsetx = 0;
+	im->offsety = 0;
 }
 
 // transformas all objects in an image to the current angle
@@ -183,19 +165,14 @@ void	trans_op(image *im)
 	while (temps)
 	{
 		mxt(*rotmtx, *temps, &tempd, im->top_hight);
-		// printf("p0 x: %d, t0 y: %d\n", tempd.p0.color, temps->p0.color);
-		// printf("p1 x: %d, t1 y: %d\n", tempd.p1.color, temps->p1.color);
-		// printf("p2 x: %d, t2 y: %d\n", tempd.p2.color, temps->p2.color);
 		scale(&tempd, im->win->size);
-		translate(&tempd, im->offset);
-
-
-		line(tempd.p1, tempd.p2, im);
-		line(tempd.p2, tempd.p0, im);
+		translate(&tempd, im->offsetx, im->offsety);
+		if (tempd.p1.x < 500 && tempd.p1.x > -500 && tempd.p1.y < 500 && tempd.p1.y > -500)
+		{
+			line(tempd.p1, tempd.p2, im);
+			line(tempd.p2, tempd.p0, im);
+		}
 		temps = temps->next;
 	}
 	free (rotmtx);
 }
-
-// HIER WEITERMACHEN, DIE KALUCULATION AUF INTEGER UND FLOATS UMSTELLEN, ADJUST_TOP EINBINDEN
-// COLORS EINBINDEN

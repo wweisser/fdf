@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 13:33:09 by wendelin          #+#    #+#             */
-/*   Updated: 2022/07/26 19:52:15 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/07/28 16:21:06 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,8 @@ typedef struct s_window
 	void	*win;
 	int		x;
 	int		y;
-	float		size;
-	// double	open_angle;
+	float	size;
+	int		mouse_state[3];
 }			window;
 
 // contains the state of an image of size x and y
@@ -75,7 +75,8 @@ typedef struct	s_image
 	int		endian;
 	int		bytes_per_line;
 	int		bits_per_pixel;
-	int		offset;
+	int		offsetx;
+	int		offsety;
 	float	top_hight;
 	int		lines;
 	int		column;
@@ -101,7 +102,7 @@ void	mxt(mtx c, trigon in, trigon *out, float top_hight);
 mtx		*create_rotmtx(float y, float ß, float a);
 mtx		*create_othromtx(window *win);
 void	trans_op(image *im);
-void	translate(trigon *tri, int zoffset);
+void	translate(trigon *tri, int offsetx, int offsety);
 void	scale(trigon *tri, int fact);
 void	adjst_top(trigon *temp, float top_hight);
 void	set_default(image *im);

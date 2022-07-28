@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 10:15:18 by wweisser          #+#    #+#             */
-/*   Updated: 2022/07/26 22:36:23 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/07/28 16:36:29 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,24 +97,24 @@ double	**new_topmap(char **input, double **top_map, int lines)
 }
 
 //###################################################
-void	TOPMAPTESTER(double **top_map)
-{
-	int	i;
-	int	j;
+// void	TOPMAPTESTER(double **top_map)
+// {
+// 	int	i;
+// 	int	j;
 
-	j = 0;
-	while (top_map[j] != NULL)
-	{
-		i = 0;
-		while (top_map[j][i] != 2147483647)
-		{
-			printf("%f ", top_map[j][i]);
-			i++;
-		}
-		printf("\n");
-		j++;
-	}
-}
+// 	j = 0;
+// 	while (top_map[j] != NULL)
+// 	{
+// 		i = 0;
+// 		while (top_map[j][i] != 2147483647)
+// 		{
+// 			printf("%f ", top_map[j][i]);
+// 			i++;
+// 		}
+// 		printf("\n");
+// 		j++;
+// 	}
+// }
 //####################################################
 
 // reads a text into input and returns the number of lines
@@ -195,7 +195,7 @@ double	**alloc_dim(double **topmap, char *in, image *im)
 	return (topmap);
 }
 
-double	transfer_numb(const char *in)
+double	transfer_numb(const char *in, image * im)
 {
 	int		i;
 	double	numb;
@@ -203,6 +203,8 @@ double	transfer_numb(const char *in)
 	i = 1;
 	numb = 0;
 	numb = atoi(in);
+	if (numb > im->top_hight && numb < 2147483646.000000)
+		im->top_hight = numb;
 	while (in[i] != ' ' && in[i] != '\0')
 	{
 		if (in[i] == ',')
@@ -224,7 +226,7 @@ double	**fill_topmap(double **topmap, char *in, image *im)
 	{
 		if (in[i[0]] == ' ' && ((in[i[0] + 1] > 47 && in[i[0] + 1] < 58) || in[i[0] + 1] == '-'))
 		{
-			topmap[i[2]][i[1]] = transfer_numb(in + i[0]);
+			topmap[i[2]][i[1]] = transfer_numb(in + i[0], im);
 			if (i[1] > 0 && i[2] > 0 && i[1] < i[3])
 				build_square(topmap, i, im);
 			i[1]++;
@@ -247,23 +249,11 @@ void	new_grid(int fd, image *im)
 
 	input = NULL;
 	topmap = NULL;
-
 	input = read_lines(fd);
-	// printf("input : %s\n", input);
 	topmap = alloc_lines(topmap, input);
-	// printf("lines allocated\n");
 	topmap = alloc_dim(topmap, input, im);
-	// printf("dimension allocated\n");
 	topmap = fill_topmap(topmap, input, im);
-	// printf("lines %d columns %d :\n", im->lines, im->column);
-	TOPMAPTESTER(topmap);
-
-
-	// built_grid(topmap, im->lines, im->column, im);
-
+	printf("tophight %f\n", im->top_hight);
 	topmap = (double **)free_mem((void **)topmap, im->lines);
 	free (input);
 }
-
-// 1. FILL-ALGORYTHMUS WEITER OPTIMIEREN
-// 2. TRIGONS AUF INTEGER UMSTELLEN, KALKULATION AUS DEN INTGERN HERAUS
