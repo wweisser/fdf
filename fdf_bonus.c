@@ -1,23 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen copy.c                                   :+:      :+:    :+:   */
+/*   fdf_bonus.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wendelin <wendelin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/24 14:25:44 by wweisser          #+#    #+#             */
-/*   Updated: 2022/07/11 15:25:18 by wweisser         ###   ########.fr       */
+/*   Created: 2022/08/06 15:10:25 by wendelin          #+#    #+#             */
+/*   Updated: 2022/08/06 15:18:34 by wendelin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "fdf.h"
+#include "fdf.h"
 
-int	ft_strlen(const char *c)
+int	main(int argc, char *argv[])
 {
-	int	i;
+	int	fd;
 
-	i = 0;
-	while (c[i] != '\0')
-		i++;
-	return (i);
+	if (argc == 1)
+		return (0);
+	else
+	{
+		fd = open(argv[1], O_RDONLY);
+		fdf_bonus(fd);
+	}
+	return (0);
 }

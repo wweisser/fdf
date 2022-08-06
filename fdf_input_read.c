@@ -1,31 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test.c                                             :+:      :+:    :+:   */
+/*   fdf_input_read.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wendelin <wendelin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/14 13:21:35 by wendelin          #+#    #+#             */
-/*   Updated: 2022/07/26 22:34:48 by wweisser         ###   ########.fr       */
+/*   Created: 2022/08/06 11:33:32 by wendelin          #+#    #+#             */
+/*   Updated: 2022/08/06 13:30:46 by wendelin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include <unistd.h>
-# include <stdlib.h>
-# include <stdio.h>
-# include <math.h>
-
-
-
-int	ft_strlen(const char *c)
-{
-	int	i;
-
-	i = 0;
-	while (c[i] != '\0')
-		i++;
-	return (i);
-}
+# include "fdf.h"
 
 int	decodehex(char c)
 {
@@ -70,28 +55,28 @@ double	read_hexdec(const char *in)
 	return (numb);
 }
 
-float	read_number(char *numb)
+// reads a text into input and returns the number of lines
+char	*read_lines(int fd)
 {
-	double	postcomma;
+	char	buffer[5101];
+	char	*temp;
+	char	*input;
+	int		read_chars;
 
-	if (numb == NULL)
-		return (0);
-	postcomma = read_hexdec(numb);
-	while (postcomma > 1)
-		postcomma = postcomma / 10;
-	return	(postcomma);
-}
-
-
-int main(void)
-{
-	double t = 3;
-	int	j = 3;
-	char test = 'C';
-	printf("test %d \n", decodehex(test));
-	// test = rnd(test, 0);
-	t = read_number("20,0xFF0000 ");
-	t = t - (int )t;
-	printf(" %f ", t);
-	return (0);
+	read_chars = read(fd, buffer, 5100);
+	if (read_chars < 5100)
+		buffer[read_chars] = '\0';
+	input = malloc(5101 * sizeof(char));
+	if (input != NULL)
+		input = (char *)ft_memmove(input, buffer, 5101);
+	while (read_chars == 5100 && input != NULL)
+	{
+		temp = input;
+		read_chars = read(fd, buffer, 5100);
+		if (read_chars < 5100)
+			buffer[read_chars] = '\0';
+		input = ft_strjoin(temp, buffer);
+		free (temp);
+	}
+	return (input);
 }

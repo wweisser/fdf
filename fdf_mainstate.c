@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fdf_window.c                                       :+:      :+:    :+:   */
+/*   fdf_mainstate.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wendelin <wendelin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/15 10:51:16 by wendelin          #+#    #+#             */
-/*   Updated: 2022/07/28 16:21:58 by wweisser         ###   ########.fr       */
+/*   Created: 2022/08/06 13:58:55 by wendelin          #+#    #+#             */
+/*   Updated: 2022/08/06 14:46:23 by wendelin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf.h"
+# include "fdf.h"
 
 // creates a pointer to a window, asigns memory, creates mlx-state and new window
 // with dimensions x and y, returns pointer to a window
@@ -63,5 +63,34 @@ image	*new_image(window *win)
 	if (im->grid == NULL || im->addr == NULL)
 		return (NULL);
 	return (im);
+}
+
+void	new_grid(int fd, image *im)
+{
+	char	*input;
+	double	**topmap;
+
+	input = NULL;
+	topmap = NULL;
+	input = read_lines(fd);
+	topmap = alloc_lines(topmap, input);
+	topmap = alloc_dim(topmap, input, im);
+	topmap = fill_topmap(topmap, input, im);
+	printf("tophight %f\n", im->top_hight);
+	topmap = (double **)free_mem((void **)topmap, im->lines);
+	free (input);
+}
+
+void	create_grid(image *im, int fd)
+{
+	new_grid(fd, im);
+	set_default(im);
+}
+
+void	build_scene(image *im)
+{
+	color_shift(im);
+	trans_op(im);
+	mlx_put_image_to_window(im->win->mlx, im->win->win, im->grid, 0, 0);
 }
 

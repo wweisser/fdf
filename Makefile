@@ -3,33 +3,75 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+         #
+#    By: wendelin <wendelin@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/10 15:31:57 by wendelin          #+#    #+#              #
-#    Updated: 2022/06/19 14:09:53 by wweisser         ###   ########.fr        #
+#    Updated: 2022/08/06 15:22:24 by wendelin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-# NAME= fdfutils.a
 
-# LFLAGS = -Lmlx -lmlx -L$(INCLIB) -lXext -lX11 -lm
+NAME= fdf
 
-# INPUT = fdf.c fdf_visual.c fdf_shape.c ft_bzero.c
-# SRC = fdf.o fdf_visual.o fdf_shape.o ft_bzero.o
+CC 		= gcc
+LIBFT 	= libft/libft.a
+INPUT	= fdf_input/fdf_input.a
+MINILIB	= -Lmlx -lmlx -L/usr/lib -Imlx -lXext -lX11 -lm mlx/libmlx.a
+LINKS 	= -g -lm -fsanitize=address 
+FLAGS	= -Wall -Werror -Werror
 
-# #Linux and others...
-# CC	= gcc
-# LFLAGS += -lbsd
+SRC 	= fdf.c 		\
+fdf_calc_mtx.c			\
+fdf_calc_point.c		\
+fdf_calc_round.c		\
+fdf_calc_trigon.c		\
+fdf_calc_vector.c		\
+fdf_control_keyboard.c	\
+fdf_control_mouse.c		\
+fdf_input_main.c		\
+fdf_input_mem.c			\
+fdf_input_read.c		\
+fdf_mainstate.c			\
+fdf_perspective.c		\
+fdf_structure_mem.c		\
+fdf_structure.c			\
+fdf_visualisation.c			
 
-# all:  $(NAME) clean
+MANDATORY = fdf_mandatory.c
+BONUS = fdf_bonus.c
 
-# $(NAME): $(SRC)
-# 	ar -rc $(NAME) $(OBJ) #$(LFLAGS)
+OBJ 	= fdf.o 		\
+fdf_calc_mtx.o			\
+fdf_calc_point.o		\
+fdf_calc_round.o		\
+fdf_calc_trigon.o		\
+fdf_calc_vector.o		\
+fdf_control_keyboard.o	\
+fdf_control_mouse.o		\
+fdf_input_main.o		\
+fdf_input_mem.o			\
+fdf_input_read.o		\
+fdf_mainstate.o			\
+fdf_perspective.o		\
+fdf_structure_mem.o		\
+fdf_structure.o			\
+fdf_visualisation.o			
 
-# SRC: $(INPUT)
-# 	$(CC) -c $(INPUT)
+all: $(NAME)
 
-# clean:
-# 	rm -f $(SRC)
+$(NAME): $(SRC) 
+	@$(CC) $(SRC) $(MANDATORY) $(LIBFT) $(MINILIB) $(INPUT) $(FLAGS) $(LINKS) -lm -o $(NAME)
+	
+bonus: $(SRC) 
+	@$(CC) $(SRC) $(BONUS) $(LIBFT) $(MINILIB) $(INPUT) $(FLAGS) $(LINKS) -lm -o fdf_bonus
 
-# re: clean all
+$(OBJ): $(INPUT)
+	$(CC) -Wall -Wextra -Werror -I/usr/include -Imlx -O3 -c $(INPUT)
+
+clean: 
+	rm -f $(OBJ)
+
+fclean: clean
+	rm -f $(NAME) fdf_bonus
+
+re: fclean all

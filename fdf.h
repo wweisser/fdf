@@ -3,25 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   fdf.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wendelin <wendelin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 13:33:09 by wendelin          #+#    #+#             */
-/*   Updated: 2022/07/28 16:21:06 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/08/06 15:24:29 by wendelin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FDF_H
 # define FDF_H
-# include "../mlx/mlx.h"
+# include "mlx/mlx.h"
 # include <math.h>
 # include <unistd.h>
 # include <stdlib.h>
 # include <fcntl.h>
 # include <stdio.h>
-# include "get_next_line.h"
-
-#define RED_PIXEL 0xFFAABB
-
+# include "libft/libft.h"
+# include "fdf_input/fdf_input.h"
 
 //first instance rows, second instance collums
 typedef struct matrix
@@ -84,65 +82,85 @@ typedef struct	s_image
 	void	*grid;
 }			image;
 
-int		mouse_hook(int key, int x, int y, image *im);
-window	*new_window(int width, int hight);
-
-image	*new_image(window *win);
-point	new_point(float x, float y, float z, int color);
+// fdf_calc_mtx.c
 mtx		*new_mtx(void);
-trigon	*new_trigon(point p0, point p1, point p2);
-void	addtrigon(trigon **head, trigon *new);
-void	new_sqare(float ctr[3], int l, image *im);
-point	a_p(float x, float y, float z, int color);
-
-// adjust output
-void	rottrigon(trigon in, trigon *out, mtx rotmtx);
+mtx 	*create_rotmtx(float y, float ß, float a);
 void	mxp(mtx c, point in, point *out);
-void	mxt(mtx c, trigon in, trigon *out, float top_hight);
-mtx		*create_rotmtx(float y, float ß, float a);
-mtx		*create_othromtx(window *win);
-void	trans_op(image *im);
-void	translate(trigon *tri, int offsetx, int offsety);
-void	scale(trigon *tri, int fact);
-void	adjst_top(trigon *temp, float top_hight);
-void	set_default(image *im);
 
-// visual implementaion
-void	draw_trigons(trigon *tri_lst, image *im);
-int		setcolor(unsigned char t, unsigned char r, unsigned char g, unsigned char b);
-void	line(point p1, point p2, image *im);
-int		create_line(int x1, int y1, int x2, int y2, image *im);
-int		render(int x, int y, int color, image *im);
-int		color_shift(image *im);
-
-// math.h
-void	cross_product(point *p1, point *p2, point *result);
-void	fact_vector(point *p1, float f);
-void	norm_vector(point *p1);
+// fdf_calc_point.c 
 void	calc_point(point p1, point p2, point *result, int op);
-float	sum_vector(point p1);
-float	dot_product(float p1[3], float p2[3]);
-float	scalar_product(point *d1, point *d2);
+void	fact_vector(point *p1, float f);
+void	fact_vector(point *p1, float f);
+
+// fdf_calc_round.c
 float	rnd(float in, int places);
 
-// input handle
+// fdf_calc_trigon.c
+void	rottrigon(trigon in, trigon *out, mtx rotmtx);
+void	adjst_top(trigon *temp, float top_hight);
+void	mxt(mtx c, trigon in, trigon *out, float top_hight);
+void	translate(trigon *tri, int offsetx, int offsety);
+void	scale(trigon *tri, int fact);
+
+// fdf_calc_vector.c
+float	scalar_product(point *d1, point *d2);
+void	cross_product(point *p1, point *p2, point *result);
+float	dot_product(float p1[3], float p2[3]);
+float	sum_vector(point p1);
+void	norm_vector(point *p1);
+
+// fdf_control_keyboard.c
+int	keydown(int key, image *im);
+
+// fdf_control_mouse.c
+int	adjust_mousestate(int x, int y, image *im);
+int	mouse_down(int key, int x, int y, image *im);
+int	mouse_up(int key, int x, int y, image *im);
+int	move_obj(int x, int y, image *im);
+
+// fdf_input_main.c
+double	transfer_numb(const char *in, image * im);
+double	**fill_topmap(double **topmap, char *in, image *im);
+
+// fdf_input_mem.c
+void	**free_mem(void **input, int size);
+double	**new_topmap(char **input, double **top_map, int lines);
+double	**alloc_lines(double **topmap, char *in);
+double	**alloc_dim(double **topmap, char *in, image *im);
+
+// fdf_input_read.c
+int	decodehex(char c);
+double	read_hexdec(const char *in);
 char	*read_lines(int fd);
+
+// fdf_mainstate.c
+window	*new_window(int width, int hight);
+image	*new_image(window *win);
 void	new_grid(int fd, image *im);
-void	built_grid(double **top_map, int lines, int rows, image *im);
-void	build_square(double **tp, int i[4], image *im);
 void	create_grid(image *im, int fd);
+void	build_scene(image *im);
 
+// fdf_perspective.c
+void	set_default(image *im);
+void	trans_op(image *im);
+
+// fdf_structure_mem.c
+void	addtrigon(trigon **head, trigon *new);
 void	free_lst(trigon **head);
-char 	*fdf_main(int fd);
 
-// libft
-int		ft_strlen(const char *c);
-char	*ft_strjoin(char const *s1, char const *s2);
-char	**ft_split(char const *s, char c);
-int		ft_strlen(const char *c);
-size_t	ft_strlcpy(char *dst, const char *src, size_t n);
-void	*ft_calloc(size_t count, size_t size);
-int		ft_atoi(const char *str);
-void	*ft_memmove(void *dest, const void *src, unsigned int n);
+// fdf_structure.c
+point	new_point(float x, float y, float z, int color);
+trigon	*new_trigon(point p0, point p1, point p2);
+void	build_square(double **tp, int i[4], image *im);
+
+// fdf_visualisation.c
+int	render(int x, int y, int color, image *im);
+int	setcolor(unsigned char t, unsigned char r, unsigned char g, unsigned char b);
+int	color_shift(image *im);
+void	line(point p1, point p2, image *im);
+
+// fdf.c
+char *fdf_mandatory(int fd);
+char *fdf_bonus(int fd);
 
 # endif

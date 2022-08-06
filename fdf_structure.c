@@ -1,17 +1,15 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fdf_shape.c                                        :+:      :+:    :+:   */
+/*   fdf_structure.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wendelin <wendelin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 15:23:40 by wendelin          #+#    #+#             */
-/*   Updated: 2022/07/27 15:13:59 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/08/06 14:28:00 by wendelin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <math.h>
 #include "fdf.h"
 
 // a new point with xyz is allocated and returned
@@ -45,25 +43,6 @@ trigon	*new_trigon(point p0, point p1, point p2)
 	return (tri);
 }
 
-
-// appends a node containing a trigon at the end of a list of trigons
-// ADDTRIGON UND NEW TRIGON MÜSSEN GETRENNT WERDEN
-void	addtrigon(trigon **head, trigon *new)
-{
-	if (new == NULL)
-		return ;
-	if (*head == NULL)
-	{
-		new->next = NULL;
-		*head = new;
-	}
-	else
-	{
-		new->next = *head;
-		*head = new;
-	}
-}
-
 void	build_square(double **tp, int i[4], image *im)
 {
 	point	np[3];
@@ -81,22 +60,4 @@ void	build_square(double **tp, int i[4], image *im)
 	np[2] = new_point(i[1] - 1 - (im->column / 2), tp[i[2] - 1][i[1] - 1], i[2] - 1 - (im->lines / 2), color);
 	nt = new_trigon(np[0], np[1], np[2]);
 	addtrigon(&im->stat, nt);
-}
-
-
-void	free_lst(trigon **head)
-{
-	trigon *temp;
-
-	temp = *head;
-	if (*head != NULL)
-	{
-		while(*head)
-		{
-			temp = *head;
-			*head = (*head)->next;
-			free(temp);
-		}
-		head = NULL;
-	}
 }
