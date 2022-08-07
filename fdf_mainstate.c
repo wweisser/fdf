@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf_mainstate.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wendelin <wendelin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 13:58:55 by wendelin          #+#    #+#             */
-/*   Updated: 2022/08/07 14:51:35 by wendelin         ###   ########.fr       */
+/*   Updated: 2022/08/07 21:00:02 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,13 @@
 window	new_window(window *win, int width, int hight)
 {
 	win->mlx = mlx_init();
+	win->win = mlx_new_window(win->mlx, width, hight, "fdf");
 	win->x = width;
 	win->y = hight;
 	win->size = 0;
+	win->mouse_state[0] = 0;
+	win->mouse_state[1] = 0;
+	win->mouse_state[2] = 0;
 	return (*win);
 }
 
@@ -32,7 +36,6 @@ image	new_image(image *im, window win)
 	im->bytes_per_line = 4;
 	im->endian = 1;
 	im->offsetx = 0;
-	im->offsetx = 0;
 	im->x = win.x / 2;
 	im->y = win.y / 2;
 	im->grid = NULL;
@@ -42,6 +45,31 @@ image	new_image(image *im, window win)
 		&im->bytes_per_line, &im->endian);
 	im->stat = NULL;
 	return (*im);
+}
+
+void	check_topmap(double **topmap, int lines)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (j < lines)
+	{
+		i = 0;
+		while (1)
+		{
+			if (topmap[j][i] == 2147483647)
+			{
+				printf("\n");
+				break ;
+			}
+			else
+			printf("%f ", topmap[j][i]);
+			i++;
+		}
+		j++;
+	}
 }
 
 void	new_grid(int fd, image *im)
@@ -55,7 +83,9 @@ void	new_grid(int fd, image *im)
 	topmap = alloc_lines(topmap, input);
 	topmap = alloc_dim(topmap, input, im);
 	topmap = fill_topmap(topmap, input, im);
+	check_topmap(topmap, im->lines);
 	topmap = (double **)free_mem((void **)topmap, im->lines);
+
 	free (input);
 }
 
@@ -65,10 +95,10 @@ void	create_grid(image *im, int fd)
 	set_default(im);
 }
 
-void	build_scene(image im)
+void	build_scene(image im, window win)
 {
 	color_shift(im);
 	trans_op(im);
-	mlx_put_image_to_window(im.win.mlx, im.win.win, im.grid, 0, 0);
+	mlx_put_image_to_window(win.mlx, win.win, im.grid, 0, 0);
 }
 

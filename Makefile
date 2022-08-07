@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: wendelin <wendelin@student.42.fr>          +#+  +:+       +#+         #
+#    By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/10 15:31:57 by wendelin          #+#    #+#              #
-#    Updated: 2022/08/06 15:22:24 by wendelin         ###   ########.fr        #
+#    Updated: 2022/08/07 22:07:14 by wweisser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,8 +15,7 @@ NAME= fdf
 
 CC 		= gcc
 LIBFT 	= libft/libft.a
-INPUT	= fdf_input/fdf_input.a
-MINILIB	= -Lmlx -lmlx -L/usr/lib -Imlx -lXext -lX11 -lm mlx/libmlx.a
+MINILIB	= -Lmlx -lmlx -framework OpenGL -framework AppKit
 LINKS 	= -g -lm -fsanitize=address 
 FLAGS	= -Wall -Werror -Werror
 
@@ -59,19 +58,19 @@ fdf_visualisation.o
 
 all: $(NAME)
 
-$(NAME): $(SRC) 
-	@$(CC) $(SRC) $(MANDATORY) $(LIBFT) $(MINILIB) $(INPUT) $(FLAGS) $(LINKS) -lm -o $(NAME)
+$(NAME): $(OBJ) 
+	@$(CC) $(OBJ) $(MANDATORY) $(LIBFT) $(MINILIB) $(FLAGS) $(LINKS) -lm -o $(NAME)
 	
-bonus: $(SRC) 
-	@$(CC) $(SRC) $(BONUS) $(LIBFT) $(MINILIB) $(INPUT) $(FLAGS) $(LINKS) -lm -o fdf_bonus
+bonus: $(OBJ) 
+	@$(CC) $(OBJ) $(BONUS) $(LIBFT) $(MINILIB) $(FLAGS) $(LINKS) -lm -o fdf_bonus
 
 $(OBJ): $(INPUT)
-	$(CC) -Wall -Wextra -Werror -I/usr/include -Imlx -O3 -c $(INPUT)
+	@$(CC) -Wall -Wextra -Werror -c $(SRC) 
 
 clean: 
-	rm -f $(OBJ)
+	@rm -f $(OBJ)
 
 fclean: clean
-	rm -f $(NAME) fdf_bonus
+	@rm -f $(NAME) fdf_bonus
 
 re: fclean all

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf_input_main.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wendelin <wendelin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 12:17:03 by wendelin          #+#    #+#             */
-/*   Updated: 2022/08/07 14:51:01 by wendelin         ###   ########.fr       */
+/*   Updated: 2022/08/07 23:51:52 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,20 +38,23 @@ double	**fill_topmap(double **topmap, char *in, image *im)
 	i[0] = 0;
 	i[1] = 0;
 	i[2] = 0;
+	topmap[0][0] = transfer_numb(in, im);
 	while (in[i[0]] != '\0')
 	{
 		if (in[i[0]] == ' ' && ((in[i[0] + 1] > 47 && in[i[0] + 1] < 58) || in[i[0] + 1] == '-'))
 		{
 			topmap[i[2]][i[1]] = transfer_numb(in + i[0], im);
 			if (i[1] > 0 && i[2] > 0 && i[1] < i[3])
-				build_square(topmap, i, *im);
+				build_square(topmap, i, im);
 			i[1]++;
 		}
-		else if (in[i[0]] == '\n')
+		else if (in[i[0]] == '\n'  && ((in[i[0] + 1] > 47 && in[i[0] + 1] < 58) || in[i[0] + 1] == '-'))
 		{
 			i[3] = i[1];
+			topmap[i[2]][0] = transfer_numb(in + i[0], im);
 			i[1] = 0;
 			i[2]++;
+			printf("test %f\n", topmap[i[2]][0]);
 		}
 		i[0]++;
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wendelin <wendelin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 13:33:09 by wendelin          #+#    #+#             */
-/*   Updated: 2022/08/07 14:50:17 by wendelin         ###   ########.fr       */
+/*   Updated: 2022/08/07 21:29:15 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,25 +17,24 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <fcntl.h>
+# include <stdio.h>
 # include "libft/libft.h"
-# include "fdf_input/fdf_input.h"
 
 //first instance rows, second instance collums
-typedef struct matrix
+struct matrix
 {
-	float	m[4][4];
-}			mtx;
+	float		m[4][4];
+};
+typedef struct matrix mtx;
 
-// HIER WEITERMACHEN:	1. GESAMTE BERECHNUNG UNF SPEICHERUNG AUF INT UMSTELLEN
-
-typedef struct s_point
+struct s_point
 {
 	float	x;
 	float	y;
 	float	z;
 	int	color;
-}		point;
-
+};
+typedef struct s_point point;
 // holds the anchor point p, direction vectors d1 and d2 and the normal vector n
 // it represents a trigon of three points p, p+d1, p+d2
 struct s_trigon
@@ -49,7 +48,7 @@ struct s_trigon
 typedef struct s_trigon	trigon;
 
 // contains the state of a window
-typedef struct s_window
+ struct s_window
 {
 	void	*mlx;
 	void	*win;
@@ -57,10 +56,11 @@ typedef struct s_window
 	int		y;
 	float	size;
 	int		mouse_state[3];
-}			window;
+};
+typedef struct s_window window;
 
 // contains the state of an image of size x and y
-typedef struct	s_image
+struct	s_image
 {
 	trigon	*stat;
 	window	win;
@@ -78,7 +78,8 @@ typedef struct	s_image
 	int		column;
 	void	*mlx;
 	void	*grid;
-}			image;
+};
+typedef struct s_image image;
 
 // fdf_calc_mtx.c
 mtx		*new_mtx(void);
@@ -136,7 +137,7 @@ window	new_window(window *win, int width, int hight);
 image	new_image(image *im, window win);
 void	new_grid(int fd, image *im);
 void	create_grid(image *im, int fd);
-void	build_scene(image im);
+void	build_scene(image im, window win);
 
 // fdf_perspective.c
 void	set_default(image *im);
@@ -149,7 +150,7 @@ void	free_lst(trigon **head);
 // fdf_structure.c
 point	new_point(float x, float y, float z, int color);
 trigon	*new_trigon(point p0, point p1, point p2);
-void	build_square(double **tp, int i[4], image im);
+void	build_square(double **tp, int i[4], image *im);
 
 // fdf_visualisation.c
 int		render(int x, int y, int color, image im);
@@ -158,7 +159,7 @@ int		color_shift(image im);
 void	line(point p1, point p2, image im);
 
 // fdf.c
-char *fdf_mandatory(int fd);
-char *fdf_bonus(int fd);
+int 	fdf_mandatory(int fd);
+int 	fdf_bonus(int fd);
 
 # endif

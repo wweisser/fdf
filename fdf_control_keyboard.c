@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf_control_keyboard.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wendelin <wendelin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 14:13:20 by wendelin          #+#    #+#             */
-/*   Updated: 2022/08/07 14:16:42 by wendelin         ###   ########.fr       */
+/*   Updated: 2022/08/07 22:11:50 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,15 @@ int	keydown(int key, image *im)
 		im->top_hight -= 0.1;
 	if (key == 49)
 		set_default(im);
-	build_scene(*im);
+	build_scene(*im, im->win);
 	if (key == 53)
+	{
 		mlx_destroy_window(im->win.mlx, im->win.win);
+		free_lst(&im->stat);
+		free(im->mlx);
+		free(im->win.win);
+		free(im->win.mlx);
+		// exit(0);
+	}
 	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf_control_mouse.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wendelin <wendelin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 14:11:26 by wendelin          #+#    #+#             */
-/*   Updated: 2022/08/07 14:38:04 by wendelin         ###   ########.fr       */
+/*   Updated: 2022/08/07 18:31:21 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	adjust_mousestate(int x, int y, image *im)
 
 	im->win.mouse_state[0] = x;
 	im->win.mouse_state[1] = y;
-	build_scene(*im);
+	build_scene(*im, im->win);
 	return (0);
 }
 
@@ -48,7 +48,7 @@ int	mouse_down(int key, int x, int y, image *im)
 		im->angle[0] = (im->angle[0] + 15) % 720;
 	if (key == 1)
 		im->win.mouse_state[2] = 1;
-	build_scene(*im);
+	build_scene(*im, im->win);
 	return (x + y);
 }
 
