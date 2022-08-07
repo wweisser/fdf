@@ -6,7 +6,7 @@
 /*   By: wendelin <wendelin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 14:13:20 by wendelin          #+#    #+#             */
-/*   Updated: 2022/08/06 14:15:19 by wendelin         ###   ########.fr       */
+/*   Updated: 2022/08/07 14:16:42 by wendelin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ int	keydown(int key, image *im)
 		im->top_hight -= 0.1;
 	if (key == 49)
 		set_default(im);
-	build_scene(im);
+	build_scene(*im);
 	if (key == 53)
-		mlx_destroy_window(im->win->mlx, im->win->win);
+		mlx_destroy_window(im->win.mlx, im->win.win);
 	return (0);
 }

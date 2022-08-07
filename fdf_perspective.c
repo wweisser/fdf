@@ -6,7 +6,7 @@
 /*   By: wendelin <wendelin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 09:32:35 by wweisser          #+#    #+#             */
-/*   Updated: 2022/08/06 14:17:14 by wendelin         ###   ########.fr       */
+/*   Updated: 2022/08/07 14:54:25 by wendelin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	set_default(image *im)
 	}
 	temp1 = (im->lines + im->column) / 2;
 	im->top_hight = temp1 / (temp1 + (vert_hight + vert_low));
-	im->win->size = (im->x) / temp1;
+	im->win.size = (im->x) / temp1;
 	im->angle[0] = 490;
 	im->angle[1] = 15;
 	im->angle[2] = 45;
@@ -41,20 +41,20 @@ void	set_default(image *im)
 }
 
 // transformas all objects in an image to the current angle
-void	trans_op(image *im)
+void	trans_op(image im)
 {
 	mtx		*rotmtx;
 	trigon	*temps;
 	trigon	tempd;
 
 
-	rotmtx = create_rotmtx(im->angle[0], im->angle[1], im->angle[2]);
-	temps = im->stat;
+	rotmtx = create_rotmtx(im.angle[0], im.angle[1], im.angle[2]);
+	temps = im.stat;
 	while (temps)
 	{
-		mxt(*rotmtx, *temps, &tempd, im->top_hight);
-		scale(&tempd, im->win->size);
-		translate(&tempd, im->offsetx, im->offsety);
+		mxt(*rotmtx, *temps, &tempd, im.top_hight);
+		scale(&tempd, im.win.size);
+		translate(&tempd, im.offsetx, im.offsety);
 		if (tempd.p1.x < 500 && tempd.p1.x > -500 && tempd.p1.y < 500 && tempd.p1.y > -500)
 		{
 			line(tempd.p1, tempd.p2, im);

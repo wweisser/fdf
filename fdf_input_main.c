@@ -6,13 +6,13 @@
 /*   By: wendelin <wendelin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 12:17:03 by wendelin          #+#    #+#             */
-/*   Updated: 2022/08/06 14:09:23 by wendelin         ###   ########.fr       */
+/*   Updated: 2022/08/07 14:51:01 by wendelin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "fdf.h"
 
-double	transfer_numb(const char *in, image * im)
+double	transfer_numb(const char *in , image *im)
 {
 	int		i;
 	double	numb;
@@ -44,7 +44,7 @@ double	**fill_topmap(double **topmap, char *in, image *im)
 		{
 			topmap[i[2]][i[1]] = transfer_numb(in + i[0], im);
 			if (i[1] > 0 && i[2] > 0 && i[1] < i[3])
-				build_square(topmap, i, im);
+				build_square(topmap, i, *im);
 			i[1]++;
 		}
 		else if (in[i[0]] == '\n')

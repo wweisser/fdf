@@ -6,7 +6,7 @@
 /*   By: wendelin <wendelin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 13:33:09 by wendelin          #+#    #+#             */
-/*   Updated: 2022/08/06 15:24:29 by wendelin         ###   ########.fr       */
+/*   Updated: 2022/08/07 14:50:17 by wendelin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <fcntl.h>
-# include <stdio.h>
 # include "libft/libft.h"
 # include "fdf_input/fdf_input.h"
 
@@ -63,9 +62,8 @@ typedef struct s_window
 // contains the state of an image of size x and y
 typedef struct	s_image
 {
-	window	*win;
 	trigon	*stat;
-	trigon	*disp;
+	window	win;
 	int		angle[3];
 	int		*addr;
 	int		x;
@@ -119,7 +117,7 @@ int	mouse_up(int key, int x, int y, image *im);
 int	move_obj(int x, int y, image *im);
 
 // fdf_input_main.c
-double	transfer_numb(const char *in, image * im);
+double	transfer_numb(const char *in, image *im);
 double	**fill_topmap(double **topmap, char *in, image *im);
 
 // fdf_input_mem.c
@@ -129,20 +127,20 @@ double	**alloc_lines(double **topmap, char *in);
 double	**alloc_dim(double **topmap, char *in, image *im);
 
 // fdf_input_read.c
-int	decodehex(char c);
+int		decodehex(char c);
 double	read_hexdec(const char *in);
 char	*read_lines(int fd);
 
 // fdf_mainstate.c
-window	*new_window(int width, int hight);
-image	*new_image(window *win);
+window	new_window(window *win, int width, int hight);
+image	new_image(image *im, window win);
 void	new_grid(int fd, image *im);
 void	create_grid(image *im, int fd);
-void	build_scene(image *im);
+void	build_scene(image im);
 
 // fdf_perspective.c
 void	set_default(image *im);
-void	trans_op(image *im);
+void	trans_op(image im);
 
 // fdf_structure_mem.c
 void	addtrigon(trigon **head, trigon *new);
@@ -151,13 +149,13 @@ void	free_lst(trigon **head);
 // fdf_structure.c
 point	new_point(float x, float y, float z, int color);
 trigon	*new_trigon(point p0, point p1, point p2);
-void	build_square(double **tp, int i[4], image *im);
+void	build_square(double **tp, int i[4], image im);
 
 // fdf_visualisation.c
-int	render(int x, int y, int color, image *im);
-int	setcolor(unsigned char t, unsigned char r, unsigned char g, unsigned char b);
-int	color_shift(image *im);
-void	line(point p1, point p2, image *im);
+int		render(int x, int y, int color, image im);
+int		setcolor(unsigned char t, unsigned char r, unsigned char g, unsigned char b);
+int		color_shift(image im);
+void	line(point p1, point p2, image im);
 
 // fdf.c
 char *fdf_mandatory(int fd);
