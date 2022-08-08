@@ -6,7 +6,7 @@
 #    By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/10 15:31:57 by wendelin          #+#    #+#              #
-#    Updated: 2022/08/08 14:03:26 by wweisser         ###   ########.fr        #
+#    Updated: 2022/08/08 17:27:17 by wweisser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,25 +19,25 @@ MINILIB	= -Lmlx -lmlx -framework OpenGL -framework AppKit
 LINKS 	= -g -lm -fsanitize=address 
 FLAGS	= -Wall -Werror -Werror
 
-SRC 	= fdf.c 		\
-fdf_calc_mtx.c			\
-fdf_calc_point.c		\
-fdf_calc_round.c		\
-fdf_calc_trigon.c		\
-fdf_calc_vector.c		\
-fdf_control_keyboard.c	\
-fdf_control_mouse.c		\
-fdf_input_main.c		\
-fdf_input_mem.c			\
-fdf_input_read.c		\
-fdf_mainstate.c			\
-fdf_perspective.c		\
-fdf_structure_mem.c		\
-fdf_structure.c			\
-fdf_visualisation.c			
+SRC 	= fdf_files/fdf.c 			\
+fdf_files/fdf_calc_mtx.c			\
+fdf_files/fdf_calc_point.c			\
+fdf_files/fdf_calc_round.c			\
+fdf_files/fdf_calc_trigon.c			\
+fdf_files/fdf_calc_vector.c			\
+fdf_files/fdf_control_keyboard.c	\
+fdf_files/fdf_control_mouse.c		\
+fdf_files/fdf_input_main.c			\
+fdf_files/fdf_input_mem.c			\
+fdf_files/fdf_input_read.c			\
+fdf_files/fdf_mainstate.c			\
+fdf_files/fdf_perspective.c			\
+fdf_files/fdf_structure_mem.c		\
+fdf_files/fdf_structure.c			\
+fdf_files/fdf_visualisation.c			
 
-MANDATORY = fdf_mandatory.c
-BONUS = fdf_bonus.c
+MANDATORY = fdf_files/fdf_mandatory.c
+BONUS = fdf_files/fdf_bonus.c
 
 OBJ 	= fdf.o 		\
 fdf_calc_mtx.o			\

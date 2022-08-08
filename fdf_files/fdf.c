@@ -6,16 +6,16 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 15:38:02 by wendelin          #+#    #+#             */
-/*   Updated: 2022/08/08 17:21:08 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/08/08 20:23:00 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int fdf_bonus(int fd)
+int	fdf_bonus(int fd)
 {
-	window	win;
-	image	im;
+	t_window	win;
+	t_image		im;
 
 	win.win = NULL;
 	win.mlx = NULL;
@@ -24,21 +24,21 @@ int fdf_bonus(int fd)
 	im = new_image(&im, win);
 	create_grid(&im, fd);
 	build_scene(im, win);
-	mlx_hook(win.win, 2, 1L<<0, keydown, &im);
-	mlx_hook(win.win, 4, 1L<<0, mouse_down, &im);
-	mlx_hook(win.win, 6, 1L<<0, move_obj, &im);
-	mlx_hook(win.win, 5, 1L<<0, mouse_up, &im);
-	mlx_hook(win.win, 5, 1L<<0, mouse_up, &im);
-	mlx_hook(win.win, 17, 1L<<0, close_state, &im);
+	mlx_hook(win.win, 2, 1L << 0, keydown_bonus, &im);
+	mlx_hook(win.win, 4, 1L << 0, mouse_down, &im);
+	mlx_hook(win.win, 6, 1L << 0, move_obj, &im);
+	mlx_hook(win.win, 5, 1L << 0, mouse_up, &im);
+	mlx_hook(win.win, 5, 1L << 0, mouse_up, &im);
+	mlx_hook(win.win, 17, 1L << 0, close_state, &im);
 	mlx_loop(win.mlx);
 	close_state(&im);
 	return (0);
 }
 
-int fdf_mandatory(int fd)
+int	fdf_mandatory(int fd)
 {
-	window	win;
-	image	im;
+	t_window	win;
+	t_image		im;
 
 	win.win = NULL;
 	win.mlx = NULL;
@@ -47,6 +47,7 @@ int fdf_mandatory(int fd)
 	im = new_image(&im, win);
 	create_grid(&im, fd);
 	build_scene(im, win);
+	mlx_hook(win.win, 2, 1L << 0, keydown_mandatory, &im);
 	mlx_hook(win.win, 17, 0, close_state, &im);
 	mlx_loop(win.mlx);
 	close_state(&im);

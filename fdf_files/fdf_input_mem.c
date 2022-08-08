@@ -6,11 +6,11 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 12:08:23 by wendelin          #+#    #+#             */
-/*   Updated: 2022/08/08 14:58:40 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/08/08 20:18:35 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "fdf.h"
+#include "fdf.h"
 
 void	**free_mem(void **input, int size)
 {
@@ -23,7 +23,6 @@ void	**free_mem(void **input, int size)
 	input = NULL;
 	return (input);
 }
-
 
 double	**alloc_lines(double **topmap, char *in)
 {
@@ -48,7 +47,7 @@ double	**alloc_lines(double **topmap, char *in)
 	return (topmap);
 }
 
-double	**alloc_dim(double **topmap, char *in, image *im)
+double	**alloc_dim(double **topmap, char *in, t_image *im)
 {
 	int		i;
 	double	*temp;
@@ -56,10 +55,10 @@ double	**alloc_dim(double **topmap, char *in, image *im)
 	i = 0;
 	im->lines = 0;
 	im->column = 1;
-	temp = NULL;
 	while (in[i] != '\0')
 	{
-		if (in[i] == ' ' && ((in[i + 1] > 47 && in[i + 1] < 58) || in[i + 1] == '-'))
+		if (in[i] == ' ' && ((in[i + 1] > 47 && in[i + 1] < 58)
+				|| in[i + 1] == '-'))
 			im->column++;
 		if (in[i] == '\n')
 		{

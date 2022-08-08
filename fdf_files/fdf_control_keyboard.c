@@ -6,13 +6,13 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 14:13:20 by wendelin          #+#    #+#             */
-/*   Updated: 2022/08/08 17:07:14 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/08/08 20:04:56 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int	keydown(int key, image *im)
+int	keydown_bonus(int key, t_image *im)
 {
 	if (key == 13)
 		im->angle[0] = (im->angle[0] + 10) % 720;
@@ -29,6 +29,13 @@ int	keydown(int key, image *im)
 	if (key == 49)
 		set_default(im);
 	build_scene(*im, im->win);
+	if (key == 53)
+		close_state(im);
+	return (0);
+}
+
+int	keydown_mandatory(int key, t_image *im)
+{
 	if (key == 53)
 		close_state(im);
 	return (0);

@@ -6,18 +6,27 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 09:32:35 by wweisser          #+#    #+#             */
-/*   Updated: 2022/08/08 16:35:43 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/08/08 20:25:16 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "fdf.h"
+#include "fdf.h"
 
-void	set_default(image *im)
+void	default_image(t_image *im)
 {
-	float	vert_hight;
-	float	vert_low;
-	float	temp1;
-	trigon	*temp;
+	im->angle[0] = 490;
+	im->angle[1] = 15;
+	im->angle[2] = 45;
+	im->offsetx = 0;
+	im->offsety = 0;
+}
+
+void	set_default(t_image *im)
+{
+	float		vert_hight;
+	float		vert_low;
+	float		temp1;
+	t_trigon	*temp;
 
 	vert_hight = 0;
 	vert_low = 0;
@@ -32,24 +41,19 @@ void	set_default(image *im)
 		temp = temp->next;
 	}
 	temp1 = im->column;
-	if (im->lines > im->column)
-		temp1 = im->lines;
+		temp1 = (im->lines + im->column) / 2;
 	if ((im->x / temp1) > 1)
 		im->win.size = im->x / temp1;
 	im->top_hight = temp1 / (temp1 + (vert_hight + vert_low));
-	im->angle[0] = 490;
-	im->angle[1] = 15;
-	im->angle[2] = 45;
-	im->offsetx = 0;
-	im->offsety = 0;
+	default_image(im);
 }
 
 // transformas all objects in an image to the current angle
-void	trans_op(image im)
+void	trans_op(t_image im)
 {
-	mtx		*rotmtx;
-	trigon	*temps;
-	trigon	tempd;
+	t_mtx		*rotmtx;
+	t_trigon	*temps;
+	t_trigon	tempd;
 
 	rotmtx = create_rotmtx(im.angle[0], im.angle[1], im.angle[2]);
 	temps = im.stat;
@@ -58,7 +62,8 @@ void	trans_op(image im)
 		mxt(*rotmtx, *temps, &tempd, im.top_hight);
 		scale(&tempd, im.win.size);
 		translate(&tempd, im.offsetx, im.offsety);
-		if (tempd.p1.x < 600 && tempd.p1.x > -600 && tempd.p1.y < 600 && tempd.p1.y > -600)
+		if (tempd.p1.x < 600 && tempd.p1.x > -600
+			&& tempd.p1.y < 600 && tempd.p1.y > -600)
 		{
 			line(tempd.p1, tempd.p2, im);
 			line(tempd.p2, tempd.p0, im);

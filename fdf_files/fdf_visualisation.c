@@ -6,14 +6,14 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 15:00:31 by wendelin          #+#    #+#             */
-/*   Updated: 2022/08/08 16:48:34 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/08/08 20:28:39 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
 // sets the pixelvalue at the coordinate x and y to color
-int	render(int x, int y, int color, image im)
+int	render(int x, int y, int color, t_image im)
 {
 	int	pixel;
 
@@ -22,10 +22,9 @@ int	render(int x, int y, int color, image im)
 	return (0);
 }
 
-
 // assigns 4bit values (between 0 and 255) for transparency red, green and blue
 // to an integer by bitshifting, considering endian 1
-int	setcolor(unsigned char t, unsigned char r, unsigned char g, unsigned char b)
+int	setc(unsigned char t, unsigned char r, unsigned char g, unsigned char b)
 {
 	int	color;
 
@@ -51,7 +50,7 @@ int	setcolor(unsigned char t, unsigned char r, unsigned char g, unsigned char b)
 }
 
 // goes through y and x of the image and sets each pixel to a ceratain color
-int	color_shift(image im)
+int	color_shift(t_image im)
 {
 	int	x;
 	int	y;
@@ -66,7 +65,7 @@ int	color_shift(image im)
 		x = 0;
 		while (x < im.win.x)
 		{
-			render(x, y, setcolor(0, bright, bright, bright), im);
+			render(x, y, setc(0, bright, bright, bright), im);
 			x++;
 		}
 		y++;
@@ -74,31 +73,32 @@ int	color_shift(image im)
 	return (0);
 }
 
-
-void	line(point p1, point p2, image im)
+void	line(t_point p1, t_point p2, t_image im)
 {
-	point	np;
+	t_point	np;
 	int		color;
 
 	color = (p2.color + p1.color) / 2;
 	if ((p1.x == p2.x) && (p1.y == p2.y))
-			return ;
-	else if ((p1.x == p2.x + 1 || p1.x == p2.x - 1) && (p1.y == p2.y + 1 || p1.y == p2.y - 1))
+		return ;
+	else if ((p1.x == p2.x + 1 || p1.x == p2.x - 1) && (p1.y == p2.y + 1
+			|| p1.y == p2.y - 1))
 		return ;
 	else if ((p1.y == p2.y) && (p1.x == p2.x + 1 || p1.x == p2.x - 1))
 		return ;
 	else if ((p1.x == p2.x) && (p1.y == p2.y + 1 || p1.y == p2.y - 1))
 		return ;
-	np = new_point(round( p1.x + ((p2.x - p1.x) / 2)), round(p1.y + ((p2.y - p1.y) / 2)), 0, color );
+	np = new_point(round (p1.x + ((p2.x - p1.x) / 2)),
+			round (p1.y + ((p2.y - p1.y) / 2)), 0, color);
 	line(p1, np, im);
 	line(np, p2, im);
-	if ((np.x < im.x) && (np.y < im.y) &&
-		(np.x > -im.x) && (np.y > -im.y))
+	if ((np.x < im.x) && (np.y < im.y)
+		&& (np.x > -im.x) && (np.y > -im.y))
 		render((int )(np.x + im.x), (int )(np.y + im.y), color, im);
 	return ;
 }
 
-void	build_scene(image im, window win)
+void	build_scene(t_image im, t_window win)
 {
 	color_shift(im);
 	trans_op(im);

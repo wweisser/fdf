@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   fdf_input_read.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wendelin <wendelin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 11:33:32 by wendelin          #+#    #+#             */
-/*   Updated: 2022/08/06 13:30:46 by wendelin         ###   ########.fr       */
+/*   Updated: 2022/08/08 19:16:29 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "fdf.h"
+#include "fdf.h"
 
 int	decodehex(char c)
 {
@@ -34,7 +34,7 @@ int	decodehex(char c)
 double	read_hexdec(const char *in)
 {
 	int		i;
-	double		numb;
+	double	numb;
 	int		factor;
 
 	if (in == NULL)

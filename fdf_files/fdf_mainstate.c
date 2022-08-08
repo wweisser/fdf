@@ -6,15 +6,15 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 13:58:55 by wendelin          #+#    #+#             */
-/*   Updated: 2022/08/08 17:06:50 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/08/08 20:19:07 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "fdf.h"
+#include "fdf.h"
 
-// creates a pointer to a window, asigns memory, creates mlx-state and new window
-// with dimensions x and y, returns pointer to a window
-window	new_window(window *win, int width, int hight)
+// creates a pointer to a window, asigns memory, creates mlx-state and new 
+// window with dimensions x and y, returns pointer to a window
+t_window	new_window(t_window *win, int width, int hight)
 {
 	win->mlx = mlx_init();
 	win->win = mlx_new_window(win->mlx, width, hight, "fdf");
@@ -29,7 +29,7 @@ window	new_window(window *win, int width, int hight)
 
 // creates image of size of the window, assigns bit/pixel and bytes/line,
 // endian, color, returns pointer to an image
-image	new_image(image *im, window win)
+t_image	new_image(t_image *im, t_window win)
 {
 	im->win = win;
 	im->bits_per_pixel = 32;
@@ -42,7 +42,7 @@ image	new_image(image *im, window win)
 	im->addr = NULL;
 	im->grid = mlx_new_image(win.mlx, win.y, win.x);
 	im->addr = (int *)mlx_get_data_addr(im->grid, &im->bits_per_pixel,
-		&im->bytes_per_line, &im->endian);
+			&im->bytes_per_line, &im->endian);
 	im->stat = NULL;
 	return (*im);
 }
@@ -72,7 +72,7 @@ image	new_image(image *im, window win)
 // 	}
 // }
 
-void	new_grid(int fd, image *im)
+void	new_grid(int fd, t_image *im)
 {
 	char	*input;
 	double	**topmap;
@@ -87,13 +87,13 @@ void	new_grid(int fd, image *im)
 	free (input);
 }
 
-void	create_grid(image *im, int fd)
+void	create_grid(t_image *im, int fd)
 {
 	new_grid(fd, im);
 	set_default(im);
 }
 
-int close_state(image *im)
+int	close_state(t_image *im)
 {
 	mlx_destroy_window(im->win.mlx, im->win.win);
 	free_lst(&im->stat);

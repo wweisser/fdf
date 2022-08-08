@@ -6,16 +6,16 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 15:23:40 by wendelin          #+#    #+#             */
-/*   Updated: 2022/08/07 20:46:39 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/08/08 20:25:36 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
 // a new point with xyz is allocated and returned
-point	new_point(float x, float y, float z, int color)
+t_point	new_point(float x, float y, float z, int color)
 {
-	point	p;
+	t_point	p;
 
 	p.x = x;
 	p.y = y;
@@ -29,11 +29,12 @@ point	new_point(float x, float y, float z, int color)
 
 // takes a tree vertizes creates and returns a pointer to an new trigon
 // calculates the dirtction vector d1 and d2 and the normale n by d2xd1
-trigon	*new_trigon(point p0, point p1, point p2)
+t_trigon	*new_trigon(t_point p0, t_point p1, t_point p2)
 {
-	trigon	*tri;
+	t_trigon	*tri;
+
 	tri = NULL;
-	tri = malloc(sizeof(trigon));
+	tri = malloc(sizeof(t_trigon));
 	if (tri == NULL)
 		return (NULL);
 	tri->p0 = new_point(p0.x, p0.y, p0.z, p0.color);
@@ -43,21 +44,27 @@ trigon	*new_trigon(point p0, point p1, point p2)
 	return (tri);
 }
 
-void	build_square(double **tp, int i[4], image *im)
+void	build_square(double **tp, int i[4], t_image *im)
 {
-	point	np[3];
-	trigon	*nt;
-	int	color;
-	color = setcolor(0, 255, tp[i[2]][i[1] - 1] * (float )(255 / im->top_hight), 100);
-	np[0] = new_point(i[1] - 1 - (im->column / 2), tp[i[2]][i[1] - 1], i[2] - (im->lines / 2), color);
-	color = setcolor(0, 255, tp[i[2] - 1][i[1]] * (float )(255 / im->top_hight), 100);
-	np[1] = new_point(i[1] - (im->column / 2), tp[i[2] - 1][i[1]], i[2] - 1 - (im->lines / 2), color);
-	color = setcolor(0, 255, tp[i[2]][i[1]] * (float )(255 / im->top_hight), 100);
-	np[2] = new_point(i[1] - (im->column / 2), tp[i[2]][i[1]], i[2] - (im->lines / 2), color);
+	t_point		np[3];
+	t_trigon	*nt;
+	int			c;
+
+	c = setc(0, 255, tp[i[2]][i[1] - 1] * (float )(255 / im->top_hight), 100);
+	np[0] = new_point(i[1] - 1 - (im->column / 2),
+			tp[i[2]][i[1] - 1], i[2] - (im->lines / 2), c);
+	c = setc(0, 255, tp[i[2] - 1][i[1]] * (float )(255 / im->top_hight), 100);
+	np[1] = new_point(i[1] - (im->column / 2),
+			tp[i[2] - 1][i[1]], i[2] - 1 - (im->lines / 2), c);
+	c = setc(0, 255, tp[i[2]][i[1]] * (float )(255 / im->top_hight), 100);
+	np[2] = new_point(i[1] - (im->column / 2),
+			tp[i[2]][i[1]], i[2] - (im->lines / 2), c);
 	nt = new_trigon(np[0], np[1], np[2]);
 	addtrigon(&im->stat, nt);
-	color = setcolor(0, 255, tp[i[2] - 1][i[1] - 1] * (float )(255 / im->top_hight), 100);
-	np[2] = new_point(i[1] - 1 - (im->column / 2), tp[i[2] - 1][i[1] - 1], i[2] - 1 - (im->lines / 2), color);
+	c = setc(0, 255, tp[i[2] - 1][i[1] - 1]
+			* (float )(255 / im->top_hight), 100);
+	np[2] = new_point(i[1] - 1 - (im->column / 2),
+			tp[i[2] - 1][i[1] - 1], i[2] - 1 - (im->lines / 2), c);
 	nt = new_trigon(np[0], np[1], np[2]);
 	addtrigon(&im->stat, nt);
 }

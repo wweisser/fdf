@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   fdf_calc_trigon.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wendelin <wendelin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 13:56:43 by wendelin          #+#    #+#             */
-/*   Updated: 2022/08/06 13:58:08 by wendelin         ###   ########.fr       */
+/*   Updated: 2022/08/08 20:17:42 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "fdf.h"
+#include "fdf.h"
 
 // rotates all vertices of a trigon together with its normal direction vector
 // also norms the rotated direction vector
-void	rottrigon(trigon in, trigon *out, mtx rotmtx)
+void	rottrigon(t_trigon in, t_trigon *out, t_mtx rotmtx)
 {
 	mxp(rotmtx, in.p0, &out->p0);
 	mxp(rotmtx, in.p1, &out->p1);
@@ -23,7 +23,7 @@ void	rottrigon(trigon in, trigon *out, mtx rotmtx)
 	norm_vector(&out->n);
 }
 
-void	adjst_top(trigon *temp, float top_hight)
+void	adjst_top(t_trigon *temp, float top_hight)
 {
 			temp->p0.y = temp->p0.y * top_hight;
 			temp->p1.y = temp->p1.y * top_hight;
@@ -31,7 +31,7 @@ void	adjst_top(trigon *temp, float top_hight)
 }
 
 // matrix mulitplies a triangle. If orthogoinal matrix => ortho=1
-void	mxt(mtx c, trigon in, trigon *out, float top_hight)
+void	mxt(t_mtx c, t_trigon in, t_trigon *out, float top_hight)
 {
 	adjst_top(&in, top_hight);
 	mxp(c, in.p0, &out->p0);
@@ -42,7 +42,7 @@ void	mxt(mtx c, trigon in, trigon *out, float top_hight)
 	out->p2.color = in.p2.color;
 }
 
-void	translate(trigon *tri, int offsetx, int offsety)
+void	translate(t_trigon *tri, int offsetx, int offsety)
 {
 	tri->p0.x += tri->p0.x + offsetx;
 	tri->p1.x += tri->p1.x + offsetx;
@@ -52,7 +52,7 @@ void	translate(trigon *tri, int offsetx, int offsety)
 	tri->p2.y += tri->p2.y + offsety;
 }
 
-void	scale(trigon *tri, int fact)
+void	scale(t_trigon *tri, int fact)
 {
 	tri->p0.x = (int )(tri->p0.x * fact);
 	tri->p0.y = (int )(tri->p0.y * fact);
