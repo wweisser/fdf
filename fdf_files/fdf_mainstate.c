@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 13:58:55 by wendelin          #+#    #+#             */
-/*   Updated: 2022/08/08 20:19:07 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/08/08 21:05:55 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,31 +47,6 @@ t_image	new_image(t_image *im, t_window win)
 	return (*im);
 }
 
-// void	check_topmap(double **topmap, int lines)
-// {
-// 	int	i;
-// 	int	j;
-
-// 	i = 0;
-// 	j = 0;
-// 	while (j < lines)
-// 	{
-// 		i = 0;
-// 		while (1)
-// 		{
-// 			if (topmap[j][i] == 2147483647)
-// 			{
-// 				printf("\n");
-// 				break ;
-// 			}
-// 			else
-// 			printf("%f ", topmap[j][i]);
-// 			i++;
-// 		}
-// 		j++;
-// 	}
-// }
-
 void	new_grid(int fd, t_image *im)
 {
 	char	*input;
@@ -96,7 +71,8 @@ void	create_grid(t_image *im, int fd)
 int	close_state(t_image *im)
 {
 	mlx_destroy_window(im->win.mlx, im->win.win);
-	free_lst(&im->stat);
+	if (im->stat != NULL)
+		free_lst(&im->stat);
 	exit(0);
 	return (0);
 }

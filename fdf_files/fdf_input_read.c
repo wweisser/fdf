@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 11:33:32 by wendelin          #+#    #+#             */
-/*   Updated: 2022/08/08 19:16:29 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/08/08 21:39:36 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,9 @@ char	*read_lines(int fd)
 	if (read_chars < 5100)
 		buffer[read_chars] = '\0';
 	input = malloc(5101 * sizeof(char));
-	if (input != NULL)
-		input = (char *)ft_memmove(input, buffer, 5101);
+	if (input == NULL)
+		return (NULL);
+	input = (char *)ft_memmove(input, buffer, 5101);
 	while (read_chars == 5100 && input != NULL)
 	{
 		temp = input;
@@ -77,6 +78,8 @@ char	*read_lines(int fd)
 			buffer[read_chars] = '\0';
 		input = ft_strjoin(temp, buffer);
 		free (temp);
+		if (input == NULL)
+			return (NULL);
 	}
 	return (input);
 }

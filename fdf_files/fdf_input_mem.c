@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 12:08:23 by wendelin          #+#    #+#             */
-/*   Updated: 2022/08/08 20:18:35 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/08/08 21:22:39 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ double	**alloc_lines(double **topmap, char *in)
 	lines = 0;
 	topmap = NULL;
 	if (in == NULL)
-		return (0);
+		return (NULL);
 	while (in[i] != '\0')
 	{
 		if (in[i] == '\n')
@@ -55,6 +55,8 @@ double	**alloc_dim(double **topmap, char *in, t_image *im)
 	i = 0;
 	im->lines = 0;
 	im->column = 1;
+	if (topmap == NULL)
+		return (NULL);
 	while (in[i] != '\0')
 	{
 		if (in[i] == ' ' && ((in[i + 1] > 47 && in[i + 1] < 58)
@@ -63,8 +65,6 @@ double	**alloc_dim(double **topmap, char *in, t_image *im)
 		if (in[i] == '\n')
 		{
 			temp = ft_calloc(im->column + 1, sizeof(double));
-			if (temp == NULL)
-				return (0);
 			topmap[im->lines] = temp;
 			topmap[im->lines][im->column] = 2147483647;
 			if (in[i + 1] != '\0')
