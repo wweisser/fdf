@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 13:58:55 by wendelin          #+#    #+#             */
-/*   Updated: 2022/08/07 21:00:02 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/08/08 17:06:50 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,30 +47,30 @@ image	new_image(image *im, window win)
 	return (*im);
 }
 
-void	check_topmap(double **topmap, int lines)
-{
-	int	i;
-	int	j;
+// void	check_topmap(double **topmap, int lines)
+// {
+// 	int	i;
+// 	int	j;
 
-	i = 0;
-	j = 0;
-	while (j < lines)
-	{
-		i = 0;
-		while (1)
-		{
-			if (topmap[j][i] == 2147483647)
-			{
-				printf("\n");
-				break ;
-			}
-			else
-			printf("%f ", topmap[j][i]);
-			i++;
-		}
-		j++;
-	}
-}
+// 	i = 0;
+// 	j = 0;
+// 	while (j < lines)
+// 	{
+// 		i = 0;
+// 		while (1)
+// 		{
+// 			if (topmap[j][i] == 2147483647)
+// 			{
+// 				printf("\n");
+// 				break ;
+// 			}
+// 			else
+// 			printf("%f ", topmap[j][i]);
+// 			i++;
+// 		}
+// 		j++;
+// 	}
+// }
 
 void	new_grid(int fd, image *im)
 {
@@ -83,9 +83,7 @@ void	new_grid(int fd, image *im)
 	topmap = alloc_lines(topmap, input);
 	topmap = alloc_dim(topmap, input, im);
 	topmap = fill_topmap(topmap, input, im);
-	check_topmap(topmap, im->lines);
 	topmap = (double **)free_mem((void **)topmap, im->lines);
-
 	free (input);
 }
 
@@ -95,10 +93,10 @@ void	create_grid(image *im, int fd)
 	set_default(im);
 }
 
-void	build_scene(image im, window win)
+int close_state(image *im)
 {
-	color_shift(im);
-	trans_op(im);
-	mlx_put_image_to_window(win.mlx, win.win, im.grid, 0, 0);
+	mlx_destroy_window(im->win.mlx, im->win.win);
+	free_lst(&im->stat);
+	exit(0);
+	return (0);
 }
-

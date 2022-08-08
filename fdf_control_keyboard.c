@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 14:13:20 by wendelin          #+#    #+#             */
-/*   Updated: 2022/08/07 22:11:50 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/08/08 17:07:14 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,6 @@ int	keydown(int key, image *im)
 		set_default(im);
 	build_scene(*im, im->win);
 	if (key == 53)
-	{
-		mlx_destroy_window(im->win.mlx, im->win.win);
-		free_lst(&im->stat);
-		free(im->mlx);
-		free(im->win.win);
-		free(im->win.mlx);
-		// exit(0);
-	}
+		close_state(im);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 12:17:03 by wendelin          #+#    #+#             */
-/*   Updated: 2022/08/07 23:51:52 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/08/08 13:32:20 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ double	**fill_topmap(double **topmap, char *in, image *im)
 	int		i[4];
 
 	i[0] = 0;
-	i[1] = 0;
+	i[1] = 1;
 	i[2] = 0;
 	topmap[0][0] = transfer_numb(in, im);
 	while (in[i[0]] != '\0')
@@ -48,13 +48,11 @@ double	**fill_topmap(double **topmap, char *in, image *im)
 				build_square(topmap, i, im);
 			i[1]++;
 		}
-		else if (in[i[0]] == '\n'  && ((in[i[0] + 1] > 47 && in[i[0] + 1] < 58) || in[i[0] + 1] == '-'))
+		else if (in[i[0]] == '\n'  && in[i[0]] != '\0')
 		{
 			i[3] = i[1];
-			topmap[i[2]][0] = transfer_numb(in + i[0], im);
-			i[1] = 0;
+			i[1] = 1;
 			i[2]++;
-			printf("test %f\n", topmap[i[2]][0]);
 		}
 		i[0]++;
 	}

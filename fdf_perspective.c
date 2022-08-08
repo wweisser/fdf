@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 09:32:35 by wweisser          #+#    #+#             */
-/*   Updated: 2022/08/07 22:15:11 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/08/08 16:35:43 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	set_default(image *im)
 	vert_hight = 0;
 	vert_low = 0;
 	temp = im->stat;
+	im->win.size = 1;
 	while (temp)
 	{
 		if (temp->p2.y > vert_hight)
@@ -30,11 +31,11 @@ void	set_default(image *im)
 			vert_low = temp->p2.y;
 		temp = temp->next;
 	}
+	temp1 = im->column;
 	if (im->lines > im->column)
 		temp1 = im->lines;
-	else
-		temp1 = im->column;
-	im->win.size = im->x / temp1;
+	if ((im->x / temp1) > 1)
+		im->win.size = im->x / temp1;
 	im->top_hight = temp1 / (temp1 + (vert_hight + vert_low));
 	im->angle[0] = 490;
 	im->angle[1] = 15;

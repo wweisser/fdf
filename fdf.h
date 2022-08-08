@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 13:33:09 by wendelin          #+#    #+#             */
-/*   Updated: 2022/08/07 21:29:15 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/08/08 17:06:12 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ struct	s_image
 	float	top_hight;
 	int		lines;
 	int		column;
-	void	*mlx;
 	void	*grid;
 };
 typedef struct s_image image;
@@ -137,7 +136,7 @@ window	new_window(window *win, int width, int hight);
 image	new_image(image *im, window win);
 void	new_grid(int fd, image *im);
 void	create_grid(image *im, int fd);
-void	build_scene(image im, window win);
+int		close_state(image *im);
 
 // fdf_perspective.c
 void	set_default(image *im);
@@ -157,6 +156,7 @@ int		render(int x, int y, int color, image im);
 int		setcolor(unsigned char t, unsigned char r, unsigned char g, unsigned char b);
 int		color_shift(image im);
 void	line(point p1, point p2, image im);
+void	build_scene(image im, window win);
 
 // fdf.c
 int 	fdf_mandatory(int fd);

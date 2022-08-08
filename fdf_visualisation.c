@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 15:00:31 by wendelin          #+#    #+#             */
-/*   Updated: 2022/08/07 22:04:47 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/08/08 16:48:34 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,4 +96,11 @@ void	line(point p1, point p2, image im)
 		(np.x > -im.x) && (np.y > -im.y))
 		render((int )(np.x + im.x), (int )(np.y + im.y), color, im);
 	return ;
+}
+
+void	build_scene(image im, window win)
+{
+	color_shift(im);
+	trans_op(im);
+	mlx_put_image_to_window(win.mlx, win.win, im.grid, 0, 0);
 }

@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 15:38:02 by wendelin          #+#    #+#             */
-/*   Updated: 2022/08/07 19:43:33 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/08/08 17:21:08 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,10 @@ int fdf_bonus(int fd)
 	mlx_hook(win.win, 4, 1L<<0, mouse_down, &im);
 	mlx_hook(win.win, 6, 1L<<0, move_obj, &im);
 	mlx_hook(win.win, 5, 1L<<0, mouse_up, &im);
+	mlx_hook(win.win, 5, 1L<<0, mouse_up, &im);
+	mlx_hook(win.win, 17, 1L<<0, close_state, &im);
 	mlx_loop(win.mlx);
-	free_lst(&im.stat);
-	free(im.mlx);
-	free(win.win);
-	free(win.mlx);
+	close_state(&im);
 	return (0);
 }
 
@@ -48,10 +47,8 @@ int fdf_mandatory(int fd)
 	im = new_image(&im, win);
 	create_grid(&im, fd);
 	build_scene(im, win);
+	mlx_hook(win.win, 17, 0, close_state, &im);
 	mlx_loop(win.mlx);
-	free_lst(&im.stat);
-	free(im.mlx);
-	free(win.win);
-	free(win.mlx);
+	close_state(&im);
 	return (fd);
 }

@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 12:08:23 by wendelin          #+#    #+#             */
-/*   Updated: 2022/08/07 23:51:37 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/08/08 14:58:40 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,33 +24,6 @@ void	**free_mem(void **input, int size)
 	return (input);
 }
 
-// allocates memory for the topogrphical map.
-double	**new_topmap(char **input, double **top_map, int lines)
-{
-	int	i;
-	int	j;
-	int	numb_of_digets;
-
-	j = 0;
-	top_map = malloc(lines * sizeof(double *));
-	if (top_map ==  NULL)
-		return (NULL);
-	while (lines != 0 && j <= lines)
-	{
-		i = 0;
-		numb_of_digets = 1;
-		while (input[j][i] != '\0')
-		{
-			if (input[j][i] == ' ' && ((input[j][i + 1] > 47 && input[j][i + 1] < 58) || input[j][i + 1] == '-'))
-				numb_of_digets++;
-			i++;
-		}
-		top_map[j] = ft_calloc(numb_of_digets + 1, sizeof(double));
-		top_map[j][numb_of_digets] = 2147483647;
-		j++;
-	}
-	return (top_map);
-}
 
 double	**alloc_lines(double **topmap, char *in)
 {
@@ -82,7 +55,7 @@ double	**alloc_dim(double **topmap, char *in, image *im)
 
 	i = 0;
 	im->lines = 0;
-	im->column = 0;
+	im->column = 1;
 	temp = NULL;
 	while (in[i] != '\0')
 	{
@@ -96,7 +69,7 @@ double	**alloc_dim(double **topmap, char *in, image *im)
 			topmap[im->lines] = temp;
 			topmap[im->lines][im->column] = 2147483647;
 			if (in[i + 1] != '\0')
-				im->column = 0;
+				im->column = 1;
 			im->lines++;
 		}
 		i++;

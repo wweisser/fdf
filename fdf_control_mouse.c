@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 14:11:26 by wendelin          #+#    #+#             */
-/*   Updated: 2022/08/07 18:31:21 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/08/08 15:30:57 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ int	mouse_down(int key, int x, int y, image *im)
 {
 	if (key == 4)
 		im->win.size++;
+	printf("%f\n", im->win.size );
 	if (key == 5)
 		im->win.size--;
 	if (key == 1 && x > 800)
