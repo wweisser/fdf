@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 13:47:05 by wendelin          #+#    #+#             */
-/*   Updated: 2022/08/08 20:00:53 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/08/11 15:16:17 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	calc_point(t_point p1, t_point p2, t_point *result, int op)
 }
 
 // multiplies p1 times f
-void	fact_vector(t_point *p1, float f)
+void	fact_vector(t_point *p1, double f)
 {
 		p1->x = p1->x * f;
 		p1->y = p1->y * f;

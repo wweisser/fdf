@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 15:00:31 by wendelin          #+#    #+#             */
-/*   Updated: 2022/08/08 20:28:39 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/08/11 14:50:22 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,22 +28,6 @@ int	setc(unsigned char t, unsigned char r, unsigned char g, unsigned char b)
 {
 	int	color;
 
-	if (t < 0)
-		t = 0;
-	if (r < 0)
-		r = 0;
-	if (g < 0)
-		g = 0;
-	if (b < 0)
-		b = 0;
-	if (t > 255)
-		t = 255;
-	if (r > 255)
-		r = 255;
-	if (g > 255)
-		g = 255;
-	if (b > 255)
-		b = 255;
 	color = 0;
 	color = (t << 24 | r << 16 | g << 8 | b);
 	return (color);
@@ -88,7 +72,7 @@ void	line(t_point p1, t_point p2, t_image im)
 		return ;
 	else if ((p1.x == p2.x) && (p1.y == p2.y + 1 || p1.y == p2.y - 1))
 		return ;
-	np = new_point(round (p1.x + ((p2.x - p1.x) / 2)),
+	np = value_to_point(round (p1.x + ((p2.x - p1.x) / 2)),
 			round (p1.y + ((p2.y - p1.y) / 2)), 0, color);
 	line(p1, np, im);
 	line(np, p2, im);

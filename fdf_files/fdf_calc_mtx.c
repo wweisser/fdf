@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 13:37:51 by wendelin          #+#    #+#             */
-/*   Updated: 2022/08/08 20:25:01 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/08/11 22:02:54 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,12 +64,9 @@ t_mtx	*create_rotmtx(float y, float b, float a)
 // If it is an Orthogonal matrix => ortho=1, which means a 4x4 matrix, w is
 // the fourth value which divides the other tree results
 //(see ORthogonal matrix)
-void	mxp(t_mtx c, t_point in, t_point *out)
+void	mxp(t_mtx c, t_point *in, t_point *out)
 {
-	out->x = (in.x * c.m[0][0] + in.y
-			* c.m[0][1] + in.z * c.m[0][2] + c.m[0][3]);
-	out->y = (in.x * c.m[1][0] + in.y
-			* c.m[1][1] + in.z * c.m[1][2] + c.m[1][3]);
-	out->z = (in.x * c.m[2][0] + in.y
-			* c.m[2][1] + in.z * c.m[2][2] + c.m[2][3]);
+	out->x = (in->x * c.m[0][0] + in->y * c.m[0][1] + in->z * c.m[0][2]);
+	out->y = (in->x * c.m[1][0] + in->y * c.m[1][1] + in->z * c.m[1][2]);
+	out->z = (in->x * c.m[2][0] + in->y * c.m[2][1] + in->z * c.m[2][2]);
 }

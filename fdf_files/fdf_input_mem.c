@@ -6,15 +6,15 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 12:08:23 by wendelin          #+#    #+#             */
-/*   Updated: 2022/08/08 21:22:39 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/08/11 23:29:27 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void	**free_mem(void **input, int size)
+double	**free_mem(double **input, int size)
 {
-	while (size <= 0)
+	while (size >= 0)
 	{
 		free (input[size]);
 		size--;
@@ -34,10 +34,12 @@ double	**alloc_lines(double **topmap, char *in)
 	topmap = NULL;
 	if (in == NULL)
 		return (NULL);
-	while (in[i] != '\0')
+	while (1)
 	{
-		if (in[i] == '\n')
+		if (in[i] == '\n' || in[i] == '\0')
 			lines++;
+		if (in[i] == '\0')
+			break ;
 		i++;
 	}
 	topmap = (double **)malloc((lines + 1) * sizeof(int *));
@@ -47,30 +49,43 @@ double	**alloc_lines(double **topmap, char *in)
 	return (topmap);
 }
 
+double	*alloc_row(double **topmap, double *line, int len, int row)
+{
+	line = NULL;
+	line = (double *)ft_calloc(len + 1, sizeof(double));
+	if (line == NULL)
+	{
+		topmap = free_mem(topmap, row);
+		return (NULL);
+	}
+	else
+		line[len] = 2147483647;
+	return (line);
+}
+
 double	**alloc_dim(double **topmap, char *in, t_image *im)
 {
 	int		i;
-	double	*temp;
 
 	i = 0;
 	im->lines = 0;
 	im->column = 1;
 	if (topmap == NULL)
 		return (NULL);
-	while (in[i] != '\0')
+	while (1)
 	{
 		if (in[i] == ' ' && ((in[i + 1] > 47 && in[i + 1] < 58)
 				|| in[i + 1] == '-'))
 			im->column++;
-		if (in[i] == '\n')
+		if (in[i] == '\n' || in[i] == '\0')
 		{
-			temp = ft_calloc(im->column + 1, sizeof(double));
-			topmap[im->lines] = temp;
-			topmap[im->lines][im->column] = 2147483647;
-			if (in[i + 1] != '\0')
-				im->column = 1;
+			topmap[im->lines] = alloc_row(topmap, topmap[im->lines],
+					im->column, im->lines);
+			im->column = 1;
 			im->lines++;
 		}
+		if (in[i] == '\0')
+			break ;
 		i++;
 	}
 	return (topmap);

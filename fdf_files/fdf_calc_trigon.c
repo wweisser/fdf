@@ -6,37 +6,21 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 13:56:43 by wendelin          #+#    #+#             */
-/*   Updated: 2022/08/08 20:17:42 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/08/12 00:24:56 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-// rotates all vertices of a trigon together with its normal direction vector
-// also norms the rotated direction vector
-void	rottrigon(t_trigon in, t_trigon *out, t_mtx rotmtx)
-{
-	mxp(rotmtx, in.p0, &out->p0);
-	mxp(rotmtx, in.p1, &out->p1);
-	mxp(rotmtx, in.p2, &out->p2);
-	mxp(rotmtx, in.n, &out->n);
-	norm_vector(&out->n);
-}
-
-void	adjst_top(t_trigon *temp, float top_hight)
-{
-			temp->p0.y = temp->p0.y * top_hight;
-			temp->p1.y = temp->p1.y * top_hight;
-			temp->p2.y = temp->p2.y * top_hight;
-}
-
 // matrix mulitplies a triangle. If orthogoinal matrix => ortho=1
-void	mxt(t_mtx c, t_trigon in, t_trigon *out, float top_hight)
+void	mxt(t_mtx c, t_trigon in, t_trigon *out, double top_hight)
 {
-	adjst_top(&in, top_hight);
-	mxp(c, in.p0, &out->p0);
-	mxp(c, in.p1, &out->p1);
-	mxp(c, in.p2, &out->p2);
+	in.p0.y = in.p0.y * top_hight;
+	in.p1.y = in.p1.y * top_hight;
+	in.p2.y = in.p2.y * top_hight;
+	mxp(c, &in.p0, &out->p0);
+	mxp(c, &in.p1, &out->p1);
+	mxp(c, &in.p2, &out->p2);
 	out->p0.color = in.p0.color;
 	out->p1.color = in.p1.color;
 	out->p2.color = in.p2.color;

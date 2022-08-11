@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 14:13:20 by wendelin          #+#    #+#             */
-/*   Updated: 2022/08/08 20:04:56 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/08/11 22:37:29 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,6 @@ int	keydown_bonus(int key, t_image *im)
 		im->top_hight += 0.1;
 	if (key == 125 && im->top_hight > 0.1)
 		im->top_hight -= 0.1;
-	if (key == 49)
-		set_default(im);
 	build_scene(*im, im->win);
 	if (key == 53)
 		close_state(im);

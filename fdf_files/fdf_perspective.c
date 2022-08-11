@@ -6,46 +6,74 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 09:32:35 by wweisser          #+#    #+#             */
-/*   Updated: 2022/08/08 20:25:16 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/08/12 00:35:01 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void	default_image(t_image *im)
+void	set_angle(t_image *im)
 {
 	im->angle[0] = 490;
 	im->angle[1] = 15;
 	im->angle[2] = 45;
-	im->offsetx = 0;
-	im->offsety = 0;
 }
 
-void	set_default(t_image *im)
+void	set_orientation(t_image *im, char *in)
 {
-	float		vert_hight;
-	float		vert_low;
-	float		temp1;
-	t_trigon	*temp;
+	int	i;
+	int	j;
+	int	k;
 
-	vert_hight = 0;
-	vert_low = 0;
-	temp = im->stat;
-	im->win.size = 1;
-	while (temp)
+	i = 0;
+	j = 0;
+	k = 0;
+	while (in[i] != '\0')
 	{
-		if (temp->p2.y > vert_hight)
-			vert_hight = temp->p2.y;
-		if (temp->p2.y < vert_low)
-			vert_low = temp->p2.y;
-		temp = temp->next;
+		if (in[i] == ' ' && ((in[i + 1] > 47 && in[i + 1] < 58)
+				|| in[i + 1] == '-'))
+			j++;
+		if (in[i] == '\n')
+			k++;
+		i++;
 	}
-	temp1 = im->column;
-		temp1 = (im->lines + im->column) / 2;
-	if ((im->x / temp1) > 1)
-		im->win.size = im->x / temp1;
-	im->top_hight = temp1 / (temp1 + (vert_hight + vert_low));
-	default_image(im);
+	im->offsetx = (j / k) / -2;
+	im->offsety = -(k / 2);
+	if (im->offsety < im->offsetx && im->offsety != 0)
+		im->win.size = 100 / (im->offsety * -1);
+	else if (im->offsetx != 0)
+		im->win.size = 100 / (im->offsetx * -1);
+	if (im->win.size < 2)
+		im->win.size = 2;
+}
+
+void	set_hight(double *top_hight, double **topmap, int lines)
+{
+	int		i;
+	int		j;
+	double	hight;
+	double	low;
+
+	j = 0;
+	hight = 0;
+	low = 0;
+	while (j < lines)
+	{
+		i = 0;
+		while (topmap[j][i] != 2147483647)
+		{
+			if (topmap[j][i] > hight)
+				hight = topmap[j][i];
+			if (topmap[j][i] < low)
+				low = topmap[j][i];
+			i++;
+		}
+		j++;
+	}
+	if ((hight - low) != 0 || ((hight - low) < 1 && (hight - low) > -1))
+		*top_hight = 1;
+	else
+		*top_hight = 100 / ((hight - low) * 2);
 }
 
 // transformas all objects in an image to the current angle

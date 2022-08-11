@@ -6,18 +6,19 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 13:33:09 by wendelin          #+#    #+#             */
-/*   Updated: 2022/08/08 20:29:48 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/08/12 00:24:24 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FDF_H
 # define FDF_H
+# include "../mlx_linux/mlx.h"
+# include "../mlx/mlx.h"
 # include <math.h>
 # include <unistd.h>
 # include <stdlib.h>
 # include <fcntl.h>
 # include <stdio.h>
-# include "../mlx/mlx.h"
 # include "../libft/libft.h"
 
 //first instance rows, second instance collums
@@ -73,7 +74,7 @@ struct	s_image
 	int			bits_per_pixel;
 	int			offsetx;
 	int			offsety;
-	float		top_hight;
+	double		top_hight;
 	int			lines;
 	int			column;
 	void		*grid;
@@ -83,28 +84,27 @@ typedef struct s_image	t_image;
 // fdf_calc_mtx.c
 t_mtx		*new_mtx(void);
 t_mtx		*create_rotmtx(float y, float b, float a);
-void		mxp(t_mtx c, t_point in, t_point *out);
+void		mxp(t_mtx c, t_point *in, t_point *out);
 
 // fdf_calc_point.c 
 void		calc_point(t_point p1, t_point p2, t_point *result, int op);
-void		fact_vector(t_point *p1, float f);
-void		fact_vector(t_point *p1, float f);
+void		fact_vector(t_point *p1, double f);
 
 // fdf_calc_round.c
-float		rnd(float in, int places);
+double		rnd(double in, int places);
 
 // fdf_calc_trigon.c
-void		rottrigon(t_trigon in, t_trigon *out, t_mtx rotmtx);
-void		adjst_top(t_trigon *temp, float top_hight);
-void		mxt(t_mtx c, t_trigon in, t_trigon *out, float top_hight);
+// void		rottrigon(t_trigon in, t_trigon *out, t_mtx rotmtx);
+// void		adjst_top(t_trigon *temp, double top_hight);
+void		mxt(t_mtx c, t_trigon in, t_trigon *out, double top_hight);
 void		translate(t_trigon *tri, int offsetx, int offsety);
 void		scale(t_trigon *tri, int fact);
 
 // fdf_calc_vector.c
-float		scalar_product(t_point *d1, t_point *d2);
+double		scalar_product(t_point *d1, t_point *d2);
 void		cross_product(t_point *p1, t_point *p2, t_point *result);
-float		dot_product(float p1[3], float p2[3]);
-float		sum_vector(t_point p1);
+double		dot_product(double p1[3], double p2[3]);
+double		sum_vector(t_point p1);
 void		norm_vector(t_point *p1);
 
 // fdf_control_keyboard.c
@@ -122,7 +122,7 @@ double		transfer_numb(const char *in, t_image *im);
 double		**fill_topmap(double **topmap, char *in, t_image *im);
 
 // fdf_input_mem.c
-void		**free_mem(void **input, int size);
+double		**free_mem(double **input, int size);
 double		**new_topmap(char **input, double **top_map, int lines);
 double		**alloc_lines(double **topmap, char *in);
 double		**alloc_dim(double **topmap, char *in, t_image *im);
@@ -136,21 +136,24 @@ char		*read_lines(int fd);
 t_window	new_window(t_window *win, int width, int hight);
 t_image		new_image(t_image *im, t_window win);
 void		new_grid(int fd, t_image *im);
-void		create_grid(t_image *im, int fd);
 int			close_state(t_image *im);
 
 // fdf_perspective.c
-void		set_default(t_image *im);
 void		trans_op(t_image im);
+void		set_orientation(t_image *im, char *input);
+void		set_hight(double *top_hight, double **topmap, int lines);
+void		set_angle(t_image *im);
 
 // fdf_structure_mem.c
 void		addtrigon(t_trigon **head, t_trigon *new);
-void		free_lst(t_trigon **head);
+t_trigon	*free_lst(t_trigon **head);
 
 // fdf_structure.c
-t_point		new_point(float x, float y, float z, int color);
+t_point		value_to_point(float x, float y, float z, int color);
+t_point		new_point(t_point p_in, t_point *p);
 t_trigon	*new_trigon(t_point p0, t_point p1, t_point p2);
-void		build_square(double **tp, int i[4], t_image *im);
+void		build_square(double **tp, int x, int y, t_image *im);
+void		translate_topmap(double **topmap, int lines, t_image *im);
 
 // fdf_visualisation.c
 int			render(int x, int y, int color, t_image im);

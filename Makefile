@@ -6,18 +6,20 @@
 #    By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/10 15:31:57 by wendelin          #+#    #+#              #
-#    Updated: 2022/08/08 17:27:17 by wweisser         ###   ########.fr        #
+#    Updated: 2022/08/10 22:35:20 by wweisser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 
-NAME= fdf
+NAME = fdf
 
 CC 		= gcc
 LIBFT 	= libft/libft.a
 MINILIB	= -Lmlx -lmlx -framework OpenGL -framework AppKit
-LINKS 	= -g -lm -fsanitize=address 
+# MINILIB	= -Lmlx_linux -lmlx_linux -L/usr/lib -Imlx_linux -lXext -lX11 mlx_linux/libmlx.a
+LINKS 	= -g -fsanitize=address 
 FLAGS	= -Wall -Werror -Werror
+LINUXFLAGS = -I/usr/include -Imlx_linux -O3
 
 SRC 	= fdf_files/fdf.c 			\
 fdf_files/fdf_calc_mtx.c			\
@@ -54,7 +56,7 @@ fdf_mainstate.o			\
 fdf_perspective.o		\
 fdf_structure_mem.o		\
 fdf_structure.o			\
-fdf_visualisation.o			
+fdf_visualisation.o	
 
 all: $(NAME)
 
@@ -65,7 +67,8 @@ bonus: $(OBJ)
 	@$(CC) $(OBJ) $(BONUS) $(LIBFT) $(MINILIB) $(FLAGS) $(LINKS) -lm -o fdf_bonus
 
 $(OBJ): $(INPUT)
-	@$(CC) -Wall -Wextra -Werror -c $(SRC) 
+	@make re -C libft/
+	@$(CC) $(FLAGS) -c $(SRC) 
 
 clean: 
 	@rm -f $(OBJ)
@@ -74,3 +77,5 @@ fclean: clean
 	@rm -f $(NAME) fdf_bonus
 
 re: fclean all
+
+#VERSUCHEN DAS MAKEFILE IN DEM UBUNTU CONTAINER AUSZUFUEHREN

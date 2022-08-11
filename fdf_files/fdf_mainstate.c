@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 13:58:55 by wendelin          #+#    #+#             */
-/*   Updated: 2022/08/08 21:05:55 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/08/12 00:26:35 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@
 t_window	new_window(t_window *win, int width, int hight)
 {
 	win->mlx = mlx_init();
-	win->win = mlx_new_window(win->mlx, width, hight, "fdf");
 	win->x = width;
 	win->y = hight;
+	win->win = mlx_new_window(win->mlx, width, hight, "fdf");
 	win->size = 0;
 	win->mouse_state[0] = 0;
 	win->mouse_state[1] = 0;
@@ -58,21 +58,18 @@ void	new_grid(int fd, t_image *im)
 	topmap = alloc_lines(topmap, input);
 	topmap = alloc_dim(topmap, input, im);
 	topmap = fill_topmap(topmap, input, im);
-	topmap = (double **)free_mem((void **)topmap, im->lines);
+	set_orientation(im, input);
+	set_hight(&(im->top_hight), topmap, im->lines);
+	translate_topmap(topmap, im->lines, im);
+	set_angle(im);
+	topmap = free_mem(topmap, im->lines);
 	free (input);
-}
-
-void	create_grid(t_image *im, int fd)
-{
-	new_grid(fd, im);
-	set_default(im);
 }
 
 int	close_state(t_image *im)
 {
-	mlx_destroy_window(im->win.mlx, im->win.win);
 	if (im->stat != NULL)
-		free_lst(&im->stat);
+		im->stat = free_lst(&(im->stat));
 	exit(0);
 	return (0);
 }

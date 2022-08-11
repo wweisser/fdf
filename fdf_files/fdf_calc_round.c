@@ -6,17 +6,17 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 13:53:54 by wendelin          #+#    #+#             */
-/*   Updated: 2022/08/08 19:34:46 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/08/11 15:15:43 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-float	rnd(float in, int places)
+double	rnd(double in, int places)
 {
 	int		i;
 	int		j;
-	float	temp;
+	double	temp;
 
 	i = 1;
 	while (places > 0)

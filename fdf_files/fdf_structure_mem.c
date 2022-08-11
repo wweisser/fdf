@@ -6,7 +6,7 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 14:27:13 by wendelin          #+#    #+#             */
-/*   Updated: 2022/08/08 20:30:36 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/08/11 05:26:20 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ void	addtrigon(t_trigon **head, t_trigon *new)
 		return ;
 	if (*head == NULL)
 	{
-		new->next = NULL;
 		*head = new;
+		new->next = NULL;
 	}
 	else
 	{
@@ -30,19 +30,19 @@ void	addtrigon(t_trigon **head, t_trigon *new)
 	}
 }
 
-void	free_lst(t_trigon **head)
+t_trigon	*free_lst(t_trigon **head)
 {
 	t_trigon	*temp;
 
-	temp = *head;
 	if (*head != NULL)
 	{
-		while (*head)
+		temp = *head;
+		while (*head != NULL)
 		{
-			temp = *head;
 			*head = (*head)->next;
-			free(temp);
+			free ((void *)temp);
+			temp = *head;
 		}
-		head = NULL;
 	}
+	return (*head);
 }

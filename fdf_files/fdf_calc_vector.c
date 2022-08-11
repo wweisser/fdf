@@ -6,14 +6,14 @@
 /*   By: wweisser <wweisser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 13:48:36 by wendelin          #+#    #+#             */
-/*   Updated: 2022/08/08 20:01:52 by wweisser         ###   ########.fr       */
+/*   Updated: 2022/08/11 15:17:12 by wweisser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
 // calculates the sacalarproduct
-float	scalar_product(t_point *d1, t_point *d2)
+double	scalar_product(t_point *d1, t_point *d2)
 {
 	double	result;
 
@@ -30,17 +30,17 @@ void	cross_product(t_point *p1, t_point *p2, t_point *result)
 }
 
 // returns the dotproct of p1 o p2
-float	dot_product(float p1[3], float p2[3])
+double	dot_product(double p1[3], double p2[3])
 {
-	float	dp;
+	double	dp;
 
 	dp = (p1[0] * p2[0]) + (p1[1] * p2[1]) + (p1[2] * p2[2]);
 	return (dp);
 }
 
-float	sum_vector(t_point p1)
+double	sum_vector(t_point p1)
 {
-	float	sum;
+	double	sum;
 
 	sum = sqrt((p1.x * p1.x) + (p1.y * p1.y) + (p1.z * p1.z));
 	return (sum);
@@ -49,7 +49,7 @@ float	sum_vector(t_point p1)
 // normates a directionvector
 void	norm_vector(t_point *p1)
 {
-	float	fact;
+	double	fact;
 
 	fact = 0.0;
 	fact = sum_vector(*p1);
